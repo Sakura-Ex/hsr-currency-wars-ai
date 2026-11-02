@@ -1,0 +1,35 @@
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+Desktop.ini
+.vs/
+.idea/
+*.swp
+
+# Logs and temporary files
+*.log
+*.tmp
+/tmp/
+
+# Local player data and research outputs
+/local-data/
+/checkpoints/
+/runs/
+/artifacts/
+
+# Common build and dependency outputs
+/target/
+/dist/
+/build/
+node_modules/
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
