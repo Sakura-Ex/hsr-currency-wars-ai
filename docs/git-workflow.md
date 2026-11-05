@@ -39,19 +39,19 @@ PR 正文使用以下结构：
 
 ## 提交信息
 
-提交标题采用固定结构，摘要用中文表达完成的动作：
+提交信息使用英文，标题采用以下格式：
 
 ```text
-type(scope): 具体改动
+type(scope): description
 
-feat(sim): 增加奖励节点的晶矿结算
-fix(battle): 按实测顺序处理冻结解除
-docs(plan): 明确首轮战斗样例的验收条件
-test(replay): 添加已复现的站位差异案例
-refactor(state): 合并重复的资源更新逻辑
-ci(checks): 增加战斗模块测试任务
+feat(sim): add crystal settlement for reward nodes
+fix(battle): apply freeze removal in the observed order
+docs(plan): clarify acceptance criteria for initial battle samples
+test(replay): add a case for reproduced positioning differences
+refactor(state): consolidate resource update logic
+ci(checks): add battle module tests
 ```
 
 type 表示改动类型，使用 `feat`、`fix`、`docs`、`test`、`refactor`、`perf`、`build`、`ci`、`chore`；scope 表示涉及的模块，使用实际模块名称。正文按需补充改动原因、行为变化和关联任务。
 
-PR 标题使用相同结构，合并后用作主分支上的提交标题。每个提交包含一项完整改动，便于理解、定位和撤销。
+PR 标题同样使用英文和上述格式，合并后用作主分支上的提交标题。每个提交包含一项完整改动，便于理解、定位和撤销。
