@@ -1,19 +1,19 @@
 # HSR Currency Wars AI
 
+English | [简体中文](README.zh-CN.md)
+
 An open-source AI strategy research and assistance project for Currency Wars in Honkai: Star Rail, aimed at Windows players.
 
 ## Project goals
 
 - Explore and evaluate team compositions, combat decisions, and economic strategies.
 - Adapt strategy recommendations to each player's available characters and equipment.
-- Separate research and training workloads from lightweight local inference for everyday players.
-- Provide a standardized account-data import interface; integration details will be explored later.
 
 ## Status
 
-Repository initialization only. No application, simulator, or trained model is available yet. Architecture, implementation languages, and hardware requirements remain to be validated.
+Early development. The Windows application has not been released yet.
 
-English is the primary language for source code, documentation, and project collaboration.
+See the [documentation hub](docs/README.md) for project plans, design, and development guides (in Chinese).
 
 ## License
 
