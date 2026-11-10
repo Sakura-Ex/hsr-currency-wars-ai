@@ -6,6 +6,6 @@
 | [游戏规则](game-rules.md) | 对局结构、经济结算、战斗操作和规则验证要求。 |
 | [系统设计与技术方案](system-design.md) | 模块职责、候选技术方案、策略研究和评估方法。 |
 | [实施计划与人员分工](implementation-plan.md) | 开发阶段、验收条件、人员分工和首轮工作安排。 |
-| [开发与测试约定](development-guide.md) | 代码约定、测试要求、差异处理和持续集成。 |
-| [Git 协作规范](git-workflow.md) | 任务与评审流程、PR 要求、分支命名和提交信息格式。 |
+| [开发与测试约定](development-guide.md) | 代码约定、默认禁用的写法、例外要求、测试与持续集成、改动验收。 |
+| [Git 协作规范](git-workflow.md) | 任务与评审流程、PR 要求、分支命名、提交粒度与时机、提交信息格式。 |
 | [文档写作规范](documentation-guidelines.md) | 写作原则、语言风格、章节组织和文档维护。 |
