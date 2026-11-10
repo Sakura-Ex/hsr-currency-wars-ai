@@ -17,6 +17,6 @@
 
 ## 许可证
 
-本项目采用 GNU 宽通用公共许可证第 3 版（`LGPL-3.0-only`）。许可证文本见 [LICENSE](LICENSE)，其中引用的 GNU 通用公共许可证第 3 版条款见 [COPYING](COPYING)。
+本项目采用 GNU 通用公共许可证第 3 版（`GPL-3.0-only`）。完整许可证文本见 [LICENSE](LICENSE)。
 
 本项目由社区独立开发，与 HoYoverse 无隶属关系，也未获得其官方认可。游戏名称和商标属于各自权利人。

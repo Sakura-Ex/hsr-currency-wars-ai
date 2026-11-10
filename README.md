@@ -17,6 +17,6 @@ See the [documentation hub](docs/README.md) for project plans, design, and devel
 
 ## License
 
-This project is licensed under the GNU Lesser General Public License version 3.0 only (`LGPL-3.0-only`). See [LICENSE](LICENSE) for the LGPL v3.0 text and [COPYING](COPYING) for the GPL v3.0 terms incorporated by it.
+This project is licensed under the GNU General Public License version 3.0 only (`GPL-3.0-only`). See [LICENSE](LICENSE) for the full license text.
 
 This is an independent community project and is not affiliated with or endorsed by HoYoverse. Game names and trademarks belong to their respective owners.
