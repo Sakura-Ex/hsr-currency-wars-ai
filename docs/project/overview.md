@@ -16,7 +16,7 @@
 
 伤害、血量、金币、晶矿和局内连胜用于分析局面及辅助训练；训练奖励与当前任务的成功条件对应。
 
-模块职责和候选技术见[系统设计与技术方案](system-design.md)，各阶段的工作和验收条件见[实施阶段与任务拆解](implementation-plan.md)。
+模块职责和候选技术见[系统设计与技术方案](architecture.md)，各阶段的工作和验收条件见[实施阶段与任务拆解](roadmap.md)。
 
 ## 玩家使用流程
 
@@ -28,7 +28,7 @@
 
 玩家端计划提供 Windows 安装包，在本地离线运行，使用 CPU 完成规则计算、轻量模型推理和限定时间内的方案搜索。最低硬件配置和响应时间通过原型实测确定，测试时同时运行游戏。
 
-账号导出首轮接入 [reliquary-archiver](https://github.com/IceDynamix/reliquary-archiver) 的 JSON，根据实际样本核对字段和角色标识。账号导出、程序生成和试用数据经过统一转换，按货币战争规则得到实际生效配置，再分别生成模型输入和战斗模拟输入。配置表示、账号生成与评价方法见[账号与遗器数据](account-data.md)。
+账号导出首轮接入 [reliquary-archiver](https://github.com/IceDynamix/reliquary-archiver) 的 JSON，根据实际样本核对字段和角色标识。账号导出、程序生成和试用数据经过统一转换，按货币战争规则得到实际生效配置，再分别生成模型输入和战斗模拟输入。配置表示、账号生成与评价方法见[账号与遗器数据](../modules/account-generation/design.md)。
 
 ## 研究设备
 
@@ -38,4 +38,4 @@
 
 ## 许可证
 
-项目沿用 LGPL-3.0-only，见 [LICENSE](../LICENSE) 和 [COPYING](../COPYING)。采用第三方组件时记录来源、版本和许可。
+项目沿用 LGPL-3.0-only，见 [LICENSE](../../LICENSE) 和 [COPYING](../../COPYING)。采用第三方组件时记录来源、版本和许可。
