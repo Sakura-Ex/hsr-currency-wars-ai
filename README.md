@@ -8,16 +8,12 @@ An open-source AI strategy research and assistance project for Currency Wars in 
 
 - Explore and evaluate team compositions, combat decisions, and economic strategies.
 - Adapt strategy recommendations to each player's available characters and equipment.
-- Separate research and training workloads from lightweight local inference for everyday players.
-- Provide a standardized account-data import interface; integration details will be explored later.
 
 ## Status
 
-Repository initialization only. No application, simulator, or trained model is available yet. Architecture, implementation languages, and hardware requirements remain to be validated.
+Early development. The Windows application has not been released yet.
 
-See the [documentation hub](docs/README.md) for project plans, development guidelines, and module designs in Chinese.
-
-Public-facing documentation, including project introductions, player guides, and release notes, is maintained in English and Simplified Chinese. Both versions are kept in sync. Design documents, development guidelines, and project collaboration use Chinese. Code identifiers, paths, and fixed tool fields retain their original names.
+See the [documentation hub](docs/README.md) for project plans, design, and development guides (in Chinese).
 
 ## License
 
