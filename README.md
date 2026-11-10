@@ -13,9 +13,9 @@ An open-source AI strategy research and assistance project for Currency Wars in 
 
 Repository initialization only. No application, simulator, or trained model is available yet. Architecture, implementation languages, and hardware requirements remain to be validated.
 
-项目说明、开发约定和模块设计见[文档入口](docs/README.md)。
+See the [documentation hub](docs/README.md) for project plans, development guidelines, and module designs in Chinese.
 
-English is the primary language for source code, documentation, and project collaboration.
+Public-facing content, including this README, player guides, and release notes, is presented primarily in English. Design documents, development guidelines, and project collaboration use Chinese. Code identifiers, paths, and fixed tool fields retain their original names.
 
 ## License
 
