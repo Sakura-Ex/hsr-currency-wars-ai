@@ -16,7 +16,8 @@ hsr-currency-wars-ai/
 │           ├── README.md               # 模块总览和阅读入口
 │           └── design.md               # 现有数据设计与首个样例约定
 ├── AGENTS.md                           # 项目协作规则
-├── README.md                           # 项目入口
+├── README.md                           # 英文项目入口
+├── README.zh-CN.md                     # 简体中文项目入口
 ├── .gitignore                          # 本地产物与配置的忽略规则
 ├── LICENSE
 └── COPYING
