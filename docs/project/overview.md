@@ -38,4 +38,4 @@
 
 ## 许可证
 
-项目沿用 LGPL-3.0-only，见 [LICENSE](../../LICENSE) 和 [COPYING](../../COPYING)。采用第三方组件时记录来源、版本和许可。
+项目采用 GPL-3.0-only，完整许可证文本见 [LICENSE](../../LICENSE)。采用第三方组件时记录来源、版本和许可。

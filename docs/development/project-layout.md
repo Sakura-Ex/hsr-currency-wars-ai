@@ -19,8 +19,7 @@ hsr-currency-wars-ai/
 ├── README.md                           # 英文项目入口
 ├── README.zh-CN.md                     # 简体中文项目入口
 ├── .gitignore                          # 本地产物与配置的忽略规则
-├── LICENSE
-└── COPYING
+└── LICENSE                            # GPL-3.0-only 许可证全文
 ```
 
 ## 模块放置
