@@ -12,7 +12,7 @@ from ..relics.single import SCORE_TOLERANCE, GenerationTargetNotReached, _PieceS
 from .allocation import _concentration_weights, _distribute
 from .models import AccountReference, AccountRequest
 
-# 连续投入目标转换到离散遗器时，每个角色允许半条的分配偏差。
+# 优先搜索与角色连续投入目标相差半条以内的成品。
 _INVESTMENT_SCORE_SPREAD = 0.5
 
 
@@ -112,14 +112,15 @@ def _generate_account_relics(
         tuple(group_bounds[cid][1] for cid in ids),
         _concentration_weights(ids, cores, strength),
     )
-    for cid, target in zip(ids, desired, strict=True):
-        lo, hi = group_bounds[cid]
-        group_bounds[cid] = (
-            max(lo, target - _INVESTMENT_SCORE_SPREAD),
-            min(hi, target + _INVESTMENT_SCORE_SPREAD),
-        )
     desired_by_id = dict(zip(ids, desired, strict=True))
-    groups = sorted(ids, key=lambda cid: group_bounds[cid][1] - group_bounds[cid][0])
+    preferred_bounds = {
+        cid: (
+            max(lo, desired_by_id[cid] - _INVESTMENT_SCORE_SPREAD),
+            min(hi, desired_by_id[cid] + _INVESTMENT_SCORE_SPREAD),
+        )
+        for cid, (lo, hi) in group_bounds.items()
+    }
+    groups = sorted(ids, key=lambda cid: preferred_bounds[cid][1] - preferred_bounds[cid][0])
     order = [
         (cid, piece)
         for cid in groups
@@ -151,13 +152,16 @@ def _generate_account_relics(
         suffix_grid[position] = gcd(suffix_grid[position + 1], *units)
     failed: set[tuple[int, float, float, bool]] = set()
 
-    def solve(position: int, score: float, middle_only: bool) -> bool:
+    def solve(
+        position: int, score: float, middle_only: bool, bounds: dict[str, tuple[float, float]]
+    ) -> bool:
         """为下一个部位搜索同时满足角色与账号目标的成品。
 
         Args:
             position: 当前部位在账号搜索顺序中的位置。
             score: 已选遗器的账号累计得分。
             middle_only: 本轮是否在允许的中档网格上搜索。
+            bounds: 本轮各角色的得分范围。
 
         Returns:
             找到完整组合时返回 True，并把遗器与分数写入 results。
@@ -178,17 +182,19 @@ def _generate_account_relics(
         state = (position, score, scores[cid], middle_only)
         if state in failed:
             return False
-        remaining_low[cid] -= piece.interval[0]
-        remaining_high[cid] -= piece.interval[1]
+        current_score = scores[cid]
+        previous_low, previous_high = remaining_low[cid], remaining_high[cid]
+        remaining_low[cid] = previous_low - piece.interval[0]
+        remaining_high[cid] = previous_high - piece.interval[1]
         remaining_count[cid] -= 1
         target = (
             max(
                 lower - score - suffix_high[position + 1],
-                group_bounds[cid][0] - scores[cid] - remaining_high[cid],
+                bounds[cid][0] - scores[cid] - remaining_high[cid],
             ),
             min(
                 upper - score - suffix_low[position + 1],
-                group_bounds[cid][1] - scores[cid] - remaining_low[cid],
+                bounds[cid][1] - scores[cid] - remaining_low[cid],
             ),
         )
         preferred = (desired_by_id[cid] - scores[cid]) / (remaining_count[cid] + 1)
@@ -199,12 +205,11 @@ def _generate_account_relics(
             distinct_scores=True,
         ):
             results[cid][relic.slot] = (relic, piece_score)
-            scores[cid] += piece_score
-            if solve(position + 1, score + piece_score, middle_only):
+            scores[cid] = current_score + piece_score
+            if solve(position + 1, score + piece_score, middle_only, bounds):
                 return True
-            scores[cid] -= piece_score
-        remaining_low[cid] += piece.interval[0]
-        remaining_high[cid] += piece.interval[1]
+            scores[cid] = current_score
+        remaining_low[cid], remaining_high[cid] = previous_low, previous_high
         remaining_count[cid] += 1
         failed.add(state)
         return False
@@ -215,8 +220,15 @@ def _generate_account_relics(
         if upper - lower <= SCORE_TOLERANCE and all(piece.tier_weights[1] > 0 for _, piece in order)
         else (False,)
     )
-    if not any(solve(0, 0, middle_only) for middle_only in phases):
-        raise _RosterRelicTargetNotReached("账号遗器目标未找到满足投入分配的合法离散组合")
+    ranges = (
+        (preferred_bounds, group_bounds) if preferred_bounds != group_bounds else (group_bounds,)
+    )
+    for bounds in ranges:
+        failed.clear()
+        if any(solve(0, 0, middle_only, bounds) for middle_only in phases):
+            break
+    else:
+        raise _RosterRelicTargetNotReached("账号遗器目标未找到满足请求范围的合法离散组合")
     return (
         {cid: tuple(results[cid][slot] for slot in range(1, 7)) for cid in ids},
         uppers,

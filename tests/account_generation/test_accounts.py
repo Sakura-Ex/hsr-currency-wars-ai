@@ -510,6 +510,34 @@ class AccountGenerationTests(unittest.TestCase):
         )
         self.assertAlmostEqual(result.mean_effective_rolls, 4, places=6)
 
+    def test_sampled_investment_gap_retries_the_requested_range(self):
+        """投入目标落在离散得分之间时，继续寻找请求区间内的合法得分。"""
+        relics = CharacterRelicsRequest(
+            effective_stat_weights={"SPD": 10},
+            tier_weights=(0, 1, 0),
+            pieces=(
+                RelicSpec(slot=1, required_substats=("SPD", "ATK", "DEF", "HP_")),
+                *(
+                    RelicSpec(slot=slot, min_effective_rolls=0, max_effective_rolls=0)
+                    for slot in range(2, 7)
+                ),
+            ),
+        )
+        result = self.generate(
+            self.request(
+                gold_count=0.5,
+                character_count=1,
+                character_pool=("1004",),
+                core_character_ids=("1004",),
+                character_overrides={"1004": CharacterSpec(relics=relics)},
+                min_mean_effective_rolls=10 / 6,
+                max_mean_effective_rolls=20 / 6,
+            )
+        )
+        head = next(piece.relic for piece in result.relics if piece.relic.slot == 1)
+        self.assertIn(head.substats["SPD"], (2.3, 4.6))
+        self.assertAlmostEqual(result.mean_effective_rolls, head.substats["SPD"] / 2.3 * 10 / 6)
+
     def test_exact_mean_supports_non_middle_rolls(self):
         """检查精确目标可使用速度高档，完整档位搜索仍然生效。"""
         mean = 2.6 / 2.3 / 6
