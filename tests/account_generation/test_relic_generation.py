@@ -266,6 +266,26 @@ class RelicGenerationTests(unittest.TestCase):
         )
         self.assertEqual(score_relic(relic, effective_stat_weights={}), 0)
 
+    def test_score_bounds_include_required_and_negative_weight_stats(self):
+        """主词条排斥与必含词条共同约束有正负权重的可达极值。"""
+        for target in (-2, 26):
+            with self.subTest(target=target):
+                result = generate_relic(
+                    replace(
+                        BASE,
+                        slot=3,
+                        mainstat=("HP_", "DEF_"),
+                        required_substats=("HP_", "SPD"),
+                        effective_stat_weights={"HP_": 4, "SPD": -1, "ATK_": 3, "DEF_": 100},
+                        tier_weights=(0, 1, 0),
+                        min_effective_rolls=target,
+                        max_effective_rolls=target,
+                    ),
+                    rng=random.Random(42),
+                )
+                self.assertEqual(result.relic.mainstat, "DEF_")
+                self.assertAlmostEqual(result.effective_rolls, target)
+
     def test_narrow_target_is_constructed_from_discrete_values(self):
         """检查精确词条目标由合法离散档位组合达成。"""
         result = generate_relic(

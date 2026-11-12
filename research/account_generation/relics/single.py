@@ -3,8 +3,8 @@
 import random
 from collections.abc import Iterator
 from dataclasses import dataclass
-from functools import cache
-from itertools import combinations
+from functools import cache, lru_cache
+from itertools import combinations, islice
 from math import comb, isfinite, log, log1p
 
 from .models import GeneratedRelic, Relic, RelicRequest, RelicSpec
@@ -93,6 +93,23 @@ def _tier_counts(count: int, weights: tuple[float, float, float]):
     return tuple(result)
 
 
+@lru_cache(maxsize=64)
+def _compatible_keysets(
+    mainstats: tuple[str, ...], required: tuple[str, ...]
+) -> tuple[tuple[str, tuple[str, ...]], ...]:
+    """枚举与候选主词条相容的副词条组合，保留抽样前的固定顺序。"""
+    if not set(required) <= SUBSTAT_ROLLS.keys():
+        return ()
+    return tuple(
+        (mainstat, required + rest)
+        for mainstat in mainstats
+        for rest in combinations(
+            [key for key in SUBSTAT_ROLLS if key != mainstat and key not in required],
+            4 - len(required),
+        )
+    )
+
+
 class _PieceSearch:
     """维护单件成品的主副词条候选，按得分范围进行离散搜索。
 
@@ -103,10 +120,9 @@ class _PieceSearch:
         tier_weights: 低、中、高档的候选排序权重。
         rng: 准备候选和搜索时共用的随机源。
         budget: 本次搜索共用的尝试计数器。
-        total_roll_options: 按抽样顺序排列的成品获得总次数，取八次或九次。
-            未指定初始条数时包含两种，显式指定时包含一种。
         keysets: 主词条与四种相容副词条键组成的候选集合，按搜索顺序排列。
         unit_bounds: 各属性单次获得能够贡献的最低、最高有效词条得分。
+        roll_bounds: 按成品总获得次数计算的合法得分上下界，保持抽样顺序。
         interval: 合法得分上下界与单件目标相交后的区间；
             具体档位组合的可达性由搜索确定。
     """
@@ -156,6 +172,7 @@ class _PieceSearch:
         required = spec.required_substats
         if len(required) > 4 or len(set(required)) != len(required):
             raise ValueError("必含副词条需要互异、至多四种，并与主词条相容")
+        mainstats = tuple(key for key in dict.fromkeys(mainstats) if key not in required)
         self.spec = spec
         self.set_id = (
             spec.set_id if spec.set_id is not None else rng.choice(SLOT_SET_IDS[spec.slot])
@@ -166,20 +183,10 @@ class _PieceSearch:
         self.budget = budget
         if spec.initial_substat_count is None:
             first = rng.choices((8, 9), weights=INITIAL_SUBSTAT_WEIGHTS, k=1)[0]
-            self.total_roll_options = (first, 9 if first == 8 else 8)
+            roll_options = (first, 9 if first == 8 else 8)
         else:
-            self.total_roll_options = (spec.initial_substat_count + 5,)
-        self.keysets = []
-        for mainstat in dict.fromkeys(mainstats):
-            pool = [key for key in SUBSTAT_ROLLS if key != mainstat]
-            if not set(required) <= set(pool):
-                continue
-            self.keysets.extend(
-                (mainstat, required + rest)
-                for rest in combinations(
-                    [key for key in pool if key not in required], 4 - len(required)
-                )
-            )
+            roll_options = (spec.initial_substat_count + 5,)
+        self.keysets = list(_compatible_keysets(mainstats, required))
         if not self.keysets:
             raise ValueError("必含副词条与所有候选主词条冲突，或包含未知属性")
         rng.shuffle(self.keysets)
@@ -191,12 +198,9 @@ class _PieceSearch:
                 if probability > 0
             ]
             self.unit_bounds[key] = min(scores), max(scores)
-        bounds = [
-            self._bounds(keys, total_rolls)
-            for total_rolls in self.total_roll_options
-            for _, keys in self.keysets
-        ]
-        lower, upper = min(b[0] for b in bounds), max(b[1] for b in bounds)
+        self.roll_bounds = self._roll_bounds(mainstats, required, roll_options)
+        lower = min(bound[0] for bound in self.roll_bounds.values())
+        upper = max(bound[1] for bound in self.roll_bounds.values())
         if spec.min_effective_rolls is not None:
             lower = max(lower, spec.min_effective_rolls)
         if spec.max_effective_rolls is not None:
@@ -204,6 +208,31 @@ class _PieceSearch:
         self.interval = lower, upper
         if lower > upper + SCORE_TOLERANCE:
             raise GenerationTargetNotReached(f"{spec.slot} 的目标超出合法成品范围")
+
+    def _roll_bounds(
+        self, mainstats: tuple[str, ...], required: tuple[str, ...], roll_options: tuple[int, ...]
+    ) -> dict[int, tuple[float, float]]:
+        """用每次得分最低和最高的相容属性计算各起始条件的范围。"""
+        pool = tuple(key for key in SUBSTAT_ROLLS if key not in required)
+        lowest = sorted(pool, key=lambda key: self.unit_bounds[key][0])
+        highest = sorted(pool, key=lambda key: self.unit_bounds[key][1], reverse=True)
+        optional_count = 4 - len(required)
+
+        def extreme_keys(ranked: list[str], mainstat: str) -> tuple[str, ...]:
+            """选出可用的极值属性并恢复固定计分顺序。"""
+            optional = set(islice((key for key in ranked if key != mainstat), optional_count))
+            return required + tuple(key for key in pool if key in optional)
+
+        # 每种属性至少获得一次，其余次数集中到单次得分最低或最高的属性。
+        lows = [extreme_keys(lowest, mainstat) for mainstat in mainstats]
+        highs = [extreme_keys(highest, mainstat) for mainstat in mainstats]
+        return {
+            rolls: (
+                min(self._bounds(keys, rolls)[0] for keys in lows),
+                max(self._bounds(keys, rolls)[1] for keys in highs),
+            )
+            for rolls in roll_options
+        }
 
     def _bounds(self, keys: tuple[str, ...], rolls: int) -> tuple[float, float]:
         """计算剩余获得次数能够贡献的得分上下界。
@@ -332,14 +361,11 @@ class _PieceSearch:
             for _, _, count, value, contribution in options:
                 yield from search(rest, rolls - count, score + contribution, stats | {key: value})
 
-        for total_rolls in self.total_roll_options:
-            bounds = [self._bounds(keys, total_rolls) for _, keys in self.keysets]
-            if (
-                min(b[0] for b in bounds) > upper + SCORE_TOLERANCE
-                or max(b[1] for b in bounds) < lower - SCORE_TOLERANCE
-            ):
+        for total_rolls, (roll_low, roll_high) in self.roll_bounds.items():
+            if roll_low > upper + SCORE_TOLERANCE or roll_high < lower - SCORE_TOLERANCE:
                 continue
-            for (mainstat, keys), (bound_low, bound_high) in zip(self.keysets, bounds, strict=True):
+            for mainstat, keys in self.keysets:
+                bound_low, bound_high = self._bounds(keys, total_rolls)
                 if bound_low > upper + SCORE_TOLERANCE or bound_high < lower - SCORE_TOLERANCE:
                     if not distinct_scores:
                         self.budget.consume()
