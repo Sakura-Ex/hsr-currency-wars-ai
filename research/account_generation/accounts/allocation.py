@@ -94,8 +94,8 @@ def _build_menus(
         options = []
         for cone_id in cone_ids:
             cone = reference.light_cones[cone_id]
-            for eidolons in (spec.eidolons,) if fixed else range(7):
-                for stack in (spec.light_cone.superimposition,) if fixed else range(1, 6):
+            for eidolons in (int(spec.eidolons),) if fixed else range(7):
+                for stack in (int(spec.light_cone.superimposition),) if fixed else range(1, 6):
                     body = _gold_units(
                         reference.character_gold_categories[cid], eidolons + 1, request
                     )

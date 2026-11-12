@@ -153,6 +153,10 @@ def _check_character_investment(request: CharacterSpec) -> None:
             raise ValueError("角色与光锥的原始等级需要落在对应突破阶段的范围内")
     if not 0 <= request.eidolons <= 6 or not 1 <= request.light_cone.superimposition <= 5:
         raise ValueError("星魂数取 0～6，光锥叠影取 1～5")
+    if request.eidolons != int(request.eidolons) or request.light_cone.superimposition != int(
+        request.light_cone.superimposition
+    ):
+        raise ValueError("星魂数和光锥叠影需要为整数")
 
 
 def generate_character(

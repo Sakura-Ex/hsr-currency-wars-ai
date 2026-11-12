@@ -325,6 +325,28 @@ class AccountGenerationTests(unittest.TestCase):
         self.assertTrue(all("source" not in row for row in payload["characters"]))
         self.assertTrue(all("form_id" not in row for row in payload["characters"]))
 
+    def test_fixed_investment_accepts_integral_values_and_rejects_fractions(self):
+        """固定星魂和叠影采用整数份数，允许值为整数的浮点输入。"""
+        cone = LightConeSpec(light_cone_id="23004", superimposition=2.0)
+        spec = CharacterSpec(eidolons=0.0, light_cone=cone)
+        request = self.request(
+            character_count=1,
+            character_pool=("1004",),
+            core_character_ids=("1004",),
+            character_overrides={"1004": spec},
+            gold_count=1.5,
+        )
+        result = self.generate(request)
+        self.assertEqual(result.gold_count, 1.5)
+        self.assertEqual(result.characters[0].eidolons, 0)
+        self.assertEqual(result.light_cones[0].superimposition, 2)
+        for invalid in (
+            replace(spec, eidolons=0.5),
+            replace(spec, light_cone=replace(cone, superimposition=1.5)),
+        ):
+            with self.subTest(spec=invalid), self.assertRaisesRegex(ValueError, "整数"):
+                self.generate(replace(request, character_overrides={"1004": invalid}))
+
     def test_half_gold_budget(self):
         """检查半金预算只能支付一份常驻角色，自动光锥沿用同命途。"""
         result = self.generate(
