@@ -7,7 +7,7 @@ from math import ceil, floor, isfinite, lcm
 
 from ..relics.models import Relic
 from ..relics.rules import SUBSTAT_ROLLS
-from ..relics.single import SCORE_TOLERANCE, _PieceSearch
+from ..relics.single import SCORE_TOLERANCE, _PieceSearch, score_relic
 
 # 自定义权重过细或过大时，使用通用搜索，限制密集位集的计算与存储。
 _MAX_SCALE = 1_000
@@ -203,14 +203,16 @@ def _try_middle_relics(
         )
         relics = []
         for piece, score in zip(pieces, scores, strict=True):
-            target = score / scale
-            relic = next(
-                piece.candidates((target, target), middle_only=True, distinct_scores=True), None
-            )
+            relic = piece.middle_relic(units[cid], score)
             if relic is None:
                 rng.setstate(state)
                 return None
-            relics.append(relic)
+            actual = score_relic(relic, effective_stat_weights=piece.weights)
+            lo, hi = piece.interval
+            if not lo - SCORE_TOLERANCE <= actual <= hi + SCORE_TOLERANCE:
+                rng.setstate(state)
+                return None
+            relics.append((relic, actual))
         lo, hi = group_bounds[cid]
         if not lo - SCORE_TOLERANCE <= sum(score for _, score in relics) <= hi + SCORE_TOLERANCE:
             rng.setstate(state)

@@ -157,24 +157,14 @@ def _generate_account_relics(
         for pieces in searches.values()
         for piece in pieces
     )
-    # 中档优先阶段最多使用当前名单剩余额度的一半，其余供全档搜索。
-    middle_limit = budget.attempts + (budget.limit - budget.attempts) // 2
     if (
         minimum is not None
         and maximum is not None
         and maximum - minimum <= _NARROW_MEAN_SCORE_WIDTH + SCORE_TOLERANCE / (len(ids) * 6)
+        and budget.limit - budget.attempts >= sum(map(len, searches.values()))
     ):
-
-        def find_middle() -> dict[str, tuple[tuple[Relic, float], ...]] | None:
-            """在角色和账号的分数范围内还原位集给出的全中档成品。"""
-            return _try_middle_relics(
-                searches, group_bounds, preferred_bounds, (lower, upper), desired_by_id, rng
-            )
-
-        middle_results = (
-            find_middle()
-            if only_middle_allowed
-            else _try_middle_phase(budget, middle_limit, rng, find_middle)
+        middle_results = _try_middle_relics(
+            searches, group_bounds, preferred_bounds, (lower, upper), desired_by_id, rng
         )
         if middle_results is not None:
             return middle_results, uppers
@@ -279,6 +269,8 @@ def _generate_account_relics(
     prioritize_middle = upper - lower <= SCORE_TOLERANCE and all(
         piece.tier_weights[1] > 0 for _, piece in order
     )
+    # 通用中档回溯最多使用剩余额度的一半，其余供全档搜索。
+    middle_limit = budget.attempts + (budget.limit - budget.attempts) // 2
     ranges = (
         (preferred_bounds, group_bounds) if preferred_bounds != group_bounds else (group_bounds,)
     )

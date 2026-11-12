@@ -93,6 +93,22 @@ def _tier_counts(count: int, weights: tuple[float, float, float]):
     return tuple(result)
 
 
+@lru_cache(maxsize=2048)
+def _middle_extra_scores(units: tuple[int, ...], rolls: int) -> frozenset[int]:
+    """合并已选副词条的额外中档获得次数。
+
+    Args:
+        units: 可用属性的单次整数得分，去重并按升序排列。
+        rolls: 四种属性各取得一次后剩余的次数。
+    Returns:
+        恰好分配 rolls 次可获得的整数得分。
+    """
+    if rolls == 0:
+        return frozenset({0})
+    previous = _middle_extra_scores(units, rolls - 1)
+    return frozenset(score + unit for score in previous for unit in units)
+
+
 @lru_cache(maxsize=64)
 def _compatible_keysets(
     mainstats: tuple[str, ...], required: tuple[str, ...]
@@ -251,16 +267,46 @@ class _PieceSearch:
     def middle_scores(self, units: dict[str, int]) -> set[int]:
         """计算全中档成品可达的整数分数，使用调用方提供的计分单位。"""
         signatures = {tuple(sorted(units[key] for key in keys)) for _, keys in self.keysets}
-        maximum_rolls = max(self.roll_bounds)
-        scores = set()
-        for signature in signatures:
-            contributions = set(signature)
-            reachable = {sum(signature)}
-            for rolls in range(5, maximum_rolls + 1):
-                reachable = {score + value for score in reachable for value in contributions}
-                if rolls in self.roll_bounds:
-                    scores.update(reachable)
-        return scores
+        return {
+            sum(signature) + score
+            for signature in signatures
+            for rolls in self.roll_bounds
+            for score in _middle_extra_scores(tuple(sorted(set(signature))), rolls - len(signature))
+        }
+
+    def middle_relic(self, units: dict[str, int], score: int) -> Relic | None:
+        """从已确认可达的全中档得分还原一件遗器。
+
+        Args:
+            units: 每种属性的单次中档整数得分。
+            score: 已通过部位得分区间检查的目标整数得分。
+        Returns:
+            与该得分对应的成品，每件计一次考察。没有对应组合时返回 None。
+        Raises:
+            GenerationTargetNotReached: 共享预算耗尽。
+        """
+        for total_rolls in self.roll_bounds:
+            for mainstat, keys in self.keysets:
+                key_units = tuple(units[key] for key in keys)
+                contributions = tuple(sorted(set(key_units)))
+                remaining = score - sum(key_units)
+                extra = total_rolls - len(keys)
+                if remaining not in _middle_extra_scores(contributions, extra):
+                    continue
+                self.budget.consume()
+                counts = dict.fromkeys(keys, 1)
+                for rolls in range(extra - 1, -1, -1):
+                    reachable = _middle_extra_scores(contributions, rolls)
+                    key = self.rng.choice(
+                        [key for key in keys if remaining - units[key] in reachable]
+                    )
+                    counts[key] += 1
+                    remaining -= units[key]
+                substats = {
+                    key: round(count * SUBSTAT_ROLLS[key][1], 10) for key, count in counts.items()
+                }
+                return Relic(self.set_id, self.spec.slot, mainstat, substats)
+        return None
 
     def candidates(
         self,

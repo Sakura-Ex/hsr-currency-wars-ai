@@ -597,7 +597,7 @@ class AccountGenerationTests(unittest.TestCase):
             core_character_ids=("1004", "8009"),
             teammate_bias=1,
         )
-        result = self.generate(request, seed=1)
+        result = self.generate(request, seed=2)
         self.assertEqual(
             tuple(character.character_id for character in result.characters),
             ("1004", "8009", "1103"),
@@ -670,7 +670,11 @@ class AccountGenerationTests(unittest.TestCase):
     def test_strict_targets_on_full_catalog_use_legal_middle_rolls(self):
         """精确值和曾耗尽预算的窄范围均能从 360 件合法遗器凑齐。"""
         reference = load_account_reference()
-        for gold, lo, hi in ((120, 3, 3), (120, 2.99, 3.01), (400, 6.5, 6.5)):
+        for gold, lo, hi, budget in (
+            (120, 3, 3, 3_000),
+            (120, 2.99, 3.01, 10_000),
+            (400, 6.5, 6.5, 10_000),
+        ):
             with self.subTest(gold=gold, lo=lo, hi=hi):
                 request = AccountRequest(
                     account_id="full-strict",
@@ -678,13 +682,14 @@ class AccountGenerationTests(unittest.TestCase):
                     gold_count=gold,
                     min_mean_effective_rolls=lo,
                     max_mean_effective_rolls=hi,
-                    max_attempts=10_000,
+                    max_attempts=budget,
                 )
                 result = generate_account(request, reference=reference, rng=random.Random(42))
                 self.assertEqual(result.gold_count, gold)
                 self.assertEqual(len(result.relics), 360)
                 self.assertGreaterEqual(result.mean_effective_rolls, lo - 1e-6)
                 self.assertLessEqual(result.mean_effective_rolls, hi + 1e-6)
+                self.assertLessEqual(result.attempts, budget)
                 for instance in result.relics:
                     rolls = [
                         value / SUBSTAT_ROLLS[key][1]
@@ -694,6 +699,30 @@ class AccountGenerationTests(unittest.TestCase):
                     self.assertIn(sum(map(round, rolls)), (8, 9))
                     for count in rolls:
                         self.assertAlmostEqual(count, round(count))
+
+    def test_middle_grid_constructs_known_scores_within_small_budget(self):
+        """位集已经选出合法分数时，每件遗器仅占用一次还原考察。"""
+        cid = "1004"
+        spec = CharacterSpec(
+            relics=CharacterRelicsRequest(
+                effective_stat_weights={},
+                pieces=tuple(RelicSpec(slot=slot) for slot in range(1, 7)),
+            )
+        )
+        request = self.request(
+            character_count=1,
+            character_pool=(cid,),
+            core_character_ids=(cid,),
+            gold_count=0.5,
+            character_overrides={cid: spec},
+            max_attempts=7,
+        )
+        result = generate_account(
+            request, reference=load_account_reference(), rng=random.Random(42)
+        )
+        self.assertEqual(len(result.relics), 6)
+        self.assertEqual(result.mean_effective_rolls, 0)
+        self.assertEqual(result.attempts, request.max_attempts)
 
     def test_exact_mean_retries_when_middle_grid_is_unavailable(self):
         """全中档分数不可达、禁用中档或网格过细时，通用搜索仍可达标。"""
