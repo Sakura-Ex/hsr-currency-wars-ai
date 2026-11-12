@@ -6,7 +6,7 @@
 
 按[单件接口页](relic-generation.md#在-ide-中调用)配置项目解释器，打开 [account.py](../../../examples/account_generation/account.py)，设置请求参数，在 `result` 处查看完整账号。
 
-示例默认使用随模块安装的 [4.6.54 内置参考资料](../../../research/account_generation/data/)，可以离线运行。需要切换快照时，把 `DATA_DIR` 指向包含 `source-manifest.json`、`character.json`、`character/` 和 `lightcone.json` 的资料目录。
+示例默认使用随模块安装的 [4.7 内置参考资料](../../../research/account_generation/data/)，可以离线运行。需要切换快照时，把 `DATA_DIR` 指向包含 `source-manifest.json`、`character.json`、`character/` 和 `lightcone.json` 的资料目录。
 
 ```python
 import random
