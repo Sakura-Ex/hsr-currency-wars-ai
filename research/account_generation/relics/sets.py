@@ -47,7 +47,7 @@ def maximum_character_relic_score(request: CharacterRelicsRequest) -> float:
         各部位最高合法得分的总和，单位为加权中档词条。
 
     Raises:
-        ValueError: 部位或主副词条条件不合法。
+        ValueError: 部位、主副词条条件或档位权重不合法。
     """
     rng = random.Random(0)
     budget = _SearchBudget(0)
@@ -82,7 +82,7 @@ def generate_character_relics(
         合计与平均得分通过结果对象的属性读取。
 
     Raises:
-        ValueError: 部位重复、未知，或某件主副词条条件不符合游戏约束。
+        ValueError: 部位重复、未知，或主副词条条件、档位权重不合法。
         GenerationTargetNotReached: 单件与整套目标冲突、无合法组合或预算耗尽。
     """
     pieces = _complete_piece_specs(request.pieces)
