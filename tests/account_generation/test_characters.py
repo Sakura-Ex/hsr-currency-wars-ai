@@ -178,6 +178,21 @@ class CharacterGenerationTests(unittest.TestCase):
         self.assertEqual(result.game_version, "test-version")
         self.assertEqual(result.data_snapshot, "test-snapshot")
 
+    def test_character_investment_outputs_integers_and_rejects_booleans(self):
+        """整值输入统一保存为整数，布尔值不能作为星魂或叠影。"""
+        request = CharacterRequest(
+            config_id="investments", eidolons=2.0, light_cone=LightConeSpec(superimposition=2.0)
+        )
+        result = generate_character(request, reference=self.reference, rng=random.Random(42))
+        self.assertIs(type(result.character.eidolons), int)
+        self.assertIs(type(result.light_cone.superimposition), int)
+        for invalid in (
+            replace(request, eidolons=False),
+            replace(request, light_cone=LightConeSpec(superimposition=True)),
+        ):
+            with self.subTest(request=invalid), self.assertRaisesRegex(ValueError, "整数"):
+                generate_character(invalid, reference=self.reference, rng=random.Random(42))
+
     def test_traces_preserve_base_levels_and_include_special_skill_nodes(self):
         """检查星魂保留原始数目，行迹使用基础等级并包含特殊技能节点。"""
         result = generate_character(

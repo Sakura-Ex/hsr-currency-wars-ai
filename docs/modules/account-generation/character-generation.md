@@ -40,7 +40,7 @@ result = generate_character(request, reference=reference, rng=random.Random(42))
 | `config_id` | 调用方分配的配置 ID，也是装备实例 ID 的前缀 | 必填 |
 | `level` | 角色原始等级 | 80 |
 | `promotion` | 原始突破阶段，取 0～6 | 6 |
-| `eidolons` | 星魂数，取 0～6 | 0 |
+| `eidolons` | 星魂数，取 0～6 的整值 | 0 |
 | `traces` | 完整原始行迹配置 `TraceConfig` | `None`，按当前等级与突破条件升满可用行迹 |
 | `light_cone` | 光锥选择与练度 `LightConeSpec` | 同命途推荐光锥随机选择、80 级、突破 6、叠影 1 |
 | `relics` | 现有 `CharacterRelicsRequest`，控制部位、权重、得分区间和搜索预算 | `None`，采用推荐配装 |
@@ -72,7 +72,7 @@ result = generate_character(request, reference=reference, rng=random.Random(42))
 | `light_cone_id` | 光锥种类 ID，字符串；显式指定时直接采用 | `None`，从同命途推荐列表等概率选择 |
 | `level` | 原始等级 | 80 |
 | `promotion` | 原始突破阶段 | 6 |
-| `superimposition` | 叠影等级，取 1～5 | 1 |
+| `superimposition` | 叠影等级，取 1～5 的整值 | 1 |
 
 光锥留空时，从同命途推荐列表中等概率选择。显式指定 ID 时直接采用该光锥，支持调用方自定义配装。每次生成一个光锥实例。[账号生成](account-generation.md)统一维护库存和占用关系，按[光锥持有约定](design.md#光锥持有与装备实例)复用活动、模拟宇宙光锥的唯一实例。
 

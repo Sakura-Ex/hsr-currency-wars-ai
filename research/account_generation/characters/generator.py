@@ -153,8 +153,9 @@ def _check_character_investment(request: CharacterSpec) -> None:
             raise ValueError("角色与光锥的原始等级需要落在对应突破阶段的范围内")
     if not 0 <= request.eidolons <= 6 or not 1 <= request.light_cone.superimposition <= 5:
         raise ValueError("星魂数取 0～6，光锥叠影取 1～5")
-    if request.eidolons != int(request.eidolons) or request.light_cone.superimposition != int(
-        request.light_cone.superimposition
+    if any(
+        isinstance(value, bool) or value != int(value)
+        for value in (request.eidolons, request.light_cone.superimposition)
     ):
         raise ValueError("星魂数和光锥叠影需要为整数")
 
@@ -189,7 +190,7 @@ def generate_character(
         light_cone_id=cone_id,
         level=request.light_cone.level,
         promotion=request.light_cone.promotion,
-        superimposition=request.light_cone.superimposition,
+        superimposition=int(request.light_cone.superimposition),
     )
     relic_request, theoretical_upper = _prepare_character_relics(request, reference, rng)
     generated = generate_character_relics(relic_request, rng=rng)
@@ -212,7 +213,7 @@ def generate_character(
             character_id=reference.character_id,
             level=request.level,
             promotion=request.promotion,
-            eidolons=request.eidolons,
+            eidolons=int(request.eidolons),
             traces=_generate_traces(request, reference),
             light_cone_instance_id=light_cone.instance_id,
             relic_instance_ids=tuple(relic.instance_id for relic in relics),
