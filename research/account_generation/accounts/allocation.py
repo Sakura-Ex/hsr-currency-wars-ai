@@ -111,6 +111,14 @@ def _add_costs(left: set[int], right: set[int], cap: int) -> set[int]:
     return {a + b for a in left for b in right if a + b <= cap}
 
 
+def _shift_costs(reachable: int, costs: set[int]) -> int:
+    """将每种配装费用加入可达金额，整数的第 n 位表示 n 个半金单位。"""
+    result = 0
+    for cost in costs:
+        result |= reachable << cost
+    return result
+
+
 def _roster_fits(
     selected: list[str],
     candidates: list[str],
@@ -119,15 +127,23 @@ def _roster_fits(
     costs: dict[str, set[int]],
 ) -> bool:
     """检查还能否从候选中选足人数，并凑到指定半金数。"""
-    sums = {0}
+    if target > sum(max(costs[cid]) for cid in (*selected, *candidates)):
+        return False
+    if count == len(candidates):
+        selected = selected + candidates
+        candidates = []
+        count = 0
+    target_bit = 1 << target
+    mask = (target_bit << 1) - 1
+    sums = 1
     for cid in selected:
-        sums = _add_costs(sums, costs[cid], target)
-    reachable = [set() for _ in range(count + 1)]
+        sums = _shift_costs(sums, costs[cid]) & mask
+    reachable = [0] * (count + 1)
     reachable[0] = sums
     for index, cid in enumerate(candidates):
         for size in range(min(count, index + 1), 0, -1):
-            reachable[size].update(_add_costs(reachable[size - 1], costs[cid], target))
-    return target in reachable[count]
+            reachable[size] |= _shift_costs(reachable[size - 1], costs[cid]) & mask
+    return bool(reachable[count] & target_bit)
 
 
 def _choose_rosters(
@@ -168,6 +184,7 @@ def _choose_rosters(
     costs = {cid: {build.units for build in options} for cid, options in menus.items()}
     if target is not None and not _roster_fits(selected, initial_candidates, needed, target, costs):
         raise GenerationTargetNotReached("角色数量、配装条件与指定金数无法同时满足")
+    all_candidates_required = needed == len(initial_candidates)
     plans: list[RecommendedTeam] = []
     for cid in selected:
         teams = reference.characters[cid].recommended_teams
@@ -230,12 +247,10 @@ def _choose_rosters(
             else:
                 rest = candidates
             budget.consume()
-            if target is not None and not _roster_fits(
-                selected + [cid],
-                rest,
-                needed - 1,
-                target,
-                costs,
+            if (
+                target is not None
+                and not all_candidates_required
+                and not _roster_fits(selected + [cid], rest, needed - 1, target, costs)
             ):
                 continue
             selected.append(cid)

@@ -19,7 +19,11 @@ from research.account_generation import (
     load_account_reference,
     load_character_reference,
 )
-from research.account_generation.accounts.allocation import _build_menus, _choose_rosters
+from research.account_generation.accounts.allocation import (
+    _build_menus,
+    _choose_rosters,
+    _roster_fits,
+)
 from research.account_generation.relics.single import _SearchBudget
 
 from .test_characters import write_reference_fixture
@@ -219,6 +223,16 @@ class AccountGenerationTests(unittest.TestCase):
             [(frozenset(ids), cores) for ids, cores in rosters],
             [(frozenset(request.character_pool), (cid,)) for cid in request.character_pool],
         )
+
+    def test_roster_gold_reachability_preserves_gaps_for_each_roster_size(self):
+        """固定角色与候选的离散半金数按所需人数分别计算。"""
+        costs = {"a": {1, 3}, "b": {0, 4}, "c": {2}}
+        for count, expected in enumerate(({1, 3}, {1, 3, 5, 7}, {3, 5, 7, 9})):
+            with self.subTest(count=count):
+                self.assertEqual(
+                    {n for n in range(11) if _roster_fits(["a"], ["b", "c"], count, n, costs)},
+                    expected,
+                )
 
     def test_roster_search_enumerates_large_core_sets_within_budget(self):
         """全员持有时，从 11 名角色中选 10 个核心，考察全部 11 种核心集合。"""
