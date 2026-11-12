@@ -174,14 +174,20 @@ def _choose_rosters(
         if teams:
             plans.append(rng.choice(teams))
     # 只有核心与非核心需要区分时，才单独枚举核心集合。
-    choose_cores = not request.core_character_ids and request.core_count < request.character_count
-    seen_cores: set[frozenset[str]] = set()
+    core_count = (
+        request.core_count
+        if not request.core_character_ids and request.core_count < request.character_count
+        else 0
+    )
 
-    def choose(available: list[str]) -> Iterator[tuple[tuple[str, ...], tuple[str, ...]]]:
+    def choose(
+        available: list[str], core_candidates: list[str]
+    ) -> Iterator[tuple[tuple[str, ...], tuple[str, ...]]]:
         """搜索下一个角色；完整名单交给调用方验证配装后再继续回溯。
 
         Args:
             available: 当前分支仍可选择的角色。
+            core_candidates: 当前分支仍可选择为核心的角色。
         Yields:
             尚未尝试过的持有集合与核心集合的组合。
 
@@ -193,8 +199,10 @@ def _choose_rosters(
             cores = request.core_character_ids or tuple(selected[: request.core_count])
             yield tuple(selected), tuple(dict.fromkeys(cores))
             return
-        picking_core = choose_cores and len(selected) < request.core_count
-        candidates = available.copy()
+        cores_needed = core_count - len(selected)
+        picking_core = cores_needed > 0
+        candidates = (core_candidates if picking_core else available).copy()
+        minimum_candidates = cores_needed if picking_core else needed
         scores = dict.fromkeys(candidates, 0.0)
         for team in plans:
             for member, backups in zip(team.members, team.backups, strict=True):
@@ -205,7 +213,7 @@ def _choose_rosters(
                 for backup in backups:
                     if backup in scores:
                         scores[backup] += 0.5
-        while candidates and (picking_core or len(candidates) >= needed):
+        while len(candidates) >= minimum_candidates:
             total = sum(scores[cid] for cid in candidates)
             weights = [
                 (1 - request.teammate_bias) / len(candidates)
@@ -216,15 +224,10 @@ def _choose_rosters(
             ]
             cid = rng.choices(candidates, weights=weights, k=1)[0]
             candidates.remove(cid)
+            # 先前分支已覆盖包含其首选角色的组合；跳过的核心候选仍可作为队友。
             if picking_core:
-                key = frozenset((*selected, cid))
-                if key in seen_cores:
-                    continue
-                seen_cores.add(key)
-                # 跳过的核心候选仍可作为后续队友。
                 rest = [other for other in available if other != cid]
             else:
-                # 先前分支已覆盖包含其首选角色的组合。
                 rest = candidates
             budget.consume()
             if target is not None and not _roster_fits(
@@ -239,12 +242,12 @@ def _choose_rosters(
             teams = reference.characters[cid].recommended_teams
             if teams:
                 plans.append(rng.choice(teams))
-            yield from choose(rest)
+            yield from choose(rest, candidates)
             if teams:
                 plans.pop()
             selected.pop()
 
-    yield from choose(initial_candidates)
+    yield from choose(initial_candidates, initial_candidates)
 
 
 def _concentration_weights(

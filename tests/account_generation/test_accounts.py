@@ -199,6 +199,33 @@ class AccountGenerationTests(unittest.TestCase):
             [(frozenset(request.character_pool), (cid,)) for cid in request.character_pool],
         )
 
+    def test_roster_search_enumerates_large_core_sets_within_budget(self):
+        """全员持有时，从 11 名角色中选 10 个核心，考察全部 11 种核心集合。"""
+        template = self.reference.characters["1004"]
+        pool = tuple(str(cid) for cid in range(3001, 3012))
+        for cid in pool:
+            self.reference.characters[cid] = replace(
+                template, character_id=cid, recommended_teams=()
+            )
+            self.reference.character_gold_categories[cid] = "standard"
+        request = self.request(
+            character_count=11,
+            character_pool=pool,
+            core_character_ids=(),
+            core_count=10,
+            light_cone_pool=("21001",),
+        )
+        menus = _build_menus(request, self.reference)
+        rosters = list(
+            _choose_rosters(
+                request, self.reference, menus, None, random.Random(1), _SearchBudget(100)
+            )
+        )
+        self.assertCountEqual(
+            [(frozenset(ids), frozenset(cores)) for ids, cores in rosters],
+            [(frozenset(pool), frozenset(pool) - {cid}) for cid in pool],
+        )
+
     def test_reference_classification_and_team_structure(self):
         """检查常驻、限定、免费、唯一光锥及队伍替补分组。"""
         self.assertEqual(
