@@ -175,6 +175,19 @@ class AccountGenerationTests(unittest.TestCase):
         self.assertEqual(overridden.character_gold_categories["1005"], "standard")
         self.assertEqual(overridden.signature_light_cone_ids["1005"], "23004")
 
+    def test_signature_override_with_no_same_path_recommendation(self):
+        """先采用专锥覆盖，缺少覆盖时报告无同命途推荐的角色 ID。"""
+        path = self.base_dir / "character/1004.json"
+        data = json.loads(path.read_text(encoding="utf-8"))
+        data["lightcones"] = [21006]  # Mage，角色为 Warlock。
+        path.write_text(json.dumps(data), encoding="utf-8")
+
+        reference = load_account_reference(self.base_dir, signature_light_cones={"1004": "23004"})
+        self.assertEqual(reference.characters["1004"].recommended_light_cone_ids, ())
+        self.assertEqual(reference.signature_light_cone_ids["1004"], "23004")
+        with self.assertRaisesRegex(ValueError, "1004.*同命途"):
+            load_account_reference(self.base_dir)
+
     def test_standard_copies_count_half_and_inventory_references_resolve(self):
         """检查全 21 两名角色分别贡献常驻两金、限定四金，库存无重复保存。"""
         result = self.generate(self.request(gold_count=6, five_star_build=(2, 1)))

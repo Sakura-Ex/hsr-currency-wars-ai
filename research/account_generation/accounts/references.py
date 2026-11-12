@@ -26,7 +26,7 @@ def load_account_reference(
         base_dir: 含 character.json、character/、lightcone.json 和来源清单的目录。
         character_categories: 覆盖指定角色的限定、常驻、免费或低星分类。
         light_cone_categories: 覆盖指定光锥的五星份数分类。
-        signature_light_cones: 覆盖五星统一配装使用的首选光锥 ID，默认取推荐首项。
+        signature_light_cones: 覆盖五星统一配装使用的首选光锥 ID，默认取同命途推荐首项。
 
     Returns:
         可在多次账号生成之间复用的参考资料。
@@ -34,6 +34,7 @@ def load_account_reference(
     Raises:
         OSError: 所需本地文件无法读取。
         KeyError: 资料字段缺失或角色属性尚未适配。
+        ValueError: 五星角色缺少同命途推荐光锥及专锥覆盖。
     """
     manifest = json.loads((base_dir / "source-manifest.json").read_text(encoding="utf-8"))
     catalog = json.loads((base_dir / "character.json").read_text(encoding="utf-8"))
@@ -71,13 +72,13 @@ def load_account_reference(
             gold_category=category,
             unique=cone_id.startswith(UNIQUE_LIGHT_CONE_PREFIXES),
         )
-    signatures = {
-        cid: profile.recommended_light_cone_ids[0]
-        for cid, profile in characters.items()
-        if profile.rarity == 5
-    }
-    if signature_light_cones is not None:
-        signatures.update(signature_light_cones)
+    signatures = dict(signature_light_cones or {})
+    for cid, profile in characters.items():
+        if profile.rarity != 5 or cid in signatures:
+            continue
+        if not profile.recommended_light_cone_ids:
+            raise ValueError(f"五星角色 {cid} 缺少同命途推荐光锥，请指定 signature_light_cones")
+        signatures[cid] = profile.recommended_light_cone_ids[0]
     return AccountReference(
         characters=characters,
         character_gold_categories=categories,
