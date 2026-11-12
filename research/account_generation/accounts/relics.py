@@ -11,9 +11,12 @@ from ..relics.sets import _complete_piece_specs
 from ..relics.single import SCORE_TOLERANCE, GenerationTargetNotReached, _PieceSearch, _SearchBudget
 from .allocation import _concentration_weights, _distribute
 from .models import AccountReference, AccountRequest
+from .relic_score_dp import _try_middle_relics
 
 # 优先搜索与角色连续投入目标相差半条以内的成品。
 _INVESTMENT_SCORE_SPREAD = 0.5
+# 窄区间对应已复现长尾的平均有效词条 2.99～3.01。
+_NARROW_MEAN_SCORE_WIDTH = 0.02
 
 
 class _RosterRelicTargetNotReached(GenerationTargetNotReached):
@@ -120,6 +123,17 @@ def _generate_account_relics(
         )
         for cid, (lo, hi) in group_bounds.items()
     }
+    minimum, maximum = request.min_mean_effective_rolls, request.max_mean_effective_rolls
+    if (
+        minimum is not None
+        and maximum is not None
+        and maximum - minimum <= _NARROW_MEAN_SCORE_WIDTH + SCORE_TOLERANCE / (len(ids) * 6)
+    ):
+        middle_results = _try_middle_relics(
+            searches, group_bounds, preferred_bounds, (lower, upper), desired_by_id, rng
+        )
+        if middle_results is not None:
+            return middle_results, uppers
     groups = sorted(ids, key=lambda cid: preferred_bounds[cid][1] - preferred_bounds[cid][0])
     order = [
         (cid, piece)

@@ -248,6 +248,20 @@ class _PieceSearch:
         lows, highs = zip(*(self.unit_bounds[key] for key in keys), strict=True)
         return sum(lows) + extra * min(lows), sum(highs) + extra * max(highs)
 
+    def middle_scores(self, units: dict[str, int]) -> set[int]:
+        """计算全中档成品可达的整数分数，使用调用方提供的计分单位。"""
+        signatures = {tuple(sorted(units[key] for key in keys)) for _, keys in self.keysets}
+        maximum_rolls = max(self.roll_bounds)
+        scores = set()
+        for signature in signatures:
+            contributions = set(signature)
+            reachable = {sum(signature)}
+            for rolls in range(5, maximum_rolls + 1):
+                reachable = {score + value for score in reachable for value in contributions}
+                if rolls in self.roll_bounds:
+                    scores.update(reachable)
+        return scores
+
     def candidates(
         self,
         target: tuple[float, float] | None = None,

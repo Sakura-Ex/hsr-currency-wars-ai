@@ -24,6 +24,7 @@ from research.account_generation.accounts.allocation import (
     _choose_rosters,
     _roster_fits,
 )
+from research.account_generation.relics.rules import SUBSTAT_ROLLS
 from research.account_generation.relics.single import _SearchBudget
 
 from .test_characters import write_reference_fixture
@@ -623,37 +624,108 @@ class AccountGenerationTests(unittest.TestCase):
         self.assertIn(head.substats["SPD"], (2.3, 4.6))
         self.assertAlmostEqual(result.mean_effective_rolls, head.substats["SPD"] / 2.3 * 10 / 6)
 
-    def test_exact_mean_supports_non_middle_rolls(self):
-        """检查精确目标可使用速度高档，完整档位搜索仍然生效。"""
-        mean = 2.6 / 2.3 / 6
-        relics = CharacterRelicsRequest(
-            effective_stat_weights={"SPD": 1},
-            pieces=(
-                RelicSpec(slot=1, required_substats=("SPD",)),
-                *(
-                    RelicSpec(slot=slot, min_effective_rolls=0, max_effective_rolls=0)
-                    for slot in range(2, 7)
-                ),
-            ),
-        )
-        result = self.generate(
-            self.request(
-                gold_count=0.5,
-                character_count=1,
-                character_pool=("1004",),
-                core_character_ids=("1004",),
-                character_overrides={"1004": CharacterSpec(relics=relics)},
-                min_mean_effective_rolls=mean,
-                max_mean_effective_rolls=mean,
+    def test_strict_targets_on_full_catalog_use_legal_middle_rolls(self):
+        """精确值和曾耗尽预算的窄范围均能从 360 件合法遗器凑齐。"""
+        reference = load_account_reference()
+        for gold, lo, hi in ((120, 3, 3), (120, 2.99, 3.01), (400, 6.5, 6.5)):
+            with self.subTest(gold=gold, lo=lo, hi=hi):
+                request = AccountRequest(
+                    account_id="full-strict",
+                    character_count=60,
+                    gold_count=gold,
+                    min_mean_effective_rolls=lo,
+                    max_mean_effective_rolls=hi,
+                    max_attempts=10_000,
+                )
+                result = generate_account(request, reference=reference, rng=random.Random(42))
+                self.assertEqual(result.gold_count, gold)
+                self.assertEqual(len(result.relics), 360)
+                self.assertGreaterEqual(result.mean_effective_rolls, lo - 1e-6)
+                self.assertLessEqual(result.mean_effective_rolls, hi + 1e-6)
+                for instance in result.relics:
+                    rolls = [
+                        value / SUBSTAT_ROLLS[key][1]
+                        for key, value in instance.relic.substats.items()
+                    ]
+                    self.assertEqual(len(rolls), 4)
+                    self.assertIn(sum(map(round, rolls)), (8, 9))
+                    for count in rolls:
+                        self.assertAlmostEqual(count, round(count))
+
+    def test_exact_mean_retries_when_middle_grid_is_unavailable(self):
+        """全中档分数不可达、禁用中档或网格过细时，通用搜索仍可达标。"""
+        for weight, tiers, speed in (
+            (1, (1, 1, 1), 2.6),
+            (1, (0, 0, 1), 2.6),
+            (0.12345, (0, 1, 0), 2.3),
+        ):
+            with self.subTest(weight=weight, tiers=tiers):
+                mean = weight * speed / 2.3 / 6
+                relics = CharacterRelicsRequest(
+                    effective_stat_weights={"SPD": weight},
+                    tier_weights=tiers,
+                    pieces=(
+                        RelicSpec(slot=1, required_substats=("SPD",)),
+                        *(
+                            RelicSpec(slot=slot, min_effective_rolls=0, max_effective_rolls=0)
+                            for slot in range(2, 7)
+                        ),
+                    ),
+                )
+                result = self.generate(
+                    self.request(
+                        gold_count=0.5,
+                        character_count=1,
+                        character_pool=("1004",),
+                        core_character_ids=("1004",),
+                        character_overrides={"1004": CharacterSpec(relics=relics)},
+                        min_mean_effective_rolls=mean,
+                        max_mean_effective_rolls=mean,
+                    )
+                )
+                self.assertAlmostEqual(result.mean_effective_rolls, mean, places=6)
+                head = next(piece.relic for piece in result.relics if piece.relic.slot == 1)
+                self.assertAlmostEqual(head.substats["SPD"], speed)
+
+    def test_middle_grid_respects_role_bounds_near_score_tolerance(self):
+        """边缘格点不能占用还原预算，角色下限稍高时选择下一合法分数。"""
+        pool = ("1005", "1004")
+        overrides = {
+            cid: CharacterSpec(
+                relics=CharacterRelicsRequest(
+                    effective_stat_weights={"SPD": 1},
+                    tier_weights=(0, 1, 0),
+                    min_total_effective_rolls=minimum,
+                    pieces=(
+                        RelicSpec(slot=1, required_substats=("SPD",)),
+                        *(
+                            RelicSpec(slot=slot, min_effective_rolls=0, max_effective_rolls=0)
+                            for slot in range(2, 7)
+                        ),
+                    ),
+                )
             )
+            for cid, minimum in zip(pool, (1, 1.0000010001), strict=True)
+        }
+        request = AccountRequest(
+            account_id="tolerance-edge",
+            character_count=2,
+            character_pool=pool,
+            core_character_ids=("1005",),
+            character_overrides=overrides,
+            resource_concentration=1,
+            min_mean_effective_rolls=0.25,
+            max_mean_effective_rolls=0.25,
+            max_attempts=300,
         )
-        self.assertAlmostEqual(result.mean_effective_rolls, mean, places=6)
-        head = next(piece.relic for piece in result.relics if piece.relic.slot == 1)
-        self.assertAlmostEqual(head.substats["SPD"], 2.6)
+        result = generate_account(request, reference=load_account_reference(), rng=random.Random(0))
+        self.assertAlmostEqual(result.investments["1005"].total_effective_rolls, 1)
+        self.assertAlmostEqual(result.investments["1004"].total_effective_rolls, 2)
 
     def test_relic_fallback_skips_equivalent_zero_score_allocations(self):
-        """三人精确总分 24 可由 10、14、0 凑齐，同分遗器共用一次搜索。"""
+        """细权重网格走通用搜索，同分遗器共用一次搜索。"""
         pool = ("1004", "1005", "8009")
+        factor = 1.0001
         overrides = {
             cid: CharacterSpec(
                 relics=CharacterRelicsRequest(
@@ -669,7 +741,7 @@ class AccountGenerationTests(unittest.TestCase):
                     ),
                 )
             )
-            for cid, weight in zip(pool, (10, 7, 0), strict=True)
+            for cid, weight in zip(pool, (10 * factor, 7 * factor, 0), strict=True)
         }
         result = self.generate(
             self.request(
@@ -677,15 +749,15 @@ class AccountGenerationTests(unittest.TestCase):
                 character_pool=pool,
                 core_character_ids=("1004",),
                 character_overrides=overrides,
-                min_mean_effective_rolls=24 / 18,
-                max_mean_effective_rolls=24 / 18,
+                min_mean_effective_rolls=24 * factor / 18,
+                max_mean_effective_rolls=24 * factor / 18,
                 resource_concentration=1,
                 max_attempts=10_000,
             ),
             seed=2,
         )
-        self.assertAlmostEqual(result.mean_effective_rolls, 24 / 18)
-        for cid, score in zip(pool, (10, 14, 0), strict=True):
+        self.assertAlmostEqual(result.mean_effective_rolls, 24 * factor / 18)
+        for cid, score in zip(pool, (10 * factor, 14 * factor, 0), strict=True):
             self.assertAlmostEqual(result.investments[cid].total_effective_rolls, score)
 
     def test_empty_account_and_fixed_seed(self):
