@@ -8,6 +8,7 @@ from dataclasses import asdict, replace
 from pathlib import Path
 
 from research.account_generation import (
+    BUNDLED_REFERENCE_DIR,
     AccountRequest,
     CharacterRelicsRequest,
     CharacterSpec,
@@ -16,6 +17,7 @@ from research.account_generation import (
     RelicSpec,
     generate_account,
     load_account_reference,
+    load_character_reference,
 )
 from research.account_generation.accounts.allocation import _build_menus, _choose_rosters
 from research.account_generation.relics.single import _SearchBudget
@@ -127,6 +129,25 @@ class AccountGenerationTests(unittest.TestCase):
         """使用固定种子调用账号公开生成接口。"""
         return generate_account(request, reference=self.reference, rng=random.Random(seed))
 
+    def test_bundled_reference_loads_without_configured_directory(self):
+        """默认资料可同时用于账号和单角色加载，并生成带版本的账号。"""
+        cid = "1004"
+        reference = load_account_reference()
+        self.assertEqual(
+            reference.characters[cid], load_character_reference(BUNDLED_REFERENCE_DIR, cid)
+        )
+        request = self.request(
+            character_count=1,
+            character_pool=(cid,),
+            core_character_ids=(cid,),
+            five_star_build=(0, 1),
+        )
+        result = generate_account(request, reference=reference, rng=random.Random(42))
+        self.assertEqual(result.characters[0].character_id, cid)
+        self.assertEqual(len(result.relics), 6)
+        self.assertTrue(result.game_version)
+        self.assertIsNone(result.data_snapshot)
+
     def test_roster_retries_when_relic_score_target_is_unreachable(self):
         """首个角色的推荐副词条得分为零时，继续寻找能满足词条下限的角色。"""
         low_ceiling = self.reference.characters["1004"]
@@ -228,6 +249,7 @@ class AccountGenerationTests(unittest.TestCase):
 
     def test_reference_classification_and_team_structure(self):
         """检查常驻、限定、免费、唯一光锥及队伍替补分组。"""
+        self.assertEqual(self.reference.data_snapshot, "test-snapshot")
         self.assertEqual(
             self.reference.character_gold_categories,
             {

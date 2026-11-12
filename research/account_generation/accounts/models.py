@@ -43,7 +43,7 @@ class AccountReference:
         signature_light_cone_ids: 五星统一配装使用的首选光锥映射，可在加载时覆盖。
         light_cones: 光锥 ID 到命途、稀有度、统计类别及唯一限制的映射。
         game_version: 游戏资料版本。
-        data_snapshot: 数据快照标识。
+        data_snapshot: 自选资料提供的快照标识，可为 None。
     """
 
     characters: dict[str, CharacterReference]
@@ -51,7 +51,7 @@ class AccountReference:
     signature_light_cone_ids: dict[str, str]
     light_cones: dict[str, LightConeReference]
     game_version: str
-    data_snapshot: str
+    data_snapshot: str | None
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -141,7 +141,7 @@ class GeneratedAccount:
         investments: 各角色的金数分类与遗器得分。
         gold_categories: 本次指定金数采用的类别。
         game_version: 所用游戏资料版本。
-        data_snapshot: 所用数据快照标识。
+        data_snapshot: 自选资料提供的快照标识，可为 None。
         attempts: 金数与遗器搜索实际考察次数。
         schema_version: 账号输出字段版本。
         generator_version: 账号生成规则版本。
@@ -161,7 +161,7 @@ class GeneratedAccount:
     investments: dict[str, CharacterInvestment]
     gold_categories: tuple[GoldCategory, ...]
     game_version: str
-    data_snapshot: str
+    data_snapshot: str | None
     attempts: int
     schema_version: int = field(default=1, init=False)
     generator_version: str = field(default="account-v1", init=False)

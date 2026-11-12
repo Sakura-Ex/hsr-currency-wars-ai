@@ -1,0 +1,302 @@
+{
+  "1004": {
+    "zh": "瓦尔特",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Warlock"
+  },
+  "1005": {
+    "zh": "卡芙卡",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Warlock"
+  },
+  "1103": {
+    "zh": "希露瓦",
+    "rank": "CombatPowerAvatarRarityType4",
+    "baseType": "Mage"
+  },
+  "1105": {
+    "zh": "娜塔莎",
+    "rank": "CombatPowerAvatarRarityType4",
+    "baseType": "Priest"
+  },
+  "1107": {
+    "zh": "克拉拉",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Warrior"
+  },
+  "1112": {
+    "zh": "托帕&账账",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Rogue"
+  },
+  "1203": {
+    "zh": "罗刹",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Priest"
+  },
+  "1204": {
+    "zh": "景元",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Mage"
+  },
+  "1205": {
+    "zh": "刃",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Warrior"
+  },
+  "1208": {
+    "zh": "符玄",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Knight"
+  },
+  "1210": {
+    "zh": "桂乃芬",
+    "rank": "CombatPowerAvatarRarityType4",
+    "baseType": "Warlock"
+  },
+  "1211": {
+    "zh": "白露",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Priest"
+  },
+  "1212": {
+    "zh": "镜流",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Warrior"
+  },
+  "1213": {
+    "zh": "丹恒•饮月",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Warrior"
+  },
+  "1214": {
+    "zh": "雪衣",
+    "rank": "CombatPowerAvatarRarityType4",
+    "baseType": "Warrior"
+  },
+  "1215": {
+    "zh": "寒鸦",
+    "rank": "CombatPowerAvatarRarityType4",
+    "baseType": "Shaman"
+  },
+  "1217": {
+    "zh": "藿藿",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Priest"
+  },
+  "1218": {
+    "zh": "椒丘",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Warlock"
+  },
+  "1220": {
+    "zh": "飞霄",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Rogue"
+  },
+  "1221": {
+    "zh": "云璃",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Warrior"
+  },
+  "1222": {
+    "zh": "灵砂",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Priest"
+  },
+  "1224": {
+    "zh": "三月七",
+    "rank": "CombatPowerAvatarRarityType4",
+    "baseType": "Rogue"
+  },
+  "1225": {
+    "zh": "忘归人",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Warlock"
+  },
+  "1304": {
+    "zh": "砂金",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Knight"
+  },
+  "1306": {
+    "zh": "花火",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Shaman"
+  },
+  "1307": {
+    "zh": "黑天鹅",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Warlock"
+  },
+  "1308": {
+    "zh": "黄泉",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Warlock"
+  },
+  "1309": {
+    "zh": "知更鸟",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Shaman"
+  },
+  "1310": {
+    "zh": "流萤",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Warrior"
+  },
+  "1313": {
+    "zh": "星期日",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Shaman"
+  },
+  "1314": {
+    "zh": "翡翠",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Mage"
+  },
+  "1315": {
+    "zh": "波提欧",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Rogue"
+  },
+  "1317": {
+    "zh": "乱破",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Mage"
+  },
+  "1321": {
+    "zh": "大丽花",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Warlock"
+  },
+  "1401": {
+    "zh": "大黑塔",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Mage"
+  },
+  "1402": {
+    "zh": "阿格莱雅",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Memory"
+  },
+  "1403": {
+    "zh": "缇宝",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Shaman"
+  },
+  "1404": {
+    "zh": "万敌",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Warrior"
+  },
+  "1405": {
+    "zh": "那刻夏",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Mage"
+  },
+  "1406": {
+    "zh": "赛飞儿",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Warlock"
+  },
+  "1407": {
+    "zh": "遐蝶",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Memory"
+  },
+  "1408": {
+    "zh": "白厄",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Warrior"
+  },
+  "1409": {
+    "zh": "风堇",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Memory"
+  },
+  "1410": {
+    "zh": "海瑟音",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Warlock"
+  },
+  "1412": {
+    "zh": "刻律德菈",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Shaman"
+  },
+  "1413": {
+    "zh": "长夜月",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Memory"
+  },
+  "1414": {
+    "zh": "丹恒•腾荒",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Knight"
+  },
+  "1415": {
+    "zh": "昔涟",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Memory"
+  },
+  "1501": {
+    "zh": "火花",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Elation"
+  },
+  "1502": {
+    "zh": "爻光",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Elation"
+  },
+  "1503": {
+    "zh": "真珠",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Elation"
+  },
+  "1504": {
+    "zh": "不死途",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Rogue"
+  },
+  "1505": {
+    "zh": "绯英",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Elation"
+  },
+  "1506": {
+    "zh": "银狼LV.<unbreak>999</unbreak>",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Elation"
+  },
+  "1507": {
+    "zh": "千冶•刃",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Warlock"
+  },
+  "1510": {
+    "zh": "姬子•启行",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Mage"
+  },
+  "1511": {
+    "zh": "星神★阿哈",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Elation"
+  },
+  "1512": {
+    "zh": "知更鸟•晴歌",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Memory"
+  },
+  "1513": {
+    "zh": "砂金•戏浪",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Elation"
+  },
+  "8009": {
+    "zh": "{NICKNAME}",
+    "rank": "CombatPowerAvatarRarityType5",
+    "baseType": "Elation"
+  }
+}

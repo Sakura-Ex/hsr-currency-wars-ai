@@ -1,0 +1,862 @@
+{
+  "20000": {
+    "zh": "锋镝",
+    "rank": "CombatPowerLightconeRarity3",
+    "baseType": "Rogue"
+  },
+  "20001": {
+    "zh": "物穰",
+    "rank": "CombatPowerLightconeRarity3",
+    "baseType": "Priest"
+  },
+  "20002": {
+    "zh": "天倾",
+    "rank": "CombatPowerLightconeRarity3",
+    "baseType": "Warrior"
+  },
+  "20003": {
+    "zh": "琥珀",
+    "rank": "CombatPowerLightconeRarity3",
+    "baseType": "Knight"
+  },
+  "20004": {
+    "zh": "幽邃",
+    "rank": "CombatPowerLightconeRarity3",
+    "baseType": "Warlock"
+  },
+  "20005": {
+    "zh": "齐颂",
+    "rank": "CombatPowerLightconeRarity3",
+    "baseType": "Shaman"
+  },
+  "20006": {
+    "zh": "智库",
+    "rank": "CombatPowerLightconeRarity3",
+    "baseType": "Mage"
+  },
+  "20007": {
+    "zh": "离弦",
+    "rank": "CombatPowerLightconeRarity3",
+    "baseType": "Rogue"
+  },
+  "20008": {
+    "zh": "嘉果",
+    "rank": "CombatPowerLightconeRarity3",
+    "baseType": "Priest"
+  },
+  "20009": {
+    "zh": "乐圮",
+    "rank": "CombatPowerLightconeRarity3",
+    "baseType": "Warrior"
+  },
+  "20010": {
+    "zh": "戍御",
+    "rank": "CombatPowerLightconeRarity3",
+    "baseType": "Knight"
+  },
+  "20011": {
+    "zh": "渊环",
+    "rank": "CombatPowerLightconeRarity3",
+    "baseType": "Warlock"
+  },
+  "20012": {
+    "zh": "轮契",
+    "rank": "CombatPowerLightconeRarity3",
+    "baseType": "Shaman"
+  },
+  "20013": {
+    "zh": "灵钥",
+    "rank": "CombatPowerLightconeRarity3",
+    "baseType": "Mage"
+  },
+  "20014": {
+    "zh": "相抗",
+    "rank": "CombatPowerLightconeRarity3",
+    "baseType": "Rogue"
+  },
+  "20015": {
+    "zh": "蕃息",
+    "rank": "CombatPowerLightconeRarity3",
+    "baseType": "Priest"
+  },
+  "20016": {
+    "zh": "俱殁",
+    "rank": "CombatPowerLightconeRarity3",
+    "baseType": "Warrior"
+  },
+  "20017": {
+    "zh": "开疆",
+    "rank": "CombatPowerLightconeRarity3",
+    "baseType": "Knight"
+  },
+  "20018": {
+    "zh": "匿影",
+    "rank": "CombatPowerLightconeRarity3",
+    "baseType": "Warlock"
+  },
+  "20019": {
+    "zh": "调和",
+    "rank": "CombatPowerLightconeRarity3",
+    "baseType": "Shaman"
+  },
+  "20020": {
+    "zh": "睿见",
+    "rank": "CombatPowerLightconeRarity3",
+    "baseType": "Mage"
+  },
+  "20021": {
+    "zh": "焚影",
+    "rank": "CombatPowerLightconeRarity3",
+    "baseType": "Memory"
+  },
+  "20022": {
+    "zh": "溯忆",
+    "rank": "CombatPowerLightconeRarity3",
+    "baseType": "Memory"
+  },
+  "20023": {
+    "zh": "嗤笑",
+    "rank": "CombatPowerLightconeRarity3",
+    "baseType": "Elation"
+  },
+  "20024": {
+    "zh": "残泪",
+    "rank": "CombatPowerLightconeRarity3",
+    "baseType": "Elation"
+  },
+  "21000": {
+    "zh": "一场术后对话",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Priest"
+  },
+  "21001": {
+    "zh": "晚安与睡颜",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Warlock"
+  },
+  "21002": {
+    "zh": "余生的第一天",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Knight"
+  },
+  "21003": {
+    "zh": "唯有沉默",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Rogue"
+  },
+  "21004": {
+    "zh": "记忆中的模样",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Shaman"
+  },
+  "21005": {
+    "zh": "鼹鼠党欢迎你",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Warrior"
+  },
+  "21006": {
+    "zh": "「我」的诞生",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Mage"
+  },
+  "21007": {
+    "zh": "同一种心情",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Priest"
+  },
+  "21008": {
+    "zh": "猎物的视线",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Warlock"
+  },
+  "21009": {
+    "zh": "朗道的选择",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Knight"
+  },
+  "21010": {
+    "zh": "论剑",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Rogue"
+  },
+  "21011": {
+    "zh": "与行星相会",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Shaman"
+  },
+  "21012": {
+    "zh": "秘密誓心",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Warrior"
+  },
+  "21013": {
+    "zh": "别让世界静下来",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Mage"
+  },
+  "21014": {
+    "zh": "此时恰好",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Priest"
+  },
+  "21015": {
+    "zh": "决心如汗珠般闪耀",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Warlock"
+  },
+  "21016": {
+    "zh": "宇宙市场趋势",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Knight"
+  },
+  "21017": {
+    "zh": "点个关注吧！",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Rogue"
+  },
+  "21018": {
+    "zh": "舞！舞！舞！",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Shaman"
+  },
+  "21019": {
+    "zh": "在蓝天下",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Warrior"
+  },
+  "21020": {
+    "zh": "天才们的休憩",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Mage"
+  },
+  "21021": {
+    "zh": "等价交换",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Priest"
+  },
+  "21022": {
+    "zh": "延长记号",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Warlock"
+  },
+  "21023": {
+    "zh": "我们是地火",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Knight"
+  },
+  "21024": {
+    "zh": "春水初生",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Rogue"
+  },
+  "21025": {
+    "zh": "过往未来",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Shaman"
+  },
+  "21026": {
+    "zh": "汪！散步时间！",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Warrior"
+  },
+  "21027": {
+    "zh": "早餐的仪式感",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Mage"
+  },
+  "21028": {
+    "zh": "暖夜不会漫长",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Priest"
+  },
+  "21029": {
+    "zh": "后会有期",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Warlock"
+  },
+  "21030": {
+    "zh": "这就是我啦！",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Knight"
+  },
+  "21031": {
+    "zh": "重返幽冥",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Rogue"
+  },
+  "21032": {
+    "zh": "镂月裁云之意",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Shaman"
+  },
+  "21033": {
+    "zh": "无处可逃",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Warrior"
+  },
+  "21034": {
+    "zh": "今日亦是和平的一日",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Mage"
+  },
+  "21035": {
+    "zh": "何物为真",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Priest"
+  },
+  "21036": {
+    "zh": "美梦小镇大冒险",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Shaman"
+  },
+  "21037": {
+    "zh": "最后的赢家",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Rogue"
+  },
+  "21038": {
+    "zh": "在火的远处",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Warrior"
+  },
+  "21039": {
+    "zh": "织造命运之线",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Knight"
+  },
+  "21040": {
+    "zh": "银河沦陷日",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Mage"
+  },
+  "21041": {
+    "zh": "好戏开演",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Warlock"
+  },
+  "21042": {
+    "zh": "铭记于心的约定",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Warrior"
+  },
+  "21043": {
+    "zh": "两个人的演唱会",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Knight"
+  },
+  "21044": {
+    "zh": "无边曼舞",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Warlock"
+  },
+  "21045": {
+    "zh": "谐乐静默之后",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Mage"
+  },
+  "21046": {
+    "zh": "芳华待灼",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Shaman"
+  },
+  "21047": {
+    "zh": "黑夜如影随行",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Rogue"
+  },
+  "21048": {
+    "zh": "梦的蒙太奇",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Priest"
+  },
+  "21050": {
+    "zh": "胜利只在朝夕间",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Memory"
+  },
+  "21051": {
+    "zh": "天才们的问候",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Memory"
+  },
+  "21052": {
+    "zh": "多流汗，少流泪",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Memory"
+  },
+  "21053": {
+    "zh": "愿旅途永远坦然",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Knight"
+  },
+  "21054": {
+    "zh": "故事的下一页",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Memory"
+  },
+  "21055": {
+    "zh": "直到明天的明天",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Priest"
+  },
+  "21056": {
+    "zh": "追逐风的时候",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Shaman"
+  },
+  "21057": {
+    "zh": "花儿不会忘记",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Memory"
+  },
+  "21058": {
+    "zh": "一行往日的血",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Warrior"
+  },
+  "21060": {
+    "zh": "氤氲麦香的梦",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Mage"
+  },
+  "21061": {
+    "zh": "假日浴场大冒险",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Warlock"
+  },
+  "21062": {
+    "zh": "于那终点再见",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Rogue"
+  },
+  "21064": {
+    "zh": "菇菇嘎嘎历险记",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Elation"
+  },
+  "21065": {
+    "zh": "今日好手气",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Elation"
+  },
+  "21066": {
+    "zh": "放个短假",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Elation"
+  },
+  "22000": {
+    "zh": "新手任务开始前",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Warlock"
+  },
+  "22001": {
+    "zh": "嘿，我在这儿",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Priest"
+  },
+  "22002": {
+    "zh": "为了明日的旅途",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Shaman"
+  },
+  "22003": {
+    "zh": "忍事录•音律狩猎",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Warrior"
+  },
+  "22004": {
+    "zh": "宇宙大生意",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Mage"
+  },
+  "22005": {
+    "zh": "永远的迷境饭",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Shaman"
+  },
+  "22006": {
+    "zh": "飞向粉色的明天",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Memory"
+  },
+  "22007": {
+    "zh": "未来，有我们一起",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Elation"
+  },
+  "22008": {
+    "zh": "向着地平线的终点",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Rogue"
+  },
+  "22009": {
+    "zh": "在世界尽头相会吧！",
+    "rank": "CombatPowerLightconeRarity4",
+    "baseType": "Elation"
+  },
+  "23000": {
+    "zh": "银河铁道之夜",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Mage"
+  },
+  "23001": {
+    "zh": "于夜色中",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Rogue"
+  },
+  "23002": {
+    "zh": "无可取代的东西",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Warrior"
+  },
+  "23003": {
+    "zh": "但战斗还未结束",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Shaman"
+  },
+  "23004": {
+    "zh": "以世界之名",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Warlock"
+  },
+  "23005": {
+    "zh": "制胜的瞬间",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Knight"
+  },
+  "23006": {
+    "zh": "只需等待",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Warlock"
+  },
+  "23007": {
+    "zh": "雨一直下",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Warlock"
+  },
+  "23008": {
+    "zh": "棺的回响",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Priest"
+  },
+  "23009": {
+    "zh": "到不了的彼岸",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Warrior"
+  },
+  "23010": {
+    "zh": "拂晓之前",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Mage"
+  },
+  "23011": {
+    "zh": "她已闭上双眼",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Knight"
+  },
+  "23012": {
+    "zh": "如泥酣眠",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Rogue"
+  },
+  "23013": {
+    "zh": "时节不居",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Priest"
+  },
+  "23014": {
+    "zh": "此身为剑",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Warrior"
+  },
+  "23015": {
+    "zh": "比阳光更明亮的",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Warrior"
+  },
+  "23016": {
+    "zh": "烦恼着，幸福着",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Rogue"
+  },
+  "23017": {
+    "zh": "惊魂夜",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Priest"
+  },
+  "23018": {
+    "zh": "片刻，留在眼底",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Mage"
+  },
+  "23019": {
+    "zh": "镜中故我",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Shaman"
+  },
+  "23020": {
+    "zh": "纯粹思维的洗礼",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Rogue"
+  },
+  "23021": {
+    "zh": "游戏尘寰",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Shaman"
+  },
+  "23022": {
+    "zh": "重塑时光之忆",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Warlock"
+  },
+  "23023": {
+    "zh": "命运从未公平",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Knight"
+  },
+  "23024": {
+    "zh": "行于流逝的岸",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Warlock"
+  },
+  "23025": {
+    "zh": "梦应归于何处",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Warrior"
+  },
+  "23026": {
+    "zh": "夜色流光溢彩",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Shaman"
+  },
+  "23027": {
+    "zh": "驶向第二次生命",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Rogue"
+  },
+  "23028": {
+    "zh": "偏偏希望无价",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Mage"
+  },
+  "23029": {
+    "zh": "那无数个春天",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Warlock"
+  },
+  "23030": {
+    "zh": "落日时起舞",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Warrior"
+  },
+  "23031": {
+    "zh": "我将，巡征追猎",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Rogue"
+  },
+  "23032": {
+    "zh": "唯有香如故",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Priest"
+  },
+  "23033": {
+    "zh": "忍法帖•缭乱破魔",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Mage"
+  },
+  "23034": {
+    "zh": "回到大地的飞行",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Shaman"
+  },
+  "23035": {
+    "zh": "长路终有归途",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Warlock"
+  },
+  "23036": {
+    "zh": "将光阴织成黄金",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Memory"
+  },
+  "23037": {
+    "zh": "向着不可追问处",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Mage"
+  },
+  "23038": {
+    "zh": "如果时间是一朵花",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Shaman"
+  },
+  "23039": {
+    "zh": "血火啊，燃烧前路",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Warrior"
+  },
+  "23040": {
+    "zh": "让告别，更美一些",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Memory"
+  },
+  "23041": {
+    "zh": "生命当付之一炬",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Mage"
+  },
+  "23042": {
+    "zh": "愿虹光永驻天空",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Memory"
+  },
+  "23043": {
+    "zh": "谎言在风中飘扬",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Warlock"
+  },
+  "23044": {
+    "zh": "黎明恰如此燃烧",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Warrior"
+  },
+  "23045": {
+    "zh": "没有回报的加冕",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Warrior"
+  },
+  "23046": {
+    "zh": "理想燃烧的地狱",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Rogue"
+  },
+  "23047": {
+    "zh": "海洋为何而歌",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Warlock"
+  },
+  "23048": {
+    "zh": "金血铭刻的时代",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Shaman"
+  },
+  "23049": {
+    "zh": "致长夜的星光",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Memory"
+  },
+  "23050": {
+    "zh": "勿忘她的火焰",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Warlock"
+  },
+  "23051": {
+    "zh": "纵然山河万程",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Knight"
+  },
+  "23052": {
+    "zh": "爱如此刻永恒",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Memory"
+  },
+  "23053": {
+    "zh": "花花世界迷人眼",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Elation"
+  },
+  "23054": {
+    "zh": "当她决定看见",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Elation"
+  },
+  "23055": {
+    "zh": "献给明日的色彩",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Elation"
+  },
+  "23056": {
+    "zh": "一场谎言的终幕",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Rogue"
+  },
+  "23057": {
+    "zh": "欢迎来到银河城",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Elation"
+  },
+  "23058": {
+    "zh": "邂逅于下一个花季",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Elation"
+  },
+  "23059": {
+    "zh": "灼尽炼狱的新骸",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Warlock"
+  },
+  "23060": {
+    "zh": "当一颗星照亮夜空",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Mage"
+  },
+  "23061": {
+    "zh": "星火悄然闪耀",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Mage"
+  },
+  "23062": {
+    "zh": "所见即我",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Warrior"
+  },
+  "23063": {
+    "zh": "你将起身歌唱",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Memory"
+  },
+  "23064": {
+    "zh": "向浪花掷下盛夏",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Elation"
+  },
+  "23065": {
+    "zh": "当第一声「阿哈」响起",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Elation"
+  },
+  "24000": {
+    "zh": "记一位星神的陨落",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Warrior"
+  },
+  "24001": {
+    "zh": "星海巡航",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Rogue"
+  },
+  "24002": {
+    "zh": "记忆的质料",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Knight"
+  },
+  "24003": {
+    "zh": "孤独的疗愈",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Warlock"
+  },
+  "24004": {
+    "zh": "不息的演算",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Mage"
+  },
+  "24005": {
+    "zh": "记忆永不落幕",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Memory"
+  },
+  "24006": {
+    "zh": "欢愉满溢祝福",
+    "rank": "CombatPowerLightconeRarity5",
+    "baseType": "Elation"
+  }
+}

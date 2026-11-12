@@ -50,7 +50,7 @@ class CharacterReference:
         path: 常规命途键。
         recommended_teams: 按队伍及位置保留的固定推荐关系。
         game_version: 资料的游戏版本。
-        data_snapshot: 资料对应的图鉴快照标识。
+        data_snapshot: 自选资料提供的快照标识，可为 None。
         traces: 行迹节点 ID 与升级条件。
         relic_request: 推荐主词条及角色副词条权重，套装由生成时共同选择。
         outer_set_ids: 推荐外圈套装候选。
@@ -63,7 +63,7 @@ class CharacterReference:
     path: str
     recommended_teams: tuple[RecommendedTeam, ...]
     game_version: str
-    data_snapshot: str
+    data_snapshot: str | None
     traces: dict[str, TraceReference]
     relic_request: CharacterRelicsRequest
     outer_set_ids: tuple[str, ...]
@@ -208,7 +208,7 @@ class GeneratedCharacter:
         mean_effective_rolls: 每件平均有效词条数，通过属性读取。
         relic_score_upper: 此配装条件的理论得分上限，包含未指定条数时的四词条。
         game_version: 所用游戏资料版本。
-        data_snapshot: 所用资料快照标识。
+        data_snapshot: 自选资料提供的快照标识，可为 None。
         schema_version: 当前输出字段版本。
         generator_version: 当前完整角色生成规则版本。
     """
@@ -221,7 +221,7 @@ class GeneratedCharacter:
     attempts: int
     relic_score_upper: float
     game_version: str
-    data_snapshot: str
+    data_snapshot: str | None
     schema_version: int = field(default=2, init=False)
     generator_version: str = field(default="character-v2", init=False)
 

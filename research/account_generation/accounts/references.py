@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 
 from ..characters.references import load_character_reference
+from ..data import BUNDLED_REFERENCE_DIR
 from .models import AccountReference, GoldCategory, LightConeReference
 from .rules import (
     FREE_CHARACTER_PREFIX,
@@ -14,7 +15,7 @@ from .rules import (
 
 
 def load_account_reference(
-    base_dir: Path,
+    base_dir: Path = BUNDLED_REFERENCE_DIR,
     *,
     character_categories: dict[str, GoldCategory] | None = None,
     light_cone_categories: dict[str, GoldCategory] | None = None,
@@ -23,7 +24,7 @@ def load_account_reference(
     """加载同一版本的账号生成资料，允许覆盖五星资源分类。
 
     Args:
-        base_dir: 含 character.json、character/、lightcone.json 和来源清单的目录。
+        base_dir: 参考资料目录，默认使用随模块安装的内置快照。
         character_categories: 覆盖指定角色的限定、常驻、免费或低星分类。
         light_cone_categories: 覆盖指定光锥的五星份数分类。
         signature_light_cones: 覆盖五星统一配装使用的首选光锥 ID，默认取同命途推荐首项。
@@ -85,5 +86,5 @@ def load_account_reference(
         signature_light_cone_ids=signatures,
         light_cones=light_cones,
         game_version=manifest["version"],
-        data_snapshot=manifest["catalog_snapshot"],
+        data_snapshot=manifest.get("catalog_snapshot"),
     )

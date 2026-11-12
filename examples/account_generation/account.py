@@ -1,16 +1,16 @@
 """在 IDE 中设置账号金数、统一配装、遗器水平与投入集中程度。"""
 
 import random
-from pathlib import Path
 from pprint import pprint
 
 from research.account_generation import (
+    BUNDLED_REFERENCE_DIR,
     AccountRequest,
     generate_account,
     load_account_reference,
 )
 
-DATA_DIR = Path(__file__).resolve().parents[2] / "local-data/account-reference"
+DATA_DIR = BUNDLED_REFERENCE_DIR
 
 
 def example():

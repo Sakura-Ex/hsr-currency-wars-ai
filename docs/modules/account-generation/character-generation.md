@@ -4,27 +4,24 @@
 
 ## 在 IDE 中调用
 
-按[单件接口页](relic-generation.md#在-ide-中调用)配置项目解释器，打开 [character.py](../../../examples/account_generation/character.py)，设置 `DATA_DIR`、角色 ID 和请求参数，在 `result` 处查看结果。
+按[单件接口页](relic-generation.md#在-ide-中调用)配置项目解释器，打开 [character.py](../../../examples/account_generation/character.py)，设置角色 ID 和请求参数，在 `result` 处查看结果。
 
-`DATA_DIR` 默认为 `local-data/account-reference/`，请设为包含 `character/`、`lightcone.json` 和 `source-manifest.json` 的本地资料目录。帕姆王的玩法配置由局内模块处理。
+`DATA_DIR` 默认指向随模块安装的内置参考资料。切换快照时可指定包含 `character/`、`lightcone.json` 和 `source-manifest.json` 的目录。帕姆王的玩法配置由局内模块处理。
 
 下面的示例从项目根目录运行：
 
 ```python
 import random
-from pathlib import Path
 
 from research.account_generation import (
+    BUNDLED_REFERENCE_DIR,
     CharacterRequest,
     LightConeSpec,
     generate_character,
     load_character_reference,
 )
 
-reference = load_character_reference(
-    Path("local-data/account-reference"),
-    "1004",
-)
+reference = load_character_reference(BUNDLED_REFERENCE_DIR, "1004")
 request = CharacterRequest(
     config_id="welt-001",
     eidolons=2,
@@ -120,7 +117,8 @@ result = generate_character(request, reference=reference, rng=random.Random(42))
 | `mean_effective_rolls` | 每件平均有效词条数，通过属性读取 |
 | `relic_score_upper` | 当前配装的理论有效词条总数上限 |
 | `attempts` | 六件遗器共用的实际搜索次数 |
-| `game_version`、`data_snapshot` | 所用资料版本与快照标识 |
+| `game_version` | 游戏资料版本 |
+| `data_snapshot` | 自选资料提供的快照标识，内置资料返回 `None` |
 | `schema_version`、`generator_version` | 输出字段版本与完整角色生成规则版本 |
 
 六件遗器及得分始终按部位 1～6 排列。光锥实例 ID 为 `<config_id>:light-cone:1`，遗器实例 ID 为 `<config_id>:relic:<slot>`。批量生成时，调用方为每份配置分配不同的 `config_id`，账号组装再处理全局库存和共享装备。

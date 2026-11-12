@@ -4,21 +4,18 @@
 
 ## 在 IDE 中调用
 
-按[单件接口页](relic-generation.md#在-ide-中调用)配置项目解释器，打开 [account.py](../../../examples/account_generation/account.py)，设置 `DATA_DIR` 和请求参数，在 `result` 处查看完整账号。
+按[单件接口页](relic-generation.md#在-ide-中调用)配置项目解释器，打开 [account.py](../../../examples/account_generation/account.py)，设置请求参数，在 `result` 处查看完整账号。
 
-`DATA_DIR` 默认为 `local-data/account-reference/`，请设为实际资料目录，其中应包含 `source-manifest.json`、`character.json`、`character/` 和 `lightcone.json`。单元测试自带参考资料样例。
+示例默认使用随模块安装的 [4.6.54 内置参考资料](../../../research/account_generation/data/)，可以离线运行。需要切换快照时，把 `DATA_DIR` 指向包含 `source-manifest.json`、`character.json`、`character/` 和 `lightcone.json` 的资料目录。
 
 ```python
 import random
-from pathlib import Path
 
 from research.account_generation import (
     AccountRequest, generate_account, load_account_reference,
 )
 
-reference = load_account_reference(
-    Path("local-data/account-reference")
-)
+reference = load_account_reference()
 request = AccountRequest(
     account_id="account-001",
     character_count=12,
@@ -32,7 +29,7 @@ request = AccountRequest(
 result = generate_account(request, reference=reference, rng=random.Random(42))
 ```
 
-参考资料可重复使用。调用方保存请求参数、随机种子、代码版本与数据快照，相同输入和随机源初始状态产生相同结果。角色缺席表达未持有，试用补齐及生效数值由后续[实际配置转换](data-flow.md)处理。
+参考资料可重复使用。使用内置资料时，调用方记录请求参数、随机种子、代码版本和游戏版本。相同输入和随机源初始状态产生相同结果。角色缺席表达未持有，试用补齐及生效数值由后续[实际配置转换](data-flow.md)处理。
 
 ## 生成条件
 
@@ -157,7 +154,8 @@ custom = replace(
 | `gold_by_category`、`gold_count` | 当前统计口径的分类金数与实际总金数，通过属性读取 |
 | `mean_effective_rolls` | 已装备遗器的每件平均得分，通过属性读取 |
 | `core_gold_share`、`core_relic_share` | 核心的实际金数与遗器得分占比，通过属性读取 |
-| `game_version`、`data_snapshot` | 游戏资料版本与快照 |
+| `game_version` | 游戏资料版本 |
+| `data_snapshot` | 自选资料提供的快照标识，内置资料返回 `None` |
 | `schema_version`、`generator_version` | 输出字段及账号生成规则版本 |
 | `attempts` | 实际消耗的候选考察次数 |
 

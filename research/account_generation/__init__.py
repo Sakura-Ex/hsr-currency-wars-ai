@@ -24,6 +24,7 @@ from .characters.models import (
     TraceReference,
 )
 from .characters.references import load_character_reference
+from .data import BUNDLED_REFERENCE_DIR
 from .relics.models import (
     CharacterRelicsRequest,
     GeneratedCharacterRelics,
@@ -38,6 +39,7 @@ from .relics.single import GenerationTargetNotReached, generate_relic, score_rel
 __all__ = [
     "AccountReference",
     "AccountRequest",
+    "BUNDLED_REFERENCE_DIR",
     "CharacterInvestment",
     "GeneratedAccount",
     "LightConeReference",

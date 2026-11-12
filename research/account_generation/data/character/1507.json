@@ -1,0 +1,679 @@
+{
+  "base_type": "Warlock",
+  "rarity": "CombatPowerAvatarRarityType5",
+  "lightcones": [
+    23059,
+    23043,
+    22000
+  ],
+  "relics": {
+    "property_list3": [
+      "CriticalChanceBase",
+      "CriticalDamageBase"
+    ],
+    "property_list4": [
+      "SpeedDelta",
+      "HPAddedRatio"
+    ],
+    "property_list5": [
+      "FireAddedRatio",
+      "HPAddedRatio"
+    ],
+    "property_list6": [
+      "HPAddedRatio",
+      "SPRatioBase"
+    ],
+    "sub_affix_property_list": [
+      "HPAddedRatio",
+      "CriticalChanceBase",
+      "CriticalDamageBase",
+      "SpeedDelta"
+    ],
+    "set2_id_list": [
+      319,
+      306,
+      315
+    ],
+    "set4_id_list": [
+      132,
+      117,
+      113
+    ]
+  },
+  "teams": [
+    {
+      "team_id": 1,
+      "position": 1,
+      "member_list": [
+        1504,
+        1403,
+        1409
+      ],
+      "backup_list1": [],
+      "backup_list2": [
+        1306,
+        1415,
+        1313,
+        1309,
+        8007,
+        1406,
+        1218,
+        1202,
+        1106
+      ],
+      "backup_list3": [
+        1414,
+        1217,
+        1222,
+        1304,
+        1208,
+        1203,
+        1301
+      ],
+      "backup_group_list1": [
+        115
+      ],
+      "backup_group_list2": [
+        116,
+        104
+      ],
+      "backup_group_list3": [
+        101
+      ]
+    },
+    {
+      "team_id": 2,
+      "position": 1,
+      "member_list": [
+        1308,
+        1218,
+        1409
+      ],
+      "backup_list1": [],
+      "backup_list2": [
+        1306,
+        1415,
+        1313,
+        1412,
+        1309,
+        8007,
+        1406,
+        1202,
+        1106
+      ],
+      "backup_list3": [
+        1414,
+        1217,
+        1222,
+        1304,
+        1208,
+        1203,
+        1301
+      ],
+      "backup_group_list1": [
+        103,
+        102
+      ],
+      "backup_group_list2": [
+        104
+      ],
+      "backup_group_list3": [
+        101
+      ]
+    },
+    {
+      "team_id": 3,
+      "position": 1,
+      "member_list": [
+        1403,
+        1306,
+        1409
+      ],
+      "backup_list1": [
+        1415,
+        1306,
+        1313,
+        1309,
+        8007,
+        1406,
+        1218,
+        1202,
+        1106
+      ],
+      "backup_list2": [
+        1415,
+        1313,
+        1309,
+        8007,
+        1406,
+        1218,
+        1202,
+        1106
+      ],
+      "backup_list3": [
+        1414,
+        1217,
+        1222,
+        1304,
+        1208,
+        1203,
+        1301
+      ],
+      "backup_group_list1": [
+        104
+      ],
+      "backup_group_list2": [
+        104
+      ],
+      "backup_group_list3": [
+        101
+      ]
+    }
+  ],
+  "skill_trees": {
+    "1507001": {
+      "1": {
+        "point_id": 1507001,
+        "level_up_skill_id": [
+          150701,
+          150708
+        ],
+        "avatar_level_limit": null,
+        "avatar_promotion_limit": null,
+        "pre_point": []
+      },
+      "2": {
+        "point_id": 1507001,
+        "level_up_skill_id": [
+          150701,
+          150708
+        ],
+        "avatar_level_limit": null,
+        "avatar_promotion_limit": 2,
+        "pre_point": []
+      },
+      "3": {
+        "point_id": 1507001,
+        "level_up_skill_id": [
+          150701,
+          150708
+        ],
+        "avatar_level_limit": null,
+        "avatar_promotion_limit": 3,
+        "pre_point": []
+      },
+      "4": {
+        "point_id": 1507001,
+        "level_up_skill_id": [
+          150701,
+          150708
+        ],
+        "avatar_level_limit": null,
+        "avatar_promotion_limit": 4,
+        "pre_point": []
+      },
+      "5": {
+        "point_id": 1507001,
+        "level_up_skill_id": [
+          150701,
+          150708
+        ],
+        "avatar_level_limit": null,
+        "avatar_promotion_limit": 5,
+        "pre_point": []
+      },
+      "6": {
+        "point_id": 1507001,
+        "level_up_skill_id": [
+          150701,
+          150708
+        ],
+        "avatar_level_limit": null,
+        "avatar_promotion_limit": 6,
+        "pre_point": []
+      }
+    },
+    "1507002": {
+      "1": {
+        "point_id": 1507002,
+        "level_up_skill_id": [
+          150702,
+          150709
+        ],
+        "avatar_level_limit": null,
+        "avatar_promotion_limit": null,
+        "pre_point": []
+      },
+      "2": {
+        "point_id": 1507002,
+        "level_up_skill_id": [
+          150702,
+          150709
+        ],
+        "avatar_level_limit": null,
+        "avatar_promotion_limit": 1,
+        "pre_point": []
+      },
+      "3": {
+        "point_id": 1507002,
+        "level_up_skill_id": [
+          150702,
+          150709
+        ],
+        "avatar_level_limit": null,
+        "avatar_promotion_limit": 2,
+        "pre_point": []
+      },
+      "4": {
+        "point_id": 1507002,
+        "level_up_skill_id": [
+          150702,
+          150709
+        ],
+        "avatar_level_limit": null,
+        "avatar_promotion_limit": 3,
+        "pre_point": []
+      },
+      "5": {
+        "point_id": 1507002,
+        "level_up_skill_id": [
+          150702,
+          150709
+        ],
+        "avatar_level_limit": null,
+        "avatar_promotion_limit": 4,
+        "pre_point": []
+      },
+      "6": {
+        "point_id": 1507002,
+        "level_up_skill_id": [
+          150702,
+          150709
+        ],
+        "avatar_level_limit": null,
+        "avatar_promotion_limit": 4,
+        "pre_point": []
+      },
+      "7": {
+        "point_id": 1507002,
+        "level_up_skill_id": [
+          150702,
+          150709
+        ],
+        "avatar_level_limit": null,
+        "avatar_promotion_limit": 5,
+        "pre_point": []
+      },
+      "8": {
+        "point_id": 1507002,
+        "level_up_skill_id": [
+          150702,
+          150709
+        ],
+        "avatar_level_limit": null,
+        "avatar_promotion_limit": 5,
+        "pre_point": []
+      },
+      "9": {
+        "point_id": 1507002,
+        "level_up_skill_id": [
+          150702,
+          150709
+        ],
+        "avatar_level_limit": null,
+        "avatar_promotion_limit": 6,
+        "pre_point": []
+      },
+      "10": {
+        "point_id": 1507002,
+        "level_up_skill_id": [
+          150702,
+          150709
+        ],
+        "avatar_level_limit": null,
+        "avatar_promotion_limit": 6,
+        "pre_point": []
+      }
+    },
+    "1507003": {
+      "1": {
+        "point_id": 1507003,
+        "level_up_skill_id": [
+          150703,
+          150714
+        ],
+        "avatar_level_limit": null,
+        "avatar_promotion_limit": null,
+        "pre_point": []
+      },
+      "2": {
+        "point_id": 1507003,
+        "level_up_skill_id": [
+          150703,
+          150714
+        ],
+        "avatar_level_limit": null,
+        "avatar_promotion_limit": 1,
+        "pre_point": []
+      },
+      "3": {
+        "point_id": 1507003,
+        "level_up_skill_id": [
+          150703,
+          150714
+        ],
+        "avatar_level_limit": null,
+        "avatar_promotion_limit": 2,
+        "pre_point": []
+      },
+      "4": {
+        "point_id": 1507003,
+        "level_up_skill_id": [
+          150703,
+          150714
+        ],
+        "avatar_level_limit": null,
+        "avatar_promotion_limit": 3,
+        "pre_point": []
+      },
+      "5": {
+        "point_id": 1507003,
+        "level_up_skill_id": [
+          150703,
+          150714
+        ],
+        "avatar_level_limit": null,
+        "avatar_promotion_limit": 4,
+        "pre_point": []
+      },
+      "6": {
+        "point_id": 1507003,
+        "level_up_skill_id": [
+          150703,
+          150714
+        ],
+        "avatar_level_limit": null,
+        "avatar_promotion_limit": 4,
+        "pre_point": []
+      },
+      "7": {
+        "point_id": 1507003,
+        "level_up_skill_id": [
+          150703,
+          150714
+        ],
+        "avatar_level_limit": null,
+        "avatar_promotion_limit": 5,
+        "pre_point": []
+      },
+      "8": {
+        "point_id": 1507003,
+        "level_up_skill_id": [
+          150703,
+          150714
+        ],
+        "avatar_level_limit": null,
+        "avatar_promotion_limit": 5,
+        "pre_point": []
+      },
+      "9": {
+        "point_id": 1507003,
+        "level_up_skill_id": [
+          150703,
+          150714
+        ],
+        "avatar_level_limit": null,
+        "avatar_promotion_limit": 6,
+        "pre_point": []
+      },
+      "10": {
+        "point_id": 1507003,
+        "level_up_skill_id": [
+          150703,
+          150714
+        ],
+        "avatar_level_limit": null,
+        "avatar_promotion_limit": 6,
+        "pre_point": []
+      }
+    },
+    "1507004": {
+      "1": {
+        "point_id": 1507004,
+        "level_up_skill_id": [
+          150704
+        ],
+        "avatar_level_limit": null,
+        "avatar_promotion_limit": null,
+        "pre_point": []
+      },
+      "2": {
+        "point_id": 1507004,
+        "level_up_skill_id": [
+          150704
+        ],
+        "avatar_level_limit": null,
+        "avatar_promotion_limit": 1,
+        "pre_point": []
+      },
+      "3": {
+        "point_id": 1507004,
+        "level_up_skill_id": [
+          150704
+        ],
+        "avatar_level_limit": null,
+        "avatar_promotion_limit": 2,
+        "pre_point": []
+      },
+      "4": {
+        "point_id": 1507004,
+        "level_up_skill_id": [
+          150704
+        ],
+        "avatar_level_limit": null,
+        "avatar_promotion_limit": 3,
+        "pre_point": []
+      },
+      "5": {
+        "point_id": 1507004,
+        "level_up_skill_id": [
+          150704
+        ],
+        "avatar_level_limit": null,
+        "avatar_promotion_limit": 4,
+        "pre_point": []
+      },
+      "6": {
+        "point_id": 1507004,
+        "level_up_skill_id": [
+          150704
+        ],
+        "avatar_level_limit": null,
+        "avatar_promotion_limit": 4,
+        "pre_point": []
+      },
+      "7": {
+        "point_id": 1507004,
+        "level_up_skill_id": [
+          150704
+        ],
+        "avatar_level_limit": null,
+        "avatar_promotion_limit": 5,
+        "pre_point": []
+      },
+      "8": {
+        "point_id": 1507004,
+        "level_up_skill_id": [
+          150704
+        ],
+        "avatar_level_limit": null,
+        "avatar_promotion_limit": 5,
+        "pre_point": []
+      },
+      "9": {
+        "point_id": 1507004,
+        "level_up_skill_id": [
+          150704
+        ],
+        "avatar_level_limit": null,
+        "avatar_promotion_limit": 6,
+        "pre_point": []
+      },
+      "10": {
+        "point_id": 1507004,
+        "level_up_skill_id": [
+          150704
+        ],
+        "avatar_level_limit": null,
+        "avatar_promotion_limit": 6,
+        "pre_point": []
+      }
+    },
+    "1507007": {
+      "1": {
+        "point_id": 1507007,
+        "level_up_skill_id": [
+          150707
+        ],
+        "avatar_level_limit": null,
+        "avatar_promotion_limit": null,
+        "pre_point": []
+      }
+    },
+    "1507101": {
+      "1": {
+        "point_id": 1507101,
+        "level_up_skill_id": [],
+        "avatar_level_limit": null,
+        "avatar_promotion_limit": 2,
+        "pre_point": []
+      }
+    },
+    "1507102": {
+      "1": {
+        "point_id": 1507102,
+        "level_up_skill_id": [],
+        "avatar_level_limit": null,
+        "avatar_promotion_limit": 4,
+        "pre_point": []
+      }
+    },
+    "1507103": {
+      "1": {
+        "point_id": 1507103,
+        "level_up_skill_id": [],
+        "avatar_level_limit": null,
+        "avatar_promotion_limit": 6,
+        "pre_point": []
+      }
+    },
+    "1507201": {
+      "1": {
+        "point_id": 1507201,
+        "level_up_skill_id": [],
+        "avatar_level_limit": 1,
+        "avatar_promotion_limit": null,
+        "pre_point": []
+      }
+    },
+    "1507202": {
+      "1": {
+        "point_id": 1507202,
+        "level_up_skill_id": [],
+        "avatar_level_limit": null,
+        "avatar_promotion_limit": 2,
+        "pre_point": [
+          1507101
+        ]
+      }
+    },
+    "1507203": {
+      "1": {
+        "point_id": 1507203,
+        "level_up_skill_id": [],
+        "avatar_level_limit": null,
+        "avatar_promotion_limit": 3,
+        "pre_point": [
+          1507202
+        ]
+      }
+    },
+    "1507204": {
+      "1": {
+        "point_id": 1507204,
+        "level_up_skill_id": [],
+        "avatar_level_limit": null,
+        "avatar_promotion_limit": 3,
+        "pre_point": [
+          1507203
+        ]
+      }
+    },
+    "1507205": {
+      "1": {
+        "point_id": 1507205,
+        "level_up_skill_id": [],
+        "avatar_level_limit": null,
+        "avatar_promotion_limit": 4,
+        "pre_point": [
+          1507102
+        ]
+      }
+    },
+    "1507206": {
+      "1": {
+        "point_id": 1507206,
+        "level_up_skill_id": [],
+        "avatar_level_limit": null,
+        "avatar_promotion_limit": 5,
+        "pre_point": [
+          1507205
+        ]
+      }
+    },
+    "1507207": {
+      "1": {
+        "point_id": 1507207,
+        "level_up_skill_id": [],
+        "avatar_level_limit": null,
+        "avatar_promotion_limit": 5,
+        "pre_point": [
+          1507206
+        ]
+      }
+    },
+    "1507208": {
+      "1": {
+        "point_id": 1507208,
+        "level_up_skill_id": [],
+        "avatar_level_limit": null,
+        "avatar_promotion_limit": 6,
+        "pre_point": [
+          1507103
+        ]
+      }
+    },
+    "1507209": {
+      "1": {
+        "point_id": 1507209,
+        "level_up_skill_id": [],
+        "avatar_level_limit": 75,
+        "avatar_promotion_limit": null,
+        "pre_point": [
+          1507103
+        ]
+      }
+    },
+    "1507210": {
+      "1": {
+        "point_id": 1507210,
+        "level_up_skill_id": [],
+        "avatar_level_limit": 80,
+        "avatar_promotion_limit": null,
+        "pre_point": [
+          1507201
+        ]
+      }
+    }
+  }
+}

@@ -106,7 +106,7 @@ def load_character_reference(base_dir: Path, character_id: str) -> CharacterRefe
             for team in data["teams"]
         ),
         game_version=manifest["version"],
-        data_snapshot=manifest["catalog_snapshot"],
+        data_snapshot=manifest.get("catalog_snapshot"),
         traces=traces,
         relic_request=CharacterRelicsRequest(pieces=pieces, effective_stat_weights=weights),
         outer_set_ids=tuple(str(set_id) for set_id in relics["set4_id_list"]),

@@ -2,18 +2,18 @@
 
 import random
 from dataclasses import asdict
-from pathlib import Path
 from pprint import pprint
 
 from research.account_generation import (
+    BUNDLED_REFERENCE_DIR,
     CharacterRequest,
     LightConeSpec,
     generate_character,
     load_character_reference,
 )
 
-# 可在 IDE 中设为实际使用的本地参考资料目录。
-DATA_DIR = Path(__file__).resolve().parents[2] / "local-data/account-reference"
+# 可在 IDE 中选择其他参考资料目录。
+DATA_DIR = BUNDLED_REFERENCE_DIR
 
 
 def example():
