@@ -24,6 +24,7 @@ from research.account_generation.accounts.allocation import (
     _choose_rosters,
     _roster_fits,
 )
+from research.account_generation.characters.models import RecommendedTeam
 from research.account_generation.relics.rules import SUBSTAT_ROLLS
 from research.account_generation.relics.single import _SearchBudget
 
@@ -219,6 +220,24 @@ class AccountGenerationTests(unittest.TestCase):
             _choose_rosters(
                 request, self.reference, menus, None, random.Random(1), _SearchBudget(10)
             )
+        )
+        self.assertCountEqual(
+            [(frozenset(ids), cores) for ids, cores in rosters],
+            [(frozenset(request.character_pool), (cid,)) for cid in request.character_pool],
+        )
+
+    def test_override_guarantees_ownership_and_keeps_automatic_cores_selectable(self):
+        """固定持有角色仍可被抽为核心，其他持有角色也保留核心候选资格。"""
+        request = self.request(
+            core_character_ids=(), character_overrides={"1004": CharacterSpec()}, teammate_bias=0
+        )
+        self.assertEqual(self.generate(request, seed=0).core_character_ids, ("1005",))
+        all_fixed = replace(
+            request, character_overrides=dict.fromkeys(request.character_pool, CharacterSpec())
+        )
+        menus = _build_menus(all_fixed, self.reference)
+        rosters = _choose_rosters(
+            all_fixed, self.reference, menus, None, random.Random(1), _SearchBudget(10)
         )
         self.assertCountEqual(
             [(frozenset(ids), cores) for ids, cores in rosters],
@@ -560,6 +579,30 @@ class AccountGenerationTests(unittest.TestCase):
         }
         self.assertEqual(alternatives, {"1005", "8009"})
 
+    def test_selected_backup_fills_one_recommended_slot(self):
+        """同一替补覆盖两个位置时，仍优先选择余下位置的首选队友。"""
+        team = RecommendedTeam(
+            team_id="test",
+            position=1,
+            members=("1005", "1103"),
+            backups=(("8009",), ("8009",)),
+            backup_groups=((), ()),
+        )
+        self.reference.characters["1004"] = replace(
+            self.reference.characters["1004"], recommended_teams=(team,)
+        )
+        request = self.request(
+            character_count=3,
+            character_pool=("1004", "1005", "1103", "8009"),
+            core_character_ids=("1004", "8009"),
+            teammate_bias=1,
+        )
+        result = self.generate(request, seed=1)
+        self.assertEqual(
+            tuple(character.character_id for character in result.characters),
+            ("1004", "8009", "1103"),
+        )
+
     def test_account_quality_tier_and_single_sided_bounds(self):
         """检查账号五档按总理论上限换算，平均词条上下限可独立设置。"""
         request = self.request(
@@ -686,6 +729,47 @@ class AccountGenerationTests(unittest.TestCase):
                 self.assertAlmostEqual(result.mean_effective_rolls, mean, places=6)
                 head = next(piece.relic for piece in result.relics if piece.relic.slot == 1)
                 self.assertAlmostEqual(head.substats["SPD"], speed)
+
+    def test_middle_search_leaves_budget_for_low_and_high_rolls(self):
+        """两个部位须分别用低档和高档，全档搜索保有足够的候选额度。"""
+        cid = "1004"
+        pieces = [
+            RelicSpec(slot=slot, min_effective_rolls=0, max_effective_rolls=0)
+            for slot in range(1, 5)
+        ]
+        for slot, speed in ((5, 2.0), (6, 2.6)):
+            score = speed / 2.3
+            pieces.append(
+                RelicSpec(
+                    slot=slot,
+                    required_substats=("SPD",),
+                    min_effective_rolls=score - 0.01,
+                    max_effective_rolls=score + 0.01,
+                )
+            )
+        request = self.request(
+            character_count=1,
+            character_pool=(cid,),
+            core_character_ids=(cid,),
+            gold_count=0.5,
+            character_overrides={
+                cid: CharacterSpec(
+                    relics=CharacterRelicsRequest(
+                        effective_stat_weights={"SPD": 1},
+                        pieces=tuple(pieces),
+                    )
+                )
+            },
+            min_mean_effective_rolls=2 / 6,
+            max_mean_effective_rolls=2 / 6,
+            max_attempts=100,
+        )
+        result = generate_account(
+            request, reference=load_account_reference(), rng=random.Random(42)
+        )
+        self.assertLessEqual(result.attempts, request.max_attempts)
+        self.assertAlmostEqual(result.mean_effective_rolls, 2 / 6)
+        self.assertEqual([piece.relic.substats["SPD"] for piece in result.relics[4:]], [2.0, 2.6])
 
     def test_middle_grid_respects_role_bounds_near_score_tolerance(self):
         """边缘格点不能占用还原预算，角色下限稍高时选择下一合法分数。"""

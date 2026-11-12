@@ -17,14 +17,27 @@ _GRID_ROUNDOFF = 1e-9
 
 
 def _integer_window(bounds: tuple[float, float], scale: int) -> tuple[int, int]:
-    """将得分范围和比较容差换算成包含端点的整数区间。"""
+    """将得分范围和比较容差换算成包含端点的整数区间。
+
+    Args:
+        bounds: 原始词条得分的下界与上界。
+        scale: 每单位词条得分对应的整数刻度数。
+    Returns:
+        包含比较容差的最小与最大整数刻度。下界大于上界表示区间内没有格点。
+    """
     lo, hi = bounds
     tolerance = SCORE_TOLERANCE - _GRID_ROUNDOFF
     return ceil((lo - tolerance) * scale), floor((hi + tolerance) * scale)
 
 
 def _suffix_scores(choices: list[tuple[int, ...]]) -> list[tuple[int, int]]:
-    """合并每组选一项的可达总分，返回各后缀的最小分及以其为起点的位集。"""
+    """合并每组选一项的可达总分。
+
+    Args:
+        choices: 各组可选的整数分数，每组非空且升序排列。
+    Returns:
+        每个后缀的最小分与以它为起点的可达分数位集，含总分为零的空后缀。
+    """
     suffix = [(0, 1)] * (len(choices) + 1)
     for i in range(len(choices) - 1, -1, -1):
         base, previous = suffix[i + 1]
@@ -39,7 +52,15 @@ def _suffix_scores(choices: list[tuple[int, ...]]) -> list[tuple[int, int]]:
 def _scores_in_window(
     reachable: tuple[int, int], bounds: tuple[float, float], scale: int
 ) -> Iterator[int]:
-    """按升序给出分数窗口内已置位的整数分数。"""
+    """从位集中读取得分窗口内的格点。
+
+    Args:
+        reachable: 后缀可达分数的最小整数分数与位集。
+        bounds: 原始词条得分的下界与上界。
+        scale: 每单位词条得分对应的整数刻度数。
+    Yields:
+        窗口内已置位的整数分数，按升序排列。
+    """
     base, bits = reachable
     lo, hi = _integer_window(bounds, scale)
     first = max(0, lo - base)
@@ -59,7 +80,16 @@ def _pick_scores(
     total: int,
     desired: list[float],
 ) -> tuple[int, ...]:
-    """选出可凑齐总分的各组分数，依次优先接近各组期望值。"""
+    """选出可凑齐总分的各组分数，依次优先接近各组期望值。
+
+    Args:
+        choices: 各组可选的整数分数。
+        suffix: 对应 choices 的后缀可达分数。
+        total: 已知可达的整数总分。
+        desired: 各组的期望得分，单位为整数刻度，可位于格点之间。
+    Returns:
+        按 choices 顺序选出的各组整数得分。
+    """
     selected = []
     for i, options in enumerate(choices):
         base, bits = suffix[i + 1]
@@ -86,8 +116,17 @@ def _try_middle_relics(
 ) -> dict[str, tuple[tuple[Relic, float], ...]] | None:
     """尝试用全中档成品满足硬性分数范围，优先接近角色投入目标。
 
+    Args:
+        searches: 各角色按部位维护的遗器候选搜索器。
+        group_bounds: 各角色配装允许的总分范围。
+        preferred_bounds: 优先尝试的各角色投入范围。
+        total_bounds: 账号所有遗器的目标总分范围。
+        desired: 各角色的目标投入分数。
+        rng: 与搜索器共用的随机源。还原成品会推进状态，返回 None 时恢复初始状态。
     Returns:
         按角色和部位排列的遗器及得分。网格无法给出可验证结果时返回 None。
+    Raises:
+        GenerationTargetNotReached: 还原遗器时耗尽传入搜索器的候选预算。
     """
     if any(piece.tier_weights[1] == 0 for pieces in searches.values() for piece in pieces):
         return None

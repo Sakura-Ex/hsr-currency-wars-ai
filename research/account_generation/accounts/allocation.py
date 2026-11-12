@@ -146,6 +146,35 @@ def _roster_fits(
     return bool(reachable[count] & target_bit)
 
 
+def _covered_team_slots(team: RecommendedTeam, selected: set[str]) -> set[int]:
+    """匹配推荐队伍中的位置，每名已选角色最多占用一个位置。
+
+    Args:
+        team: 首选队友与对应的替补。
+        selected: 当前已持有的角色。
+    Returns:
+        最大匹配覆盖的位置索引。同等覆盖数量时优先保留靠前位置。
+    """
+    options = [
+        tuple(cid for cid in (member, *backups) if cid in selected)
+        for member, backups in zip(team.members, team.backups, strict=True)
+    ]
+    assignments: dict[str, int] = {}
+
+    def cover(slot: int, visited: set[str]) -> bool:
+        """尝试占用 slot，必要时将已有位置交给另一名候选角色。"""
+        for cid in options[slot]:
+            if cid in visited:
+                continue
+            visited.add(cid)
+            if cid not in assignments or cover(assignments[cid], visited):
+                assignments[cid] = slot
+                return True
+        return False
+
+    return {slot for slot in range(len(options)) if cover(slot, set())}
+
+
 def _choose_rosters(
     request: AccountRequest,
     reference: AccountReference,
@@ -172,7 +201,8 @@ def _choose_rosters(
         ValueError: 必需角色不在可用候选中，或数量超过持有规模。
         GenerationTargetNotReached: 持有人数与金数不相容或预算耗尽。
     """
-    selected = list(dict.fromkeys((*request.core_character_ids, *request.character_overrides)))
+    cores = list(dict.fromkeys(request.core_character_ids))
+    selected = list(dict.fromkeys((*cores, *request.character_overrides)))
     if any(cid not in menus for cid in selected):
         raise ValueError("核心或覆盖角色需要位于候选范围内，并有可用的光锥")
     if len(selected) > request.character_count:
@@ -190,11 +220,10 @@ def _choose_rosters(
         teams = reference.characters[cid].recommended_teams
         if teams:
             plans.append(rng.choice(teams))
-    # 只有核心与非核心需要区分时，才单独枚举核心集合。
+    all_cores = not cores and request.core_count == request.character_count
+    # 只有自动核心与非核心需要区分时，才单独枚举核心集合。
     core_count = (
-        request.core_count
-        if not request.core_character_ids and request.core_count < request.character_count
-        else 0
+        request.core_count if not cores and 0 < request.core_count < request.character_count else 0
     )
 
     def choose(
@@ -212,18 +241,23 @@ def _choose_rosters(
             GenerationTargetNotReached: 共享候选预算耗尽。
         """
         needed = request.character_count - len(selected)
-        if needed == 0:
-            cores = request.core_character_ids or tuple(selected[: request.core_count])
-            yield tuple(selected), tuple(dict.fromkeys(cores))
+        cores_needed = core_count - len(cores)
+        if needed == 0 and cores_needed <= 0:
+            yield tuple(selected), tuple(selected if all_cores else cores)
             return
-        cores_needed = core_count - len(selected)
         picking_core = cores_needed > 0
-        candidates = (core_candidates if picking_core else available).copy()
+        candidates = (
+            [cid for cid in core_candidates if needed or cid in selected]
+            if picking_core
+            else available.copy()
+        )
         minimum_candidates = cores_needed if picking_core else needed
         scores = dict.fromkeys(candidates, 0.0)
+        selected_ids = set(selected)
         for team in plans:
-            for member, backups in zip(team.members, team.backups, strict=True):
-                if any(cid in selected for cid in (member, *backups)):
+            covered = _covered_team_slots(team, selected_ids)
+            for slot, (member, backups) in enumerate(zip(team.members, team.backups, strict=True)):
+                if slot in covered:
                     continue
                 if member in scores:
                     scores[member] += 1
@@ -241,6 +275,7 @@ def _choose_rosters(
             ]
             cid = rng.choices(candidates, weights=weights, k=1)[0]
             candidates.remove(cid)
+            new_character = cid not in selected_ids
             # 先前分支已覆盖包含其首选角色的组合；跳过的核心候选仍可作为队友。
             if picking_core:
                 rest = [other for other in available if other != cid]
@@ -249,20 +284,27 @@ def _choose_rosters(
             budget.consume()
             if (
                 target is not None
+                and new_character
                 and not all_candidates_required
                 and not _roster_fits(selected + [cid], rest, needed - 1, target, costs)
             ):
                 continue
-            selected.append(cid)
-            teams = reference.characters[cid].recommended_teams
+            if new_character:
+                selected.append(cid)
+            if picking_core:
+                cores.append(cid)
+            teams = reference.characters[cid].recommended_teams if new_character else ()
             if teams:
                 plans.append(rng.choice(teams))
             yield from choose(rest, candidates)
             if teams:
                 plans.pop()
-            selected.pop()
+            if picking_core:
+                cores.pop()
+            if new_character:
+                selected.pop()
 
-    yield from choose(initial_candidates, initial_candidates)
+    yield from choose(initial_candidates, list(menus))
 
 
 def _concentration_weights(

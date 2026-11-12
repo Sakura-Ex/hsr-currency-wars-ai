@@ -1,6 +1,7 @@
 """联合搜索账号内全部遗器，满足平均词条目标与角色投入分布。"""
 
 import random
+from collections.abc import Callable
 from fractions import Fraction
 from math import gcd, lcm
 
@@ -21,6 +22,33 @@ _NARROW_MEAN_SCORE_WIDTH = 0.02
 
 class _RosterRelicTargetNotReached(GenerationTargetNotReached):
     """当前名单的遗器无法满足目标，可继续检查其他名单。"""
+
+
+def _try_middle_phase[T](
+    budget: _SearchBudget, limit: int, rng: random.Random, search: Callable[[], T]
+) -> T | None:
+    """用共享预算的一部分优先搜索全中档成品。
+
+    Args:
+        budget: 记录全部候选考察次数的共享预算。
+        limit: 中档阶段可使用的累计次数上限。
+        rng: 搜索随机源。中档额度耗尽时恢复阶段开始前的状态。
+        search: 在当前额度下执行的中档搜索。
+    Returns:
+        搜索结果。当前中档额度耗尽时返回 None，并保留实际考察次数。
+    """
+    if budget.attempts >= limit:
+        return None
+    full_limit = budget.limit
+    state = rng.getstate()
+    budget.limit = limit
+    try:
+        return search()
+    except GenerationTargetNotReached:
+        rng.setstate(state)
+        return None
+    finally:
+        budget.limit = full_limit
 
 
 def _generate_account_relics(
@@ -124,13 +152,29 @@ def _generate_account_relics(
         for cid, (lo, hi) in group_bounds.items()
     }
     minimum, maximum = request.min_mean_effective_rolls, request.max_mean_effective_rolls
+    only_middle_allowed = all(
+        not (piece.tier_weights[0] or piece.tier_weights[2])
+        for pieces in searches.values()
+        for piece in pieces
+    )
+    # 中档优先阶段最多使用当前名单剩余额度的一半，其余供全档搜索。
+    middle_limit = budget.attempts + (budget.limit - budget.attempts) // 2
     if (
         minimum is not None
         and maximum is not None
         and maximum - minimum <= _NARROW_MEAN_SCORE_WIDTH + SCORE_TOLERANCE / (len(ids) * 6)
     ):
-        middle_results = _try_middle_relics(
-            searches, group_bounds, preferred_bounds, (lower, upper), desired_by_id, rng
+
+        def find_middle() -> dict[str, tuple[tuple[Relic, float], ...]] | None:
+            """在角色和账号的分数范围内还原位集给出的全中档成品。"""
+            return _try_middle_relics(
+                searches, group_bounds, preferred_bounds, (lower, upper), desired_by_id, rng
+            )
+
+        middle_results = (
+            find_middle()
+            if only_middle_allowed
+            else _try_middle_phase(budget, middle_limit, rng, find_middle)
         )
         if middle_results is not None:
             return middle_results, uppers
@@ -212,34 +256,43 @@ def _generate_account_relics(
             ),
         )
         preferred = (desired_by_id[cid] - scores[cid]) / (remaining_count[cid] + 1)
-        for relic, piece_score in piece.candidates(
-            target,
-            preferred_score=preferred,
-            middle_only=middle_only,
-            distinct_scores=True,
-        ):
-            results[cid][relic.slot] = (relic, piece_score)
-            scores[cid] = current_score + piece_score
-            if solve(position + 1, score + piece_score, middle_only, bounds):
-                return True
+        try:
+            for relic, piece_score in piece.candidates(
+                target,
+                preferred_score=preferred,
+                middle_only=middle_only,
+                distinct_scores=True,
+            ):
+                results[cid][relic.slot] = (relic, piece_score)
+                scores[cid] = current_score + piece_score
+                if solve(position + 1, score + piece_score, middle_only, bounds):
+                    return True
+                scores[cid] = current_score
+        finally:
             scores[cid] = current_score
-        remaining_low[cid], remaining_high[cid] = previous_low, previous_high
-        remaining_count[cid] += 1
+            remaining_low[cid], remaining_high[cid] = previous_low, previous_high
+            remaining_count[cid] += 1
         failed.add(state)
         return False
 
     # 精确总分先在全账号中档网格上搜索，再搜索全部允许的档位。
-    phases = (
-        (True, False)
-        if upper - lower <= SCORE_TOLERANCE and all(piece.tier_weights[1] > 0 for _, piece in order)
-        else (False,)
+    prioritize_middle = upper - lower <= SCORE_TOLERANCE and all(
+        piece.tier_weights[1] > 0 for _, piece in order
     )
     ranges = (
         (preferred_bounds, group_bounds) if preferred_bounds != group_bounds else (group_bounds,)
     )
     for bounds in ranges:
         failed.clear()
-        if any(solve(0, 0, middle_only, bounds) for middle_only in phases):
+        if (
+            prioritize_middle
+            and not only_middle_allowed
+            and _try_middle_phase(
+                budget, middle_limit, rng, lambda bounds=bounds: solve(0, 0, True, bounds)
+            )
+        ):
+            break
+        if solve(0, 0, prioritize_middle and only_middle_allowed, bounds):
             break
     else:
         raise _RosterRelicTargetNotReached("账号遗器目标未找到满足请求范围的合法离散组合")

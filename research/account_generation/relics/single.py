@@ -306,6 +306,15 @@ class _PieceSearch:
 
         seen_states: set[tuple[tuple[str | None, ...], int, float]] = set()
 
+        def middle_bounds(keys: tuple[str, ...], rolls: int) -> tuple[float, float]:
+            """计算剩余次数全用中档数值时的得分范围。"""
+            units = [self.weights.get(key, 0) for key in keys]
+            base = sum(units)
+            extra = rolls - len(keys)
+            return base + extra * min(units), base + extra * max(units)
+
+        bounds = middle_bounds if middle_only else self._bounds
+
         def search(
             keys: tuple[str, ...],
             rolls: int,
@@ -345,7 +354,7 @@ class _PieceSearch:
                 # 最后一个属性取得所有剩余次数。
                 if not rest and count != rolls:
                     continue
-                rest_low, rest_high = self._bounds(rest, rolls - count) if rest else (0, 0)
+                rest_low, rest_high = bounds(rest, rolls - count) if rest else (0, 0)
                 tier_weights = (0, 1, 0) if middle_only else self.tier_weights
                 for tiers, log_probability in _tier_counts(count, tier_weights):
                     value = round(
@@ -379,7 +388,7 @@ class _PieceSearch:
             if roll_low > upper + SCORE_TOLERANCE or roll_high < lower - SCORE_TOLERANCE:
                 continue
             for mainstat, keys in self.keysets:
-                bound_low, bound_high = self._bounds(keys, total_rolls)
+                bound_low, bound_high = bounds(keys, total_rolls)
                 if bound_low > upper + SCORE_TOLERANCE or bound_high < lower - SCORE_TOLERANCE:
                     if not distinct_scores:
                         self.budget.consume()
