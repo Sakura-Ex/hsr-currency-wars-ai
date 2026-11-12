@@ -35,7 +35,7 @@ result = generate_character_relics(request, rng=random.Random(42))
 | `effective_stat_weights` | 角色有效副词条及权重，六件共用 | 必填 |
 | `min_total_effective_rolls` | 六件合计有效词条下限 | `None` |
 | `max_total_effective_rolls` | 六件合计有效词条上限 | `None` |
-| `tier_weights` | 低／中／高档的候选排序权重，零权重档位排除 | `(1, 1, 1)` |
+| `tier_weights` | 低／中／高档的有限非负排序权重，至少一档为正，零权重档位排除 | `(1, 1, 1)` |
 | `max_attempts` | 六件共用的搜索尝试预算 | `100000` |
 
 每个 `RelicSpec` 包含：

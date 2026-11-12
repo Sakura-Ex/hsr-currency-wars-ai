@@ -36,7 +36,7 @@ class RelicRequest(RelicSpec):
 
     Attributes:
         effective_stat_weights: 副词条键及角色权重，未列出的属性计零分。
-        tier_weights: 低、中、高档的非负相对权重，总和须为正；
+        tier_weights: 低、中、高档的有限非负相对权重，至少一档为正；
             零权重档位排除，其余权重影响候选排序。
         max_attempts: 单件搜索考察属性集合与数值分配的尝试次数上限。
     """
@@ -56,7 +56,7 @@ class CharacterRelicsRequest:
         effective_stat_weights: 六件共用的角色副词条权重，未列出属性计零分。
         min_total_effective_rolls: 六件合计有效词条下限；None 表示不设该端限制。
         max_total_effective_rolls: 六件合计有效词条上限；None 表示不设该端限制。
-        tier_weights: 低、中、高档的非负相对权重，总和须为正。
+        tier_weights: 低、中、高档的有限非负相对权重，至少一档为正。
         max_attempts: 六件生成与回溯共用的搜索尝试次数上限。
     """
 

@@ -214,6 +214,34 @@ class RelicGenerationTests(unittest.TestCase):
                 count = value / ROLL_VALUES[key][1]
                 self.assertAlmostEqual(count, round(count), places=6)
 
+    def test_invalid_slot_raises_value_error(self):
+        """未知部位由单件生成入口报告为输入错误。"""
+        with self.assertRaisesRegex(ValueError, "部位.*0"):
+            generate_relic(replace(BASE, slot=0), rng=random.Random(1))
+
+    def test_invalid_tier_weights_raise_value_error(self):
+        """无有效副词条时也拒绝负值、非有限值、全零和缺失档位的权重。"""
+        for weights in ((-1, 2, 0), (float("nan"), 1, 1), (1, float("inf"), 1), (0, 0, 0), (1, 1)):
+            with self.subTest(weights=weights), self.assertRaisesRegex(ValueError, "档位权重"):
+                request = replace(BASE, tier_weights=weights, effective_stat_weights={})
+                generate_relic(request, rng=random.Random(1))
+
+    def test_tiny_positive_tier_weight_still_allows_its_value(self):
+        """合法权重的跨度极大时，精确目标仍可使用低档速度。"""
+        target = 2 / 2.3
+        result = generate_relic(
+            replace(
+                BASE,
+                required_substats=("SPD",),
+                effective_stat_weights={"SPD": 1},
+                tier_weights=(1e-300, 1e308, 1e308),
+                min_effective_rolls=target,
+                max_effective_rolls=target,
+            ),
+            rng=random.Random(1),
+        )
+        self.assertEqual(result.relic.substats["SPD"], 2)
+
     def test_tier_weights_limit_available_values(self):
         """检查零权重档位不会参与成品数值组合。"""
         for tier in (0, 2):

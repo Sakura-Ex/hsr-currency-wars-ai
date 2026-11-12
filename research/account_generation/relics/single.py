@@ -5,7 +5,7 @@ from collections.abc import Iterator
 from dataclasses import dataclass
 from functools import cache
 from itertools import combinations
-from math import comb, log1p
+from math import comb, isfinite, log, log1p
 
 from .models import GeneratedRelic, Relic, RelicRequest, RelicSpec
 from .rules import INITIAL_SUBSTAT_WEIGHTS, SLOT_MAINSTATS, SLOT_SET_IDS, SUBSTAT_ROLLS
@@ -67,27 +67,29 @@ def _tier_counts(count: int, weights: tuple[float, float, float]):
 
     Args:
         count: 分配给一种副词条的总获得次数。
-        weights: 低、中、高档的非负相对权重，总和须为正。
+        weights: 低、中、高档的有限非负相对权重，至少一档为正。
 
     Returns:
-        由档位数量元组和组合概率组成的元组。每项形如
-        ((低档次数, 中档次数, 高档次数), 概率)，零概率组合被排除。
+        由档位数量元组和对数组合概率组成的元组。每项形如
+        ((低档次数, 中档次数, 高档次数), 对数概率)，排除使用零权重档位的组合。
     """
-    total = sum(weights)
-    probabilities = tuple(w / total for w in weights)
+    largest = max(weights)
+    # 缩放后计算对数总权重，保留极小正权重对应的合法组合。
+    log_total = log(largest) + log(sum(w / largest for w in weights))
+    log_probabilities = tuple(log(w) - log_total if w else 0 for w in weights)
     result = []
-    for low in range(count + 1):
-        for mid in range(count - low + 1):
+    for low in range(count + 1 if weights[0] else 1):
+        for mid in range(count - low + 1 if weights[1] else 1):
             high = count - low - mid
-            probability = (
-                comb(count, low)
-                * comb(count - low, mid)
-                * probabilities[0] ** low
-                * probabilities[1] ** mid
-                * probabilities[2] ** high
+            if high and not weights[2]:
+                continue
+            log_probability = (
+                log(comb(count, low) * comb(count - low, mid))
+                + log_probabilities[0] * low
+                + log_probabilities[1] * mid
+                + log_probabilities[2] * high
             )
-            if probability:
-                result.append(((low, mid, high), probability))
+            result.append(((low, mid, high), log_probability))
     return tuple(result)
 
 
@@ -122,14 +124,22 @@ class _PieceSearch:
         Args:
             spec: 部位、主词条候选、必含副词条及单件得分目标。
             weights: 按角色提供的副词条有效权重。
-            tier_weights: 低、中、高档的非负相对权重，总和须为正。
+            tier_weights: 低、中、高档的有限非负相对权重，至少一档为正。
             rng: 控制候选顺序的随机源，其状态随准备和搜索推进。
             budget: 单件或整套搜索共用的尝试预算。
 
         Raises:
-            ValueError: 套装部位、初始条数、主词条或必含副词条不符合游戏约束。
+            ValueError: 部位、套装、初始条数、词条或档位权重不合法。
             GenerationTargetNotReached: 目标区间与合法成品得分范围不相交。
         """
+        if spec.slot not in SLOT_MAINSTATS:
+            raise ValueError(f"未知遗器部位 {spec.slot}")
+        if (
+            len(tier_weights) != 3
+            or any(not isfinite(weight) or weight < 0 for weight in tier_weights)
+            or not any(tier_weights)
+        ):
+            raise ValueError("档位权重需要三个有限非负数，且至少一项大于零")
         allowed_mainstats = SLOT_MAINSTATS[spec.slot]
         if spec.set_id is not None and spec.set_id not in SLOT_SET_IDS[spec.slot]:
             raise ValueError("套装 ID 需要适用于指定部位")
@@ -236,6 +246,8 @@ class _PieceSearch:
         lower, upper = self.interval
         if target is not None:
             lower, upper = max(lower, target[0]), min(upper, target[1])
+        if lower > upper + 2 * SCORE_TOLERANCE:
+            return
         guided = (
             target is not None
             or preferred_score is not None
@@ -289,7 +301,7 @@ class _PieceSearch:
                     continue
                 rest_low, rest_high = self._bounds(rest, rolls - count) if rest else (0, 0)
                 tier_weights = (0, 1, 0) if middle_only else self.tier_weights
-                for tiers, probability in _tier_counts(count, tier_weights):
+                for tiers, log_probability in _tier_counts(count, tier_weights):
                     value = round(
                         sum(n * v for n, v in zip(tiers, SUBSTAT_ROLLS[key], strict=True)), 10
                     )
@@ -301,11 +313,13 @@ class _PieceSearch:
                     ):
                         continue
                     distance = abs(next_score + (rest_low + rest_high) / 2 - preferred)
-                    priority = log1p(-self.rng.random()) / probability
+                    # 在对数域比较指数随机值与组合概率之比。
+                    draw = -log1p(-self.rng.random())
+                    priority = log(draw) - log_probability if draw else float("-inf")
                     options.append(
                         (
                             distance if guided else 0,
-                            -priority,
+                            priority,
                             count,
                             value,
                             contribution,
@@ -344,7 +358,7 @@ def generate_relic(request: RelicRequest, *, rng: random.Random) -> GeneratedRel
         最终遗器、有效词条得分及实际搜索尝试次数。
 
     Raises:
-        ValueError: 主副词条条件不符合游戏约束。
+        ValueError: 部位、套装、初始条数、词条或档位权重不合法。
         GenerationTargetNotReached: 目标范围冲突、无合法档位组合或预算耗尽。
     """
     budget = _SearchBudget(request.max_attempts)

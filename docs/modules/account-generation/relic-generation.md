@@ -36,7 +36,7 @@ result = generate_relic(request, rng=random.Random(42))
 | `required_substats` | 成品必含的副词条，至多四种，与主词条相容 | `()` |
 | `min_effective_rolls` | 有效词条下限 | `None` |
 | `max_effective_rolls` | 有效词条上限 | `None` |
-| `tier_weights` | 低／中／高档的候选排序权重，零权重档位排除 | `(1, 1, 1)` |
+| `tier_weights` | 低／中／高档的有限非负排序权重，至少一档为正，零权重档位排除 | `(1, 1, 1)` |
 | `max_attempts` | 搜索尝试预算 | `10000` |
 
 部位 ID 为整数：1 头部、2 手部、3 躯干、4 脚部、5 位面球、6 连结绳。部位与主词条的对应关系由 `relics/rules.py` 维护。完整数值与 ID／名称对照见[五星遗器数据](../../game-data/relic-data.md)。
