@@ -233,7 +233,7 @@ class _PieceSearch:
             target: 由整套搜索传入的附加得分区间。为 None 时使用单件范围。
             preferred_score: 区间内优先接近的分数；None 时使用区间中点。
             middle_only: 本轮使用中档组合，供账号精确目标先搜索整条或分数条网格。
-            distinct_scores: 相同剩余属性、次数与分数保留一种成品分配，供账号按分数搜索。
+            distinct_scores: 账号搜索按剩余计分属性、次数与累计分数合并等价分配。
 
         Yields:
             遗器及其有效词条得分组成的元组。搜索推进随机源和共享预算。
@@ -261,7 +261,7 @@ class _PieceSearch:
             else min(upper, max(lower, preferred_score))
         )
 
-        seen_states: set[tuple[tuple[str, ...], int, float]] = set()
+        seen_states: set[tuple[tuple[str | None, ...], int, float]] = set()
 
         def search(
             keys: tuple[str, ...],
@@ -284,10 +284,13 @@ class _PieceSearch:
                 GenerationTargetNotReached: 搜索尝试预算耗尽。
             """
             if distinct_scores:
-                state = (keys, rolls, score)
+                # 四种属性已通过相容性检查，零权重属性只占用一次或多次获得次数。
+                scoring_keys = tuple(key if self.weights.get(key, 0) else None for key in keys)
+                state = (scoring_keys, rolls, score)
                 if state in seen_states:
                     return
                 seen_states.add(state)
+            self.budget.consume()
             if not keys:
                 if rolls == 0 and lower - SCORE_TOLERANCE <= score <= upper + SCORE_TOLERANCE:
                     yield stats, score
@@ -327,7 +330,6 @@ class _PieceSearch:
                     )
             options.sort()
             for _, _, count, value, contribution in options:
-                self.budget.consume()
                 yield from search(rest, rolls - count, score + contribution, stats | {key: value})
 
         for total_rolls in self.total_roll_options:
@@ -337,10 +339,10 @@ class _PieceSearch:
                 or max(b[1] for b in bounds) < lower - SCORE_TOLERANCE
             ):
                 continue
-            for mainstat, keys in self.keysets:
-                self.budget.consume()
-                bound_low, bound_high = self._bounds(keys, total_rolls)
+            for (mainstat, keys), (bound_low, bound_high) in zip(self.keysets, bounds, strict=True):
                 if bound_low > upper + SCORE_TOLERANCE or bound_high < lower - SCORE_TOLERANCE:
+                    if not distinct_scores:
+                        self.budget.consume()
                     continue
                 for stats, score in search(keys, total_rolls, 0, {}):
                     yield Relic(self.set_id, self.spec.slot, mainstat, stats), score

@@ -593,6 +593,43 @@ class AccountGenerationTests(unittest.TestCase):
         head = next(piece.relic for piece in result.relics if piece.relic.slot == 1)
         self.assertAlmostEqual(head.substats["SPD"], 2.6)
 
+    def test_relic_fallback_skips_equivalent_zero_score_allocations(self):
+        """三人精确总分 24 可由 10、14、0 凑齐，同分遗器共用一次搜索。"""
+        pool = ("1004", "1005", "8009")
+        overrides = {
+            cid: CharacterSpec(
+                relics=CharacterRelicsRequest(
+                    effective_stat_weights={"SPD": weight},
+                    min_total_effective_rolls=weight,
+                    max_total_effective_rolls=2 * weight,
+                    pieces=(
+                        RelicSpec(slot=1, required_substats=("SPD", "ATK", "DEF", "HP_")),
+                        *(
+                            RelicSpec(slot=slot, min_effective_rolls=0, max_effective_rolls=0)
+                            for slot in range(2, 7)
+                        ),
+                    ),
+                )
+            )
+            for cid, weight in zip(pool, (10, 7, 0), strict=True)
+        }
+        result = self.generate(
+            self.request(
+                character_count=3,
+                character_pool=pool,
+                core_character_ids=("1004",),
+                character_overrides=overrides,
+                min_mean_effective_rolls=24 / 18,
+                max_mean_effective_rolls=24 / 18,
+                resource_concentration=1,
+                max_attempts=10_000,
+            ),
+            seed=2,
+        )
+        self.assertAlmostEqual(result.mean_effective_rolls, 24 / 18)
+        for cid, score in zip(pool, (10, 14, 0), strict=True):
+            self.assertAlmostEqual(result.investments[cid].total_effective_rolls, score)
+
     def test_empty_account_and_fixed_seed(self):
         """检查空账号保持角色缺席，完整账号能够按种子复现。"""
         empty = self.generate(AccountRequest(account_id="empty", character_count=0, gold_count=0))
