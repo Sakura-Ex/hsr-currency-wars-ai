@@ -17,6 +17,8 @@ from research.account_generation import (
     generate_account,
     load_account_reference,
 )
+from research.account_generation.accounts.allocation import _build_menus, _choose_rosters
+from research.account_generation.relics.single import _SearchBudget
 
 from .test_characters import write_reference_fixture
 
@@ -145,6 +147,57 @@ class AccountGenerationTests(unittest.TestCase):
                     tuple(character.character_id for character in result.characters), ("1005",)
                 )
                 self.assertGreaterEqual(result.mean_effective_rolls, 1)
+
+    def test_roster_search_skips_permutations_before_spending_budget(self):
+        """从 11 名候选中选 10 名，避开令零分目标不可达的首选角色。"""
+        template = self.reference.characters["1004"]
+        pool = tuple(str(cid) for cid in range(3001, 3012))
+        blocked = pool[1]  # 种子 1 在无队友偏好时先抽到第二名候选。
+        for cid in pool:
+            pieces = template.relic_request.pieces
+            if cid == blocked:
+                pieces = (replace(pieces[0], required_substats=("SPD",)), *pieces[1:])
+            self.reference.characters[cid] = replace(
+                template,
+                character_id=cid,
+                recommended_teams=(),
+                relic_request=replace(
+                    template.relic_request,
+                    pieces=pieces,
+                    effective_stat_weights={"SPD": 1} if cid == blocked else {},
+                ),
+            )
+            self.reference.character_gold_categories[cid] = "standard"
+        result = self.generate(
+            self.request(
+                character_count=10,
+                character_pool=pool,
+                core_character_ids=(),
+                light_cone_pool=("21001",),
+                gold_count=5,
+                max_attempts=10_000,
+            ),
+            seed=1,
+        )
+        self.assertEqual(
+            {character.character_id for character in result.characters}, set(pool) - {blocked}
+        )
+        self.assertEqual(result.gold_count, 5)
+        self.assertEqual(result.mean_effective_rolls, 0)
+
+    def test_roster_search_distinguishes_automatic_cores(self):
+        """相同持有集合中，任一角色都可以成为自动选择的核心。"""
+        request = self.request(core_character_ids=())
+        menus = _build_menus(request, self.reference)
+        rosters = list(
+            _choose_rosters(
+                request, self.reference, menus, None, random.Random(1), _SearchBudget(10)
+            )
+        )
+        self.assertCountEqual(
+            [(frozenset(ids), cores) for ids, cores in rosters],
+            [(frozenset(request.character_pool), (cid,)) for cid in request.character_pool],
+        )
 
     def test_reference_classification_and_team_structure(self):
         """检查常驻、限定、免费、唯一光锥及队伍替补分组。"""
