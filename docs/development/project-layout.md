@@ -1,26 +1,64 @@
 # 项目目录与文件职责
 
-日期：2026-11-10。本页约定模块放置、文件职责、依赖关系，以及示例、测试、文档和数据的组织方式，供新增模块和目录调整时使用。系统模块职责见[系统设计与技术方案](../project/architecture.md)。
+日期：2026-11-11。本页约定模块放置、文件职责、依赖关系，以及示例、测试、文档和数据的组织方式，供新增模块和目录调整时使用。系统模块职责见[系统设计与技术方案](../project/architecture.md)。
 
 ## 当前目录
 
 ```text
 hsr-currency-wars-ai/
+├── research/account_generation/         # 原始账号配置生成
+│   ├── __init__.py                      # 对外接口
+│   ├── relics/                          # 遗器规则与生成
+│   │   ├── __init__.py
+│   │   ├── models.py                    # 请求、成品与生成统计
+│   │   ├── rules.py                     # 部位、主副词条与档位数值
+│   │   ├── single.py                    # 单件搜索、评分与共用搜索预算
+│   │   └── sets.py                      # 六件联合搜索与理论上限
+│   ├── characters/                      # 角色原始配置与生成
+│   │   ├── __init__.py
+│   │   ├── models.py                    # 角色条件、参考资料与原始配置
+│   │   ├── references.py                # 推荐配装、队伍与行迹资料读取
+│   │   └── generator.py                 # 角色组装与五档适配
+│   └── accounts/                        # 账号资源分配与库存组装
+│       ├── __init__.py
+│       ├── models.py                    # 账号条件、统一库存与投入统计
+│       ├── rules.py                     # 金数分类与唯一光锥约定
+│       ├── references.py                # 账号参考资料与分类覆盖
+│       ├── allocation.py                # 推荐关联选择与金数配装搜索
+│       ├── relics.py                    # 账号遗器目标与投入分配搜索
+│       └── generator.py                 # 原始账号生成入口与库存组装
+├── examples/account_generation/         # IDE 调用示例
+├── tests/account_generation/            # 生成与规则测试
+├── pyproject.toml                       # Python 包与检查工具配置
+├── uv.lock                              # 依赖锁文件
 ├── docs/
 │   ├── README.md                       # 文档总入口
 │   ├── project/                        # 项目目标、架构、计划和规则
+│   ├── game-data/                      # 共用游戏数值与 ID 对照
+│   │   ├── README.md                   # 游戏数值入口
+│   │   ├── character-data.md           # 货币战争角色 ID 与基础数值
+│   │   ├── light-cone-data.md          # 光锥 ID 与基础数值
+│   │   └── relic-data.md               # 遗器词条与套装 ID 对照
 │   ├── development/                    # 通用开发、协作与目录约定
 │   └── modules/
 │       ├── README.md                   # 模块目录
 │       └── account-generation/         # 账号与遗器数据的设计资料
 │           ├── README.md               # 模块总览和阅读入口
-│           └── design.md               # 现有数据设计与首个样例约定
+│           ├── data-flow.md            # 数据流与模块职责
+│           ├── account-generation.md   # 账号生成条件、库存与 IDE 示例
+│           ├── character-generation.md # 完整角色配置接口与示例
+│           ├── relic-quality.md        # 五档遗器质量目标
+│           ├── character-relics.md     # 角色六件遗器接口与示例
+│           ├── relic-generation.md     # 单件生成接口与使用方法
+│           └── design.md               # 数据设计与账号样例约定
 ├── AGENTS.md                           # 项目协作规则
 ├── README.md                           # 英文项目入口
 ├── README.zh-CN.md                     # 简体中文项目入口
 ├── .gitignore                          # 本地产物与配置的忽略规则
 └── LICENSE                            # GPL-3.0-only 许可证全文
 ```
+
+当前账号生成模块按遗器、角色、账号三个职责组织。账号使用角色与遗器实现，角色使用遗器实现，对外接口集中由 `research.account_generation` 导出。
 
 ## 模块放置
 
@@ -36,7 +74,7 @@ hsr-currency-wars-ai/
 | `research/` | 数据生成、搜索实验、模型训练和评估等研究工具 | 复用已有规则与模块接口，保存实验的复现条件 |
 | `examples/` | 按功能归类的调用和调试示例 | 通过公开接口调用业务代码，说明运行环境和参数 |
 | `tests/` | 按功能归类的自动验证与最小测试样例 | 围绕模块行为验证，使用项目实际的导入和依赖配置 |
-| `docs/` | 项目总览、开发约定和模块资料 | 通过各层入口组织页面，随实现更新路径和状态 |
+| `docs/` | 项目总览、共用游戏数值、开发约定和模块资料 | 通过各层入口组织页面，随实现更新路径和状态 |
 | 根目录 | 项目入口、包与构建配置、依赖锁文件、协作约定和许可证 | 在各自工具规定的位置集中维护 |
 | 已忽略的本地目录 | 临时输入、生成结果、日志、模型权重和调试产物 | 通过参数或配置指定位置，保留需要复现的版本与参数 |
 
@@ -75,4 +113,4 @@ hsr-currency-wars-ai/
 
 ## 文档目录
 
-项目级说明放在 `docs/project/`，共用开发约定放在 `docs/development/`，具体模块资料放在 `docs/modules/<模块>/`。各层 `README.md` 提供阅读入口，模块细节随内容增长在模块目录内拆分。写作与索引维护方式见[文档写作规范](documentation-guidelines.md)。
+项目级说明放在 `docs/project/`，共用开发约定放在 `docs/development/`，游戏数值和 ID 对照放在 `docs/game-data/`，具体模块资料放在 `docs/modules/<模块>/`。各层 `README.md` 提供阅读入口，模块细节随内容增长在模块目录内拆分。写作与索引维护方式见[文档写作规范](documentation-guidelines.md)。
