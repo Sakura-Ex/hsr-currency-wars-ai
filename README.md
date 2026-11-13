@@ -11,9 +11,17 @@ An open-source AI strategy research and assistance project for Currency Wars in 
 
 ## Status
 
-Early development. The Windows application has not been released yet.
-
-The account generator uses bundled game data for version 4.7 and runs offline. It generates sample accounts with owned characters, Light Cones, and Relics. See the [account generator guide](docs/modules/account-generation/account-generation.md) for setup and examples (in Chinese).
+| Module | Status |
+| --- | --- |
+| [Account generator](docs/modules/account-generation/account-generation.md) | Implemented. Uses bundled game data for version 4.7 to generate sample accounts with owned characters, Light Cones, and Relics offline. |
+| Account adapter and configuration conversion | In design. Covers importing player accounts, applying trial and fallback configurations, and resolving effective stats. |
+| Run environment | Planned. Simulates stages, shops, investments, and resource settlement. |
+| Operations decision engine | In design. The current priority is defining observations, legal actions, and evaluation for one stage. Model training is planned. |
+| Combat engine | A prototype on a separate development branch tests a subset of combat rules. Integration with the run environment is planned. |
+| Combat planner | Planned. Compares positioning, combat actions, and retries. |
+| Team composition research | Planned. Searches team compositions and transitions. |
+| Experiment evaluation | Planned. Replays runs and compares strategy results. |
+| Windows player application | Planned. Presents recommendations and records player feedback. |
 
 See the [documentation hub](docs/README.md) for project plans, design, and development guides (in Chinese).
 
