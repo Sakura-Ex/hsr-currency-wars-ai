@@ -13,7 +13,16 @@
 
 项目处于早期开发阶段，Windows 玩家应用尚未发布。
 
+账号生成器使用随包提供的 4.7正式版游戏数据，可离线生成包含持有角色、光锥和遗器的样例账号。安装步骤和示例见[账号生成指南](docs/modules/account-generation/account-generation.md)。
+
 项目计划、设计和开发指南见[文档入口](docs/README.md)，这些资料使用中文。
+
+## 参考与致谢
+
+| 仓库 | 用途 |
+| --- | --- |
+| [StarRailRes](https://github.com/Mar-7th/StarRailRes) | 游戏基础数据参考 |
+| [TurnBasedGameData](https://github.com/DimbreathBot/TurnBasedGameData) | 游戏基础数据参考 |
 
 ## 许可证
 

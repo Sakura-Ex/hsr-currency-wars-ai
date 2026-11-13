@@ -13,7 +13,16 @@ An open-source AI strategy research and assistance project for Currency Wars in 
 
 Early development. The Windows application has not been released yet.
 
+The account generator uses bundled game data for version 4.7 and runs offline. It generates sample accounts with owned characters, Light Cones, and Relics. See the [account generator guide](docs/modules/account-generation/account-generation.md) for setup and examples (in Chinese).
+
 See the [documentation hub](docs/README.md) for project plans, design, and development guides (in Chinese).
+
+## References and acknowledgements
+
+| Repository | Use |
+| --- | --- |
+| [StarRailRes](https://github.com/Mar-7th/StarRailRes) | Game reference data |
+| [TurnBasedGameData](https://github.com/DimbreathBot/TurnBasedGameData) | Game reference data |
 
 ## License
 
