@@ -1,0 +1,29 @@
+name: Rust battle core
+
+on:
+  push:
+    paths: ["Cargo.toml", "Cargo.lock", "rust-toolchain.toml", "crates/battle-core/**", ".github/workflows/battle-core.yml"]
+  pull_request:
+    paths: ["Cargo.toml", "Cargo.lock", "rust-toolchain.toml", "crates/battle-core/**", ".github/workflows/battle-core.yml"]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install pinned Rust toolchain
+        run: rustup toolchain install 1.100.0 --profile minimal --component rustfmt --component clippy
+      - name: Check formatting
+        run: cargo fmt --all -- --check
+      - name: Check lints
+        run: cargo clippy --locked --workspace --all-targets -- -D warnings
+      - name: Test core and CLI
+        run: cargo test --locked --workspace
+      - name: Run 10000-trial synthetic smoke test
+        run: cargo run --release --locked -p hcwa-battle-core --bin hcwa-battle -- batch crates/battle-core/examples/duel.json 10000 20261114 > battle-smoke.json

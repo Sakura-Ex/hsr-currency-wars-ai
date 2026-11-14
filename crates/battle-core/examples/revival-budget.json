@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "ruleset": "basic_v1",
+  "provenance": {
+    "game_version": "synthetic",
+    "data_snapshot": "public-example-v1",
+    "description": "Synthetic explicit revival policy with a shared AV budget; not a client-derived penalty."
+  },
+  "unsupported_mechanics": [],
+  "max_av": 350,
+  "max_actions": 1000,
+  "ally_skill_points": {
+    "initial": 3,
+    "maximum": 5
+  },
+  "enemy_skill_points": {
+    "initial": 3,
+    "maximum": 5
+  },
+  "allies": [
+    {
+      "id": "reviver",
+      "stats": {
+        "level": 80,
+        "max_hp": 100,
+        "attack": 30,
+        "defense": 0,
+        "speed": 100,
+        "taunt": 100,
+        "crit_rate": 0,
+        "crit_damage": 1,
+        "damage_bonus": 0,
+        "defense_reduction": 0,
+        "defense_ignore": 0,
+        "resistance": 0,
+        "resistance_penetration": 0,
+        "vulnerability": 0,
+        "damage_reduction": 0,
+        "independent_multiplier": 1,
+        "toughness_broken": true,
+        "healing_bonus": 0,
+        "incoming_healing_bonus": 0,
+        "shield_bonus": 0
+      },
+      "initial_hp": 100,
+      "initial_energy": 0,
+      "max_energy": 100,
+      "revival": {
+        "charges": 2,
+        "hp_fraction": 1,
+        "av_penalty": 25
+      },
+      "actions": [
+        {
+          "id": "basic",
+          "kind": "basic",
+          "sp_cost": 0,
+          "sp_gain": 1,
+          "energy_cost": 0,
+          "energy_gain": 20,
+          "effects": [
+            {
+              "type": "damage",
+              "scale": "attack",
+              "ratio": 1,
+              "flat": 0,
+              "hits": 1,
+              "can_crit": true,
+              "target": "enemy_lowest_hp"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "waves": [
+    [
+      {
+        "id": "striker",
+        "stats": {
+          "level": 80,
+          "max_hp": 400,
+          "attack": 120,
+          "defense": 0,
+          "speed": 90,
+          "taunt": 100,
+          "crit_rate": 0,
+          "crit_damage": 1,
+          "damage_bonus": 0,
+          "defense_reduction": 0,
+          "defense_ignore": 0,
+          "resistance": 0,
+          "resistance_penetration": 0,
+          "vulnerability": 0,
+          "damage_reduction": 0,
+          "independent_multiplier": 1,
+          "toughness_broken": true,
+          "healing_bonus": 0,
+          "incoming_healing_bonus": 0,
+          "shield_bonus": 0
+        },
+        "initial_hp": 400,
+        "initial_energy": 0,
+        "max_energy": 100,
+        "revival": null,
+        "actions": [
+          {
+            "id": "basic",
+            "kind": "basic",
+            "sp_cost": 0,
+            "sp_gain": 1,
+            "energy_cost": 0,
+            "energy_gain": 20,
+            "effects": [
+              {
+                "type": "damage",
+                "scale": "attack",
+                "ratio": 1,
+                "flat": 0,
+                "hits": 1,
+                "can_crit": true,
+                "target": "enemy_lowest_hp"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  ]
+}

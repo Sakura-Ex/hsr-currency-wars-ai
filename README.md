@@ -17,7 +17,7 @@ An open-source AI strategy research and assistance project for Currency Wars in 
 | Account adapter and configuration conversion | In design. Covers importing player accounts, applying trial and fallback configurations, and resolving effective stats. |
 | Run environment | Planned. Simulates stages, shops, investments, and resource settlement. |
 | Operations decision engine | In design. The current priority is defining observations, legal actions, and evaluation for one stage. Model training is planned. |
-| Combat engine | A prototype on a separate development branch tests a subset of combat rules. Integration with the run environment is planned. |
+| [Combat engine](docs/modules/battle-simulation/README.md) | Implemented as the Rust `basic_v1` explicit-input core and batch CLI. Executes resolved stats/actions with deterministic replay; full 4.7 character kits, automatic account assembly, and run-HP settlement are not supported. |
 | Combat planner | Planned. Compares positioning, combat actions, and retries. |
 | Team composition research | Planned. Searches team compositions and transitions. |
 | Experiment evaluation | Planned. Replays runs and compares strategy results. |
