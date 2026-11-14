@@ -1,0 +1,283 @@
+{
+  "schema_version": 1,
+  "fixture_kind": "synthetic_math_only",
+  "source_commit": "f8935ddb407b297732fbd3c624d55897e3e648b9",
+  "oracle": "hsr_nous.sim_schema.expression.evaluate over original get_rulebook expressions",
+  "source_files": {
+    "src/hsr_nous/sim_schema/rulebook.yaml": "d37c1b0a9dbe3819cd210e02bef96db9598486ab9b8554bad90602ca136277fe",
+    "src/hsr_nous/sim_schema/expression.py": "5bc4667ec02fb31b9960d20265ae679fbf99c0d373997569a35b7ae55b9aee4b",
+    "LICENSE": "59ac1abbb60cf02550413644917488b757512adefcd9a2b5ade7242f900e12ff"
+  },
+  "generator_sha256": "47c4933c07e011fd75d712d54406f82f89cd1ac3c2e65f437f4f14740051d805",
+  "tolerance": "1e-10 * max(1, abs(expected))",
+  "damage": [
+    {
+      "name": "plain",
+      "critical": false,
+      "input": {
+        "base_damage": 1000.0,
+        "attacker_level": 80,
+        "defense": 1000.0,
+        "defense_reduction": 0.0,
+        "defense_ignore": 0.0,
+        "resistance": 0.0,
+        "resistance_penetration": 0.0,
+        "damage_bonus": 0.0,
+        "vulnerability": 0.0,
+        "toughness_broken": false,
+        "damage_reduction": 0.0,
+        "independent_multiplier": 1.0,
+        "crit_damage": 0.5
+      },
+      "expected": 450.0
+    },
+    {
+      "name": "critical",
+      "critical": true,
+      "input": {
+        "base_damage": 1000.0,
+        "attacker_level": 80,
+        "defense": 1000.0,
+        "defense_reduction": 0.0,
+        "defense_ignore": 0.0,
+        "resistance": 0.0,
+        "resistance_penetration": 0.0,
+        "damage_bonus": 0.0,
+        "vulnerability": 0.0,
+        "toughness_broken": false,
+        "damage_reduction": 0.0,
+        "independent_multiplier": 1.0,
+        "crit_damage": 0.5
+      },
+      "expected": 675.0
+    },
+    {
+      "name": "defense_floor",
+      "critical": false,
+      "input": {
+        "base_damage": 1000.0,
+        "attacker_level": 80,
+        "defense": 1000.0,
+        "defense_reduction": 0.6,
+        "defense_ignore": 0.6,
+        "resistance": 0.0,
+        "resistance_penetration": 0.0,
+        "damage_bonus": 0.0,
+        "vulnerability": 0.0,
+        "toughness_broken": false,
+        "damage_reduction": 0.0,
+        "independent_multiplier": 1.0,
+        "crit_damage": 0.5
+      },
+      "expected": 900.0
+    },
+    {
+      "name": "resistance_upper_clamp",
+      "critical": false,
+      "input": {
+        "base_damage": 1000.0,
+        "attacker_level": 80,
+        "defense": 1000.0,
+        "defense_reduction": 0.0,
+        "defense_ignore": 0.0,
+        "resistance": 2.0,
+        "resistance_penetration": 0.0,
+        "damage_bonus": 0.0,
+        "vulnerability": 0.0,
+        "toughness_broken": false,
+        "damage_reduction": 0.0,
+        "independent_multiplier": 1.0,
+        "crit_damage": 0.5
+      },
+      "expected": 44.999999999999986
+    },
+    {
+      "name": "resistance_lower_clamp",
+      "critical": false,
+      "input": {
+        "base_damage": 1000.0,
+        "attacker_level": 80,
+        "defense": 1000.0,
+        "defense_reduction": 0.0,
+        "defense_ignore": 0.0,
+        "resistance": -2.0,
+        "resistance_penetration": 0.0,
+        "damage_bonus": 0.0,
+        "vulnerability": 0.0,
+        "toughness_broken": false,
+        "damage_reduction": 0.0,
+        "independent_multiplier": 1.0,
+        "crit_damage": 0.5
+      },
+      "expected": 900.0
+    },
+    {
+      "name": "broken",
+      "critical": false,
+      "input": {
+        "base_damage": 1000.0,
+        "attacker_level": 80,
+        "defense": 1000.0,
+        "defense_reduction": 0.0,
+        "defense_ignore": 0.0,
+        "resistance": 0.0,
+        "resistance_penetration": 0.0,
+        "damage_bonus": 0.0,
+        "vulnerability": 0.0,
+        "toughness_broken": true,
+        "damage_reduction": 0.0,
+        "independent_multiplier": 1.0,
+        "crit_damage": 0.5
+      },
+      "expected": 500.0
+    },
+    {
+      "name": "all_factors",
+      "critical": true,
+      "input": {
+        "base_damage": 1000.0,
+        "attacker_level": 80,
+        "defense": 1000.0,
+        "defense_reduction": 0.2,
+        "defense_ignore": 0.3,
+        "resistance": 0.2,
+        "resistance_penetration": 0.1,
+        "damage_bonus": 0.2,
+        "vulnerability": 0.3,
+        "toughness_broken": false,
+        "damage_reduction": 0.25,
+        "independent_multiplier": 1.5,
+        "crit_damage": 0.5
+      },
+      "expected": 1421.5500000000002
+    },
+    {
+      "name": "zero_base",
+      "critical": true,
+      "input": {
+        "base_damage": 0.0,
+        "attacker_level": 80,
+        "defense": 1000.0,
+        "defense_reduction": 0.0,
+        "defense_ignore": 0.0,
+        "resistance": 0.0,
+        "resistance_penetration": 0.0,
+        "damage_bonus": 0.0,
+        "vulnerability": 0.0,
+        "toughness_broken": false,
+        "damage_reduction": 0.0,
+        "independent_multiplier": 1.0,
+        "crit_damage": 0.5
+      },
+      "expected": 0.0
+    },
+    {
+      "name": "full_reduction",
+      "critical": true,
+      "input": {
+        "base_damage": 1000.0,
+        "attacker_level": 80,
+        "defense": 1000.0,
+        "defense_reduction": 0.0,
+        "defense_ignore": 0.0,
+        "resistance": 0.0,
+        "resistance_penetration": 0.0,
+        "damage_bonus": 0.0,
+        "vulnerability": 0.0,
+        "toughness_broken": false,
+        "damage_reduction": 1.0,
+        "independent_multiplier": 1.0,
+        "crit_damage": 0.5
+      },
+      "expected": 0.0
+    },
+    {
+      "name": "negative_additive_pools",
+      "critical": false,
+      "input": {
+        "base_damage": 1000.0,
+        "attacker_level": 80,
+        "defense": 1000.0,
+        "defense_reduction": 0.0,
+        "defense_ignore": 0.0,
+        "resistance": 0.0,
+        "resistance_penetration": 0.0,
+        "damage_bonus": -0.5,
+        "vulnerability": -0.2,
+        "toughness_broken": false,
+        "damage_reduction": 0.0,
+        "independent_multiplier": 1.0,
+        "crit_damage": 0.5
+      },
+      "expected": 180.0
+    }
+  ],
+  "heal": [
+    {
+      "input": [
+        220.0,
+        0.1,
+        0.1
+      ],
+      "expected": 264.00000000000006
+    },
+    {
+      "input": [
+        220.0,
+        0.0,
+        -0.5
+      ],
+      "expected": 110.0
+    },
+    {
+      "input": [
+        0.0,
+        2.0,
+        3.0
+      ],
+      "expected": 0.0
+    },
+    {
+      "input": [
+        100.0,
+        -0.5,
+        -0.5
+      ],
+      "expected": 0.0
+    }
+  ],
+  "shield": [
+    {
+      "input": [
+        250.0,
+        0.2
+      ],
+      "expected": 300.0
+    },
+    {
+      "input": [
+        100.0,
+        -1.0
+      ],
+      "expected": 0.0
+    },
+    {
+      "input": [
+        0.0,
+        2.0
+      ],
+      "expected": 0.0
+    },
+    {
+      "input": [
+        12.5,
+        0.3
+      ],
+      "expected": 16.25
+    }
+  ],
+  "limitations": [
+    "No private game data or 4.7 game-rule validation.",
+    "Final-damage and weaken zones are neutral; critical is fixed externally."
+  ]
+}

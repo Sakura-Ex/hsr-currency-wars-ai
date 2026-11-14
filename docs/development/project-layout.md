@@ -6,6 +6,12 @@
 
 ```text
 hsr-currency-wars-ai/
+├── crates/battle-core/                  # 显式输入基础战斗内核与批次 CLI
+│   ├── src/                            # 输入校验、数学、状态执行、批次及 CLI
+│   ├── tests/                          # 行为、数学、批次及 CLI 验证，含合成向量
+│   └── examples/                       # 人工构造的 JSON 场景，不是真实账号
+├── Cargo.toml / Cargo.lock              # Rust workspace 与锁定依赖
+├── rust-toolchain.toml                  # 固定 Rust、rustfmt 和 Clippy 版本
 ├── research/account_generation/         # 原始账号配置生成
 │   ├── __init__.py                      # 对外接口
 │   ├── data/                            # 随模块安装的账号参考资料 JSON
@@ -104,6 +110,8 @@ hsr-currency-wars-ai/
 各模块在使用说明中登记依赖安装、运行和验证命令；IDE 选择对应的解释器或工具链。示例与测试通过同一套模块接口运行，格式和静态检查覆盖实际的源码、示例与测试目录。
 
 增加其他技术栈时，在对应配置和使用说明中登记安装、运行、构建及验证入口。模块接口和具体参数保存在各自文档中，本页维护位置与职责约定。
+
+基础战斗内核位于 `crates/battle-core/`，通过根 Cargo workspace 构建。安装 Rustup 后，由 `rust-toolchain.toml` 选择固定工具链。在根目录运行 `cargo fmt --all -- --check`、`cargo clippy --locked --workspace --all-targets -- -D warnings` 和 `cargo test --locked --workspace`；CLI 与合成场景用法见[战斗模块入口](../modules/battle-simulation/README.md)。构建产物留在已忽略的 `target/`，批次 ledger 和本机验证日志不提交。Windows/Linux 检查配置位于 `.github/workflows/battle-core.yml`，实际通过状态以对应提交的 CI 结果为准。
 
 ## 新增或迁移模块
 

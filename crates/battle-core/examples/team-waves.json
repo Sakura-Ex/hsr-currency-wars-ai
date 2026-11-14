@@ -1,0 +1,342 @@
+{
+  "schema_version": 1,
+  "ruleset": "basic_v1",
+  "provenance": {
+    "game_version": "synthetic",
+    "data_snapshot": "public-example-v1",
+    "description": "Synthetic two-wave team with support, shared SP, energy and automatic ultimates."
+  },
+  "unsupported_mechanics": [],
+  "max_av": 1500,
+  "max_actions": 1000,
+  "ally_skill_points": {
+    "initial": 3,
+    "maximum": 5
+  },
+  "enemy_skill_points": {
+    "initial": 3,
+    "maximum": 5
+  },
+  "allies": [
+    {
+      "id": "fighter",
+      "stats": {
+        "level": 80,
+        "max_hp": 800,
+        "attack": 120,
+        "defense": 0,
+        "speed": 110,
+        "taunt": 100,
+        "crit_rate": 0.5,
+        "crit_damage": 1,
+        "damage_bonus": 0,
+        "defense_reduction": 0,
+        "defense_ignore": 0,
+        "resistance": 0,
+        "resistance_penetration": 0,
+        "vulnerability": 0,
+        "damage_reduction": 0,
+        "independent_multiplier": 1,
+        "toughness_broken": true,
+        "healing_bonus": 0,
+        "incoming_healing_bonus": 0,
+        "shield_bonus": 0
+      },
+      "initial_hp": 800,
+      "initial_energy": 0,
+      "max_energy": 100,
+      "revival": null,
+      "actions": [
+        {
+          "id": "ultimate",
+          "kind": "ultimate",
+          "sp_cost": 0,
+          "sp_gain": 0,
+          "energy_cost": 60,
+          "energy_gain": 0,
+          "effects": [
+            {
+              "type": "damage",
+              "scale": "attack",
+              "ratio": 2,
+              "flat": 0,
+              "hits": 2,
+              "can_crit": true,
+              "target": "all_enemies"
+            }
+          ]
+        },
+        {
+          "id": "skill",
+          "kind": "skill",
+          "sp_cost": 1,
+          "sp_gain": 0,
+          "energy_cost": 0,
+          "energy_gain": 30,
+          "effects": [
+            {
+              "type": "damage",
+              "scale": "attack",
+              "ratio": 1.5,
+              "flat": 0,
+              "hits": 1,
+              "can_crit": true,
+              "target": "enemy_lowest_hp"
+            }
+          ]
+        },
+        {
+          "id": "basic",
+          "kind": "basic",
+          "sp_cost": 0,
+          "sp_gain": 1,
+          "energy_cost": 0,
+          "energy_gain": 20,
+          "effects": [
+            {
+              "type": "damage",
+              "scale": "attack",
+              "ratio": 1,
+              "flat": 0,
+              "hits": 1,
+              "can_crit": true,
+              "target": "enemy_lowest_hp"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "support",
+      "stats": {
+        "level": 80,
+        "max_hp": 500,
+        "attack": 40,
+        "defense": 0,
+        "speed": 120,
+        "taunt": 100,
+        "crit_rate": 0.5,
+        "crit_damage": 1,
+        "damage_bonus": 0,
+        "defense_reduction": 0,
+        "defense_ignore": 0,
+        "resistance": 0,
+        "resistance_penetration": 0,
+        "vulnerability": 0,
+        "damage_reduction": 0,
+        "independent_multiplier": 1,
+        "toughness_broken": true,
+        "healing_bonus": 0,
+        "incoming_healing_bonus": 0,
+        "shield_bonus": 0
+      },
+      "initial_hp": 500,
+      "initial_energy": 0,
+      "max_energy": 100,
+      "revival": null,
+      "actions": [
+        {
+          "id": "support_skill",
+          "kind": "skill",
+          "sp_cost": 1,
+          "sp_gain": 0,
+          "energy_cost": 0,
+          "energy_gain": 20,
+          "effects": [
+            {
+              "type": "heal",
+              "scale": "max_hp",
+              "ratio": 0.2,
+              "flat": 0,
+              "target": "ally_lowest_hp"
+            },
+            {
+              "type": "shield",
+              "scale": "max_hp",
+              "ratio": 0.2,
+              "flat": 0,
+              "max_total": 200,
+              "duration_turns": 2,
+              "target": "all_allies"
+            }
+          ]
+        },
+        {
+          "id": "basic",
+          "kind": "basic",
+          "sp_cost": 0,
+          "sp_gain": 1,
+          "energy_cost": 0,
+          "energy_gain": 20,
+          "effects": [
+            {
+              "type": "damage",
+              "scale": "attack",
+              "ratio": 1,
+              "flat": 0,
+              "hits": 1,
+              "can_crit": true,
+              "target": "enemy_lowest_hp"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "waves": [
+    [
+      {
+        "id": "wave1_a",
+        "stats": {
+          "level": 80,
+          "max_hp": 300,
+          "attack": 90,
+          "defense": 0,
+          "speed": 100,
+          "taunt": 100,
+          "crit_rate": 0,
+          "crit_damage": 1,
+          "damage_bonus": 0,
+          "defense_reduction": 0,
+          "defense_ignore": 0,
+          "resistance": 0,
+          "resistance_penetration": 0,
+          "vulnerability": 0,
+          "damage_reduction": 0,
+          "independent_multiplier": 1,
+          "toughness_broken": true,
+          "healing_bonus": 0,
+          "incoming_healing_bonus": 0,
+          "shield_bonus": 0
+        },
+        "initial_hp": 300,
+        "initial_energy": 0,
+        "max_energy": 100,
+        "revival": null,
+        "actions": [
+          {
+            "id": "basic",
+            "kind": "basic",
+            "sp_cost": 0,
+            "sp_gain": 1,
+            "energy_cost": 0,
+            "energy_gain": 20,
+            "effects": [
+              {
+                "type": "damage",
+                "scale": "attack",
+                "ratio": 1,
+                "flat": 0,
+                "hits": 1,
+                "can_crit": true,
+                "target": "enemy_lowest_hp"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "wave1_b",
+        "stats": {
+          "level": 80,
+          "max_hp": 350,
+          "attack": 90,
+          "defense": 0,
+          "speed": 105,
+          "taunt": 100,
+          "crit_rate": 0,
+          "crit_damage": 1,
+          "damage_bonus": 0,
+          "defense_reduction": 0,
+          "defense_ignore": 0,
+          "resistance": 0,
+          "resistance_penetration": 0,
+          "vulnerability": 0,
+          "damage_reduction": 0,
+          "independent_multiplier": 1,
+          "toughness_broken": true,
+          "healing_bonus": 0,
+          "incoming_healing_bonus": 0,
+          "shield_bonus": 0
+        },
+        "initial_hp": 350,
+        "initial_energy": 0,
+        "max_energy": 100,
+        "revival": null,
+        "actions": [
+          {
+            "id": "basic",
+            "kind": "basic",
+            "sp_cost": 0,
+            "sp_gain": 1,
+            "energy_cost": 0,
+            "energy_gain": 20,
+            "effects": [
+              {
+                "type": "damage",
+                "scale": "attack",
+                "ratio": 1,
+                "flat": 0,
+                "hits": 1,
+                "can_crit": true,
+                "target": "enemy_lowest_hp"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    [
+      {
+        "id": "wave2_boss",
+        "stats": {
+          "level": 80,
+          "max_hp": 1500,
+          "attack": 150,
+          "defense": 0,
+          "speed": 95,
+          "taunt": 100,
+          "crit_rate": 0,
+          "crit_damage": 1,
+          "damage_bonus": 0,
+          "defense_reduction": 0,
+          "defense_ignore": 0,
+          "resistance": 0,
+          "resistance_penetration": 0,
+          "vulnerability": 0,
+          "damage_reduction": 0,
+          "independent_multiplier": 1,
+          "toughness_broken": true,
+          "healing_bonus": 0,
+          "incoming_healing_bonus": 0,
+          "shield_bonus": 0
+        },
+        "initial_hp": 1500,
+        "initial_energy": 0,
+        "max_energy": 100,
+        "revival": null,
+        "actions": [
+          {
+            "id": "basic",
+            "kind": "basic",
+            "sp_cost": 0,
+            "sp_gain": 1,
+            "energy_cost": 0,
+            "energy_gain": 20,
+            "effects": [
+              {
+                "type": "damage",
+                "scale": "attack",
+                "ratio": 1,
+                "flat": 0,
+                "hits": 1,
+                "can_crit": true,
+                "target": "enemy_lowest_hp"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  ]
+}
