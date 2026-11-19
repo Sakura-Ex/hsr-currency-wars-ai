@@ -1,0 +1,96 @@
+[package]
+name = "battle-core"
+version.workspace = true
+edition = "2021"
+rust-version.workspace = true
+license.workspace = true
+publish.workspace = true
+description = "Deterministic, explicit-input battle simulation and Monte Carlo evaluation"
+
+[features]
+default = []
+diagnostics = ["dep:serde", "dep:serde_json"]
+
+[dependencies]
+serde = { workspace = true, optional = true }
+serde_json = { workspace = true, optional = true }
+sha2.workspace = true
+rand_chacha.workspace = true
+rand_core.workspace = true
+
+[[bin]]
+name = "hcwa-battle"
+path = "src/main.rs"
+required-features = ["diagnostics"]
+
+[[example]]
+name = "step_battle"
+required-features = ["diagnostics"]
+
+[[test]]
+name = "batch"
+required-features = ["diagnostics"]
+
+[[test]]
+name = "cli"
+required-features = ["diagnostics"]
+
+[[test]]
+name = "dynamic_scopes"
+required-features = ["diagnostics"]
+
+[[test]]
+name = "dynamic_values"
+required-features = ["diagnostics"]
+
+[[test]]
+name = "engine"
+required-features = ["diagnostics"]
+
+[[test]]
+name = "event_regressions"
+required-features = ["diagnostics"]
+
+[[test]]
+name = "feedback_regressions"
+required-features = ["diagnostics"]
+
+[[test]]
+name = "full_battle"
+required-features = ["diagnostics"]
+
+[[test]]
+name = "lifecycle"
+required-features = ["diagnostics"]
+
+[[test]]
+name = "math"
+required-features = ["diagnostics"]
+
+[[test]]
+name = "property_modifiers"
+required-features = ["diagnostics"]
+
+[[test]]
+name = "pursued_hits"
+required-features = ["diagnostics"]
+
+[[test]]
+name = "queue_deadline"
+required-features = ["diagnostics"]
+
+[[test]]
+name = "reference_math"
+required-features = ["diagnostics"]
+
+[[test]]
+name = "runtime_control"
+required-features = ["diagnostics"]
+
+[[test]]
+name = "session"
+required-features = ["diagnostics"]
+
+[[test]]
+name = "weakness_attachments"
+required-features = ["diagnostics"]

@@ -1,0 +1,1417 @@
+{
+  "schema_version": 1,
+  "ruleset": "battle_v2",
+  "provenance": {
+    "game_version": "4.7-reference/development-input",
+    "data_snapshot": "anaxa_s2_explicit_queue_v1",
+    "description": "Public Anaxa approximate vertical scenario; developer panels, finite queue, no private data"
+  },
+  "unsupported_mechanics": [],
+  "max_av": 2400,
+  "max_actions": 10000,
+  "ally_skill_points": {
+    "initial": 3,
+    "maximum": 5
+  },
+  "enemy_skill_points": {
+    "initial": 0,
+    "maximum": 5
+  },
+  "allies": [
+    {
+      "id": "anaxa",
+      "stats": {
+        "level": 80,
+        "max_hp": 6000,
+        "attack": 600,
+        "defense": 0,
+        "speed": 120,
+        "taunt": 1,
+        "crit_rate": 0.05,
+        "crit_damage": 0.5,
+        "damage_bonus": 0,
+        "defense_reduction": 0,
+        "defense_ignore": 0,
+        "resistance": 0,
+        "resistance_penetration": 0,
+        "vulnerability": 0,
+        "damage_reduction": 0,
+        "independent_multiplier": 1,
+        "toughness_broken": false,
+        "healing_bonus": 0,
+        "incoming_healing_bonus": 0,
+        "shield_bonus": 0
+      },
+      "initial_hp": 6000,
+      "initial_energy": 0,
+      "max_energy": 140,
+      "revival": null,
+      "actions": [
+        {
+          "id": "140503_ultimate",
+          "kind": "ultimate",
+          "sp_cost": 0,
+          "sp_gain": 0,
+          "energy_cost": 140,
+          "energy_gain": 5,
+          "effects": [
+            {
+              "type": "add_modifier",
+              "id": "sublimation_disclosure",
+              "stacks": {
+                "op": "constant",
+                "value": 1
+              },
+              "target": "all_enemies"
+            },
+            {
+              "type": "add_modifier",
+              "id": "disclosure_damage",
+              "stacks": {
+                "op": "constant",
+                "value": 1
+              },
+              "target": "self_unit"
+            },
+            {
+              "type": "elemental_damage",
+              "scale": "attack",
+              "ratio": {
+                "op": "constant",
+                "value": 1.6
+              },
+              "flat": {
+                "op": "constant",
+                "value": 0
+              },
+              "element": {
+                "selection": "fixed",
+                "element": "wind"
+              },
+              "attack_type": "direct",
+              "can_crit": true,
+              "target": "all_enemies"
+            },
+            {
+              "type": "attack_finish"
+            }
+          ]
+        },
+        {
+          "id": "140502_skill",
+          "kind": "skill",
+          "sp_cost": 1,
+          "sp_gain": 0,
+          "energy_cost": 0,
+          "energy_gain": 30,
+          "effects": [
+            {
+              "type": "with_dynamic_scope",
+              "scope": "ability",
+              "effects": [
+                {
+                  "type": "set_scoped_dynamic_value",
+                  "scope": "ability",
+                  "key": "bounce_count",
+                  "value": {
+                    "op": "constant",
+                    "value": 0
+                  }
+                },
+                {
+                  "type": "elemental_damage",
+                  "scale": "attack",
+                  "ratio": {
+                    "op": "constant",
+                    "value": 0.7
+                  },
+                  "flat": {
+                    "op": "constant",
+                    "value": 0
+                  },
+                  "element": {
+                    "selection": "fixed",
+                    "element": "wind"
+                  },
+                  "attack_type": "direct",
+                  "can_crit": true,
+                  "target": "ability_target"
+                },
+                {
+                  "type": "repeat",
+                  "count": {
+                    "op": "constant",
+                    "value": 4
+                  },
+                  "effects": [
+                    {
+                      "type": "set_scoped_dynamic_value",
+                      "scope": "ability",
+                      "key": "bounce_count",
+                      "value": {
+                        "op": "add",
+                        "left": {
+                          "op": "scoped_variable",
+                          "scope": "ability",
+                          "key": "bounce_count"
+                        },
+                        "right": {
+                          "op": "constant",
+                          "value": 1
+                        }
+                      }
+                    },
+                    {
+                      "type": "elemental_damage",
+                      "scale": "attack",
+                      "ratio": {
+                        "op": "constant",
+                        "value": 0.7
+                      },
+                      "flat": {
+                        "op": "constant",
+                        "value": 0
+                      },
+                      "element": {
+                        "selection": "fixed",
+                        "element": "wind"
+                      },
+                      "attack_type": "direct",
+                      "can_crit": true,
+                      "target": "enemy_random_uniform"
+                    }
+                  ]
+                },
+                {
+                  "type": "attack_finish"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "140501_basic",
+          "kind": "basic",
+          "sp_cost": 0,
+          "sp_gain": 1,
+          "energy_cost": 0,
+          "energy_gain": 30,
+          "effects": [
+            {
+              "type": "elemental_damage",
+              "scale": "attack",
+              "ratio": {
+                "op": "constant",
+                "value": 1.0
+              },
+              "flat": {
+                "op": "constant",
+                "value": 0
+              },
+              "element": {
+                "selection": "fixed",
+                "element": "wind"
+              },
+              "attack_type": "direct",
+              "can_crit": true,
+              "target": "ability_target"
+            },
+            {
+              "type": "attack_finish"
+            }
+          ]
+        },
+        {
+          "id": "anaxa_bonus_skill_approx",
+          "kind": "follow_up",
+          "sp_cost": 0,
+          "sp_gain": 0,
+          "energy_cost": 0,
+          "energy_gain": 0,
+          "effects": [
+            {
+              "type": "elemental_damage",
+              "scale": "attack",
+              "ratio": {
+                "op": "constant",
+                "value": 0.7
+              },
+              "flat": {
+                "op": "constant",
+                "value": 0
+              },
+              "element": {
+                "selection": "fixed",
+                "element": "wind"
+              },
+              "attack_type": "direct",
+              "can_crit": true,
+              "target": "ability_target"
+            },
+            {
+              "type": "attack_finish"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "waves": [
+    [
+      {
+        "id": "enemy_1",
+        "stats": {
+          "level": 80,
+          "max_hp": 2500,
+          "attack": 30,
+          "defense": 0,
+          "speed": 80,
+          "taunt": 1,
+          "crit_rate": 0.05,
+          "crit_damage": 0.5,
+          "damage_bonus": 0,
+          "defense_reduction": 0,
+          "defense_ignore": 0,
+          "resistance": 0,
+          "resistance_penetration": 0,
+          "vulnerability": 0,
+          "damage_reduction": 0,
+          "independent_multiplier": 1,
+          "toughness_broken": false,
+          "healing_bonus": 0,
+          "incoming_healing_bonus": 0,
+          "shield_bonus": 0
+        },
+        "initial_hp": 2500,
+        "initial_energy": 0,
+        "max_energy": 100,
+        "revival": null,
+        "actions": [
+          {
+            "id": "Monster_AML_Minion01_00_Skill01",
+            "kind": "basic",
+            "sp_cost": 0,
+            "sp_gain": 0,
+            "energy_cost": 0,
+            "energy_gain": 0,
+            "effects": [
+              {
+                "type": "elemental_damage",
+                "scale": "attack",
+                "ratio": {
+                  "op": "constant",
+                  "value": 2.5
+                },
+                "flat": {
+                  "op": "constant",
+                  "value": 0
+                },
+                "element": {
+                  "selection": "fixed",
+                  "element": "quantum"
+                },
+                "attack_type": "direct",
+                "can_crit": true,
+                "target": "ability_target"
+              },
+              {
+                "type": "energy",
+                "amount": 10,
+                "target": "ability_target"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "enemy_2",
+        "stats": {
+          "level": 80,
+          "max_hp": 2500,
+          "attack": 30,
+          "defense": 0,
+          "speed": 80,
+          "taunt": 1,
+          "crit_rate": 0.05,
+          "crit_damage": 0.5,
+          "damage_bonus": 0,
+          "defense_reduction": 0,
+          "defense_ignore": 0,
+          "resistance": 0,
+          "resistance_penetration": 0,
+          "vulnerability": 0,
+          "damage_reduction": 0,
+          "independent_multiplier": 1,
+          "toughness_broken": false,
+          "healing_bonus": 0,
+          "incoming_healing_bonus": 0,
+          "shield_bonus": 0
+        },
+        "initial_hp": 2500,
+        "initial_energy": 0,
+        "max_energy": 100,
+        "revival": null,
+        "actions": [
+          {
+            "id": "Monster_AML_Minion01_00_Skill01",
+            "kind": "basic",
+            "sp_cost": 0,
+            "sp_gain": 0,
+            "energy_cost": 0,
+            "energy_gain": 0,
+            "effects": [
+              {
+                "type": "elemental_damage",
+                "scale": "attack",
+                "ratio": {
+                  "op": "constant",
+                  "value": 2.5
+                },
+                "flat": {
+                  "op": "constant",
+                  "value": 0
+                },
+                "element": {
+                  "selection": "fixed",
+                  "element": "quantum"
+                },
+                "attack_type": "direct",
+                "can_crit": true,
+                "target": "ability_target"
+              },
+              {
+                "type": "energy",
+                "amount": 10,
+                "target": "ability_target"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "enemy_3",
+        "stats": {
+          "level": 80,
+          "max_hp": 2500,
+          "attack": 30,
+          "defense": 0,
+          "speed": 80,
+          "taunt": 1,
+          "crit_rate": 0.05,
+          "crit_damage": 0.5,
+          "damage_bonus": 0,
+          "defense_reduction": 0,
+          "defense_ignore": 0,
+          "resistance": 0,
+          "resistance_penetration": 0,
+          "vulnerability": 0,
+          "damage_reduction": 0,
+          "independent_multiplier": 1,
+          "toughness_broken": false,
+          "healing_bonus": 0,
+          "incoming_healing_bonus": 0,
+          "shield_bonus": 0
+        },
+        "initial_hp": 2500,
+        "initial_energy": 0,
+        "max_energy": 100,
+        "revival": null,
+        "actions": [
+          {
+            "id": "Monster_AML_Minion01_00_Skill01",
+            "kind": "basic",
+            "sp_cost": 0,
+            "sp_gain": 0,
+            "energy_cost": 0,
+            "energy_gain": 0,
+            "effects": [
+              {
+                "type": "elemental_damage",
+                "scale": "attack",
+                "ratio": {
+                  "op": "constant",
+                  "value": 2.5
+                },
+                "flat": {
+                  "op": "constant",
+                  "value": 0
+                },
+                "element": {
+                  "selection": "fixed",
+                  "element": "quantum"
+                },
+                "attack_type": "direct",
+                "can_crit": true,
+                "target": "ability_target"
+              },
+              {
+                "type": "energy",
+                "amount": 10,
+                "target": "ability_target"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "enemy_4",
+        "stats": {
+          "level": 80,
+          "max_hp": 2500,
+          "attack": 30,
+          "defense": 0,
+          "speed": 80,
+          "taunt": 1,
+          "crit_rate": 0.05,
+          "crit_damage": 0.5,
+          "damage_bonus": 0,
+          "defense_reduction": 0,
+          "defense_ignore": 0,
+          "resistance": 0,
+          "resistance_penetration": 0,
+          "vulnerability": 0,
+          "damage_reduction": 0,
+          "independent_multiplier": 1,
+          "toughness_broken": false,
+          "healing_bonus": 0,
+          "incoming_healing_bonus": 0,
+          "shield_bonus": 0
+        },
+        "initial_hp": 2500,
+        "initial_energy": 0,
+        "max_energy": 100,
+        "revival": null,
+        "actions": [
+          {
+            "id": "Monster_AML_Minion01_00_Skill01",
+            "kind": "basic",
+            "sp_cost": 0,
+            "sp_gain": 0,
+            "energy_cost": 0,
+            "energy_gain": 0,
+            "effects": [
+              {
+                "type": "elemental_damage",
+                "scale": "attack",
+                "ratio": {
+                  "op": "constant",
+                  "value": 2.5
+                },
+                "flat": {
+                  "op": "constant",
+                  "value": 0
+                },
+                "element": {
+                  "selection": "fixed",
+                  "element": "quantum"
+                },
+                "attack_type": "direct",
+                "can_crit": true,
+                "target": "ability_target"
+              },
+              {
+                "type": "energy",
+                "amount": 10,
+                "target": "ability_target"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "enemy_5",
+        "stats": {
+          "level": 80,
+          "max_hp": 2500,
+          "attack": 30,
+          "defense": 0,
+          "speed": 80,
+          "taunt": 1,
+          "crit_rate": 0.05,
+          "crit_damage": 0.5,
+          "damage_bonus": 0,
+          "defense_reduction": 0,
+          "defense_ignore": 0,
+          "resistance": 0,
+          "resistance_penetration": 0,
+          "vulnerability": 0,
+          "damage_reduction": 0,
+          "independent_multiplier": 1,
+          "toughness_broken": false,
+          "healing_bonus": 0,
+          "incoming_healing_bonus": 0,
+          "shield_bonus": 0
+        },
+        "initial_hp": 2500,
+        "initial_energy": 0,
+        "max_energy": 100,
+        "revival": null,
+        "actions": [
+          {
+            "id": "Monster_AML_Minion01_00_Skill01",
+            "kind": "basic",
+            "sp_cost": 0,
+            "sp_gain": 0,
+            "energy_cost": 0,
+            "energy_gain": 0,
+            "effects": [
+              {
+                "type": "elemental_damage",
+                "scale": "attack",
+                "ratio": {
+                  "op": "constant",
+                  "value": 2.5
+                },
+                "flat": {
+                  "op": "constant",
+                  "value": 0
+                },
+                "element": {
+                  "selection": "fixed",
+                  "element": "quantum"
+                },
+                "attack_type": "direct",
+                "can_crit": true,
+                "target": "ability_target"
+              },
+              {
+                "type": "energy",
+                "amount": 10,
+                "target": "ability_target"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "enemy_6",
+        "stats": {
+          "level": 80,
+          "max_hp": 2500,
+          "attack": 30,
+          "defense": 0,
+          "speed": 80,
+          "taunt": 1,
+          "crit_rate": 0.05,
+          "crit_damage": 0.5,
+          "damage_bonus": 0,
+          "defense_reduction": 0,
+          "defense_ignore": 0,
+          "resistance": 0,
+          "resistance_penetration": 0,
+          "vulnerability": 0,
+          "damage_reduction": 0,
+          "independent_multiplier": 1,
+          "toughness_broken": false,
+          "healing_bonus": 0,
+          "incoming_healing_bonus": 0,
+          "shield_bonus": 0
+        },
+        "initial_hp": 2500,
+        "initial_energy": 0,
+        "max_energy": 100,
+        "revival": null,
+        "actions": [
+          {
+            "id": "Monster_AML_Minion01_00_Skill01",
+            "kind": "basic",
+            "sp_cost": 0,
+            "sp_gain": 0,
+            "energy_cost": 0,
+            "energy_gain": 0,
+            "effects": [
+              {
+                "type": "elemental_damage",
+                "scale": "attack",
+                "ratio": {
+                  "op": "constant",
+                  "value": 2.5
+                },
+                "flat": {
+                  "op": "constant",
+                  "value": 0
+                },
+                "element": {
+                  "selection": "fixed",
+                  "element": "quantum"
+                },
+                "attack_type": "direct",
+                "can_crit": true,
+                "target": "ability_target"
+              },
+              {
+                "type": "energy",
+                "amount": 10,
+                "target": "ability_target"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  ],
+  "mechanics": {
+    "queue_capacity": 2,
+    "ally_damage_factor": 0.3,
+    "cycles": [
+      2400
+    ],
+    "unit_before_cycle": false,
+    "triggers": [
+      {
+        "owner": "anaxa",
+        "event": "battle_start",
+        "subject": null,
+        "action": null,
+        "uses": 0,
+        "effects": [
+          {
+            "type": "add_modifier",
+            "id": "s2_crit",
+            "stacks": {
+              "op": "constant",
+              "value": 1
+            },
+            "target": "self_unit"
+          },
+          {
+            "type": "add_modifier",
+            "id": "s2_team_damage",
+            "stacks": {
+              "op": "constant",
+              "value": 1
+            },
+            "target": "self_unit"
+          }
+        ],
+        "expires_on": null,
+        "duration": 0
+      },
+      {
+        "owner": "anaxa",
+        "event": "turn_start",
+        "subject": "anaxa",
+        "action": null,
+        "uses": 0,
+        "effects": [
+          {
+            "type": "conditional",
+            "condition": {
+              "type": "not",
+              "condition": {
+                "type": "has_modifier",
+                "id": "sublimation_disclosure",
+                "target": "all_enemies"
+              }
+            },
+            "then_effects": [
+              {
+                "type": "energy",
+                "amount": 30,
+                "target": "self_unit"
+              }
+            ],
+            "else_effects": []
+          }
+        ],
+        "expires_on": null,
+        "duration": 0
+      },
+      {
+        "owner": "anaxa",
+        "event": "before_skill_use",
+        "subject": "anaxa",
+        "action": "140502_skill",
+        "uses": 0,
+        "effects": [
+          {
+            "type": "set_dynamic_value",
+            "key": "Skill_Count",
+            "value": {
+              "op": "add",
+              "left": {
+                "op": "variable",
+                "key": "Skill_Count"
+              },
+              "right": {
+                "op": "constant",
+                "value": 1
+              }
+            },
+            "target": "self_unit"
+          },
+          {
+            "type": "conditional",
+            "condition": {
+              "type": "compare",
+              "left": {
+                "op": "variable",
+                "key": "Skill_Count"
+              },
+              "comparison": "greater_equal",
+              "right": {
+                "op": "constant",
+                "value": 2
+              }
+            },
+            "then_effects": [
+              {
+                "type": "set_dynamic_value",
+                "key": "Skill_Count",
+                "value": {
+                  "op": "subtract",
+                  "left": {
+                    "op": "variable",
+                    "key": "Skill_Count"
+                  },
+                  "right": {
+                    "op": "constant",
+                    "value": 2
+                  }
+                },
+                "target": "self_unit"
+              },
+              {
+                "type": "set_dynamic_value",
+                "key": "GridFight_S2_Current_MagicLayer",
+                "value": {
+                  "op": "add",
+                  "left": {
+                    "op": "variable",
+                    "key": "GridFight_S2_Current_MagicLayer"
+                  },
+                  "right": {
+                    "op": "constant",
+                    "value": 1
+                  }
+                },
+                "target": "self_unit"
+              },
+              {
+                "type": "set_dynamic_value",
+                "key": "grid_fight_custom:108",
+                "value": {
+                  "op": "add",
+                  "left": {
+                    "op": "variable",
+                    "key": "grid_fight_custom:108"
+                  },
+                  "right": {
+                    "op": "constant",
+                    "value": 1
+                  }
+                },
+                "target": "self_unit"
+              }
+            ],
+            "else_effects": []
+          }
+        ],
+        "expires_on": null,
+        "duration": 0
+      },
+      {
+        "owner": "anaxa",
+        "event": "after_attack",
+        "subject": "anaxa",
+        "action": "140502_skill",
+        "uses": 0,
+        "effects": [
+          {
+            "type": "set_dynamic_value",
+            "key": "Purse_Attack_Count",
+            "value": {
+              "op": "floor",
+              "value": {
+                "op": "divide",
+                "left": {
+                  "op": "variable",
+                  "key": "GridFight_S2_Current_MagicLayer"
+                },
+                "right": {
+                  "op": "constant",
+                  "value": 5
+                }
+              }
+            },
+            "target": "self_unit"
+          },
+          {
+            "type": "repeat",
+            "count": {
+              "op": "variable",
+              "key": "Purse_Attack_Count"
+            },
+            "effects": [
+              {
+                "type": "retarget_attack_random",
+                "effects": [
+                  {
+                    "type": "elemental_damage",
+                    "scale": "attack",
+                    "ratio": {
+                      "op": "constant",
+                      "value": 0.7
+                    },
+                    "flat": {
+                      "op": "constant",
+                      "value": 0
+                    },
+                    "element": {
+                      "selection": "random_all"
+                    },
+                    "attack_type": "pursued",
+                    "can_crit": true,
+                    "target": "context_target"
+                  }
+                ],
+                "empty_effects": []
+              }
+            ]
+          }
+        ],
+        "expires_on": null,
+        "duration": 0
+      },
+      {
+        "owner": "anaxa",
+        "event": "before_skill_use",
+        "subject": "anaxa",
+        "action": "anaxa_bonus_skill_approx",
+        "uses": 0,
+        "effects": [
+          {
+            "type": "set_dynamic_value",
+            "key": "Skill_Count",
+            "value": {
+              "op": "add",
+              "left": {
+                "op": "variable",
+                "key": "Skill_Count"
+              },
+              "right": {
+                "op": "constant",
+                "value": 1
+              }
+            },
+            "target": "self_unit"
+          },
+          {
+            "type": "conditional",
+            "condition": {
+              "type": "compare",
+              "left": {
+                "op": "variable",
+                "key": "Skill_Count"
+              },
+              "comparison": "greater_equal",
+              "right": {
+                "op": "constant",
+                "value": 2
+              }
+            },
+            "then_effects": [
+              {
+                "type": "set_dynamic_value",
+                "key": "Skill_Count",
+                "value": {
+                  "op": "subtract",
+                  "left": {
+                    "op": "variable",
+                    "key": "Skill_Count"
+                  },
+                  "right": {
+                    "op": "constant",
+                    "value": 2
+                  }
+                },
+                "target": "self_unit"
+              },
+              {
+                "type": "set_dynamic_value",
+                "key": "GridFight_S2_Current_MagicLayer",
+                "value": {
+                  "op": "add",
+                  "left": {
+                    "op": "variable",
+                    "key": "GridFight_S2_Current_MagicLayer"
+                  },
+                  "right": {
+                    "op": "constant",
+                    "value": 1
+                  }
+                },
+                "target": "self_unit"
+              },
+              {
+                "type": "set_dynamic_value",
+                "key": "grid_fight_custom:108",
+                "value": {
+                  "op": "add",
+                  "left": {
+                    "op": "variable",
+                    "key": "grid_fight_custom:108"
+                  },
+                  "right": {
+                    "op": "constant",
+                    "value": 1
+                  }
+                },
+                "target": "self_unit"
+              }
+            ],
+            "else_effects": []
+          }
+        ],
+        "expires_on": null,
+        "duration": 0
+      },
+      {
+        "owner": "anaxa",
+        "event": "after_attack",
+        "subject": "anaxa",
+        "action": "anaxa_bonus_skill_approx",
+        "uses": 0,
+        "effects": [
+          {
+            "type": "set_dynamic_value",
+            "key": "Purse_Attack_Count",
+            "value": {
+              "op": "floor",
+              "value": {
+                "op": "divide",
+                "left": {
+                  "op": "variable",
+                  "key": "GridFight_S2_Current_MagicLayer"
+                },
+                "right": {
+                  "op": "constant",
+                  "value": 5
+                }
+              }
+            },
+            "target": "self_unit"
+          },
+          {
+            "type": "repeat",
+            "count": {
+              "op": "variable",
+              "key": "Purse_Attack_Count"
+            },
+            "effects": [
+              {
+                "type": "retarget_attack_random",
+                "effects": [
+                  {
+                    "type": "elemental_damage",
+                    "scale": "attack",
+                    "ratio": {
+                      "op": "constant",
+                      "value": 0.7
+                    },
+                    "flat": {
+                      "op": "constant",
+                      "value": 0
+                    },
+                    "element": {
+                      "selection": "random_all"
+                    },
+                    "attack_type": "pursued",
+                    "can_crit": true,
+                    "target": "context_target"
+                  }
+                ],
+                "empty_effects": []
+              }
+            ]
+          }
+        ],
+        "expires_on": null,
+        "duration": 0
+      },
+      {
+        "owner": "anaxa",
+        "event": "before_skill_use",
+        "subject": "anaxa",
+        "action": "140501_basic",
+        "uses": 0,
+        "effects": [
+          {
+            "type": "conditional",
+            "condition": {
+              "type": "has_modifier",
+              "id": "sublimation_disclosure",
+              "target": "ability_target"
+            },
+            "then_effects": [
+              {
+                "type": "add_modifier",
+                "id": "disclosure_damage",
+                "stacks": {
+                  "op": "constant",
+                  "value": 1
+                },
+                "target": "self_unit"
+              },
+              {
+                "type": "request",
+                "kind": "follow_up",
+                "action": "anaxa_bonus_skill_approx",
+                "target": "self_unit"
+              }
+            ],
+            "else_effects": []
+          }
+        ],
+        "expires_on": null,
+        "duration": 0
+      },
+      {
+        "owner": "anaxa",
+        "event": "before_skill_use",
+        "subject": "anaxa",
+        "action": "140502_skill",
+        "uses": 0,
+        "effects": [
+          {
+            "type": "conditional",
+            "condition": {
+              "type": "has_modifier",
+              "id": "sublimation_disclosure",
+              "target": "ability_target"
+            },
+            "then_effects": [
+              {
+                "type": "add_modifier",
+                "id": "disclosure_damage",
+                "stacks": {
+                  "op": "constant",
+                  "value": 1
+                },
+                "target": "self_unit"
+              },
+              {
+                "type": "request",
+                "kind": "follow_up",
+                "action": "anaxa_bonus_skill_approx",
+                "target": "self_unit"
+              }
+            ],
+            "else_effects": []
+          }
+        ],
+        "expires_on": null,
+        "duration": 0
+      },
+      {
+        "owner": "anaxa",
+        "event": "before_skill_use",
+        "subject": "anaxa",
+        "action": "anaxa_bonus_skill_approx",
+        "uses": 0,
+        "effects": [
+          {
+            "type": "conditional",
+            "condition": {
+              "type": "has_modifier",
+              "id": "sublimation_disclosure",
+              "target": "ability_target"
+            },
+            "then_effects": [
+              {
+                "type": "add_modifier",
+                "id": "disclosure_damage",
+                "stacks": {
+                  "op": "constant",
+                  "value": 1
+                },
+                "target": "self_unit"
+              }
+            ],
+            "else_effects": []
+          }
+        ],
+        "expires_on": null,
+        "duration": 0
+      }
+    ],
+    "modifier_definitions": {
+      "s2_crit": {
+        "properties": [
+          {
+            "property": "crit_damage",
+            "value": {
+              "op": "constant",
+              "value": 0.6
+            }
+          }
+        ],
+        "lifetime": null,
+        "stack_mode": "replace_by_source",
+        "max_stacks": 1
+      },
+      "s2_team_damage": {
+        "properties": [
+          {
+            "property": "damage_bonus",
+            "value": {
+              "op": "constant",
+              "value": 0.3
+            }
+          }
+        ],
+        "lifetime": null,
+        "stack_mode": "replace_by_source",
+        "max_stacks": 1
+      },
+      "sublimation_disclosure": {
+        "properties": [],
+        "lifetime": {
+          "event": "turn_start",
+          "unit": "owner",
+          "ticks": 1
+        },
+        "stack_mode": "replace_by_source",
+        "max_stacks": 1
+      },
+      "disclosure_damage": {
+        "properties": [
+          {
+            "property": "damage_bonus",
+            "value": {
+              "op": "constant",
+              "value": 0.3
+            }
+          }
+        ],
+        "lifetime": {
+          "event": "action_end",
+          "unit": "owner",
+          "ticks": 1
+        },
+        "stack_mode": "replace_by_source",
+        "max_stacks": 1
+      }
+    },
+    "dynamic_values": {
+      "anaxa": {
+        "Skill_Count": 0,
+        "GridFight_S2_Current_MagicLayer": 0,
+        "grid_fight_custom:108": 0,
+        "Purse_Attack_Count": 0
+      }
+    },
+    "natural_weaknesses": {
+      "anaxa": [
+        "physical",
+        "wind"
+      ],
+      "enemy_1": [
+        "physical",
+        "wind"
+      ],
+      "enemy_2": [
+        "physical",
+        "wind"
+      ],
+      "enemy_3": [
+        "physical",
+        "wind"
+      ],
+      "enemy_4": [
+        "physical",
+        "wind"
+      ],
+      "enemy_5": [
+        "physical",
+        "wind"
+      ],
+      "enemy_6": [
+        "physical",
+        "wind"
+      ]
+    },
+    "modifier_weaknesses": {
+      "sublimation_disclosure": [
+        "physical",
+        "fire",
+        "ice",
+        "thunder",
+        "wind",
+        "quantum",
+        "imaginary"
+      ]
+    },
+    "element_profiles": {
+      "anaxa": {
+        "damage_bonus": {
+          "physical": 0,
+          "fire": 0,
+          "ice": 0,
+          "thunder": 0,
+          "wind": 0,
+          "quantum": 0,
+          "imaginary": 0
+        },
+        "resistance": {
+          "physical": 0,
+          "fire": 0,
+          "ice": 0,
+          "thunder": 0,
+          "wind": 0,
+          "quantum": 0,
+          "imaginary": 0
+        }
+      },
+      "enemy_1": {
+        "damage_bonus": {
+          "physical": 0,
+          "fire": 0,
+          "ice": 0,
+          "thunder": 0,
+          "wind": 0,
+          "quantum": 0,
+          "imaginary": 0
+        },
+        "resistance": {
+          "physical": 0,
+          "fire": 0,
+          "ice": 0,
+          "thunder": 0,
+          "wind": 0,
+          "quantum": 0,
+          "imaginary": 0
+        }
+      },
+      "enemy_2": {
+        "damage_bonus": {
+          "physical": 0,
+          "fire": 0,
+          "ice": 0,
+          "thunder": 0,
+          "wind": 0,
+          "quantum": 0,
+          "imaginary": 0
+        },
+        "resistance": {
+          "physical": 0,
+          "fire": 0,
+          "ice": 0,
+          "thunder": 0,
+          "wind": 0,
+          "quantum": 0,
+          "imaginary": 0
+        }
+      },
+      "enemy_3": {
+        "damage_bonus": {
+          "physical": 0,
+          "fire": 0,
+          "ice": 0,
+          "thunder": 0,
+          "wind": 0,
+          "quantum": 0,
+          "imaginary": 0
+        },
+        "resistance": {
+          "physical": 0,
+          "fire": 0,
+          "ice": 0,
+          "thunder": 0,
+          "wind": 0,
+          "quantum": 0,
+          "imaginary": 0
+        }
+      },
+      "enemy_4": {
+        "damage_bonus": {
+          "physical": 0,
+          "fire": 0,
+          "ice": 0,
+          "thunder": 0,
+          "wind": 0,
+          "quantum": 0,
+          "imaginary": 0
+        },
+        "resistance": {
+          "physical": 0,
+          "fire": 0,
+          "ice": 0,
+          "thunder": 0,
+          "wind": 0,
+          "quantum": 0,
+          "imaginary": 0
+        }
+      },
+      "enemy_5": {
+        "damage_bonus": {
+          "physical": 0,
+          "fire": 0,
+          "ice": 0,
+          "thunder": 0,
+          "wind": 0,
+          "quantum": 0,
+          "imaginary": 0
+        },
+        "resistance": {
+          "physical": 0,
+          "fire": 0,
+          "ice": 0,
+          "thunder": 0,
+          "wind": 0,
+          "quantum": 0,
+          "imaginary": 0
+        }
+      },
+      "enemy_6": {
+        "damage_bonus": {
+          "physical": 0,
+          "fire": 0,
+          "ice": 0,
+          "thunder": 0,
+          "wind": 0,
+          "quantum": 0,
+          "imaginary": 0
+        },
+        "resistance": {
+          "physical": 0,
+          "fire": 0,
+          "ice": 0,
+          "thunder": 0,
+          "wind": 0,
+          "quantum": 0,
+          "imaginary": 0
+        }
+      }
+    },
+    "settlement": {
+      "name": "weighted_kills_flat_penalty_v1",
+      "enemy_weights": {
+        "enemy_1": 1,
+        "enemy_2": 1,
+        "enemy_3": 1,
+        "enemy_4": 1,
+        "enemy_5": 1,
+        "enemy_6": 1
+      },
+      "minimum_progress": 0.5,
+      "hp_before": 60,
+      "hp_cap": 100,
+      "failure_loss": 20,
+      "recovery": 3
+    },
+    "assumptions": [
+      "configured: anaxa_s2_explicit_queue_v1; role 140502; basic level 6, skill/ultimate level 10; no equipment, active traits, eidolons or technique; explicit developer effective panels (not catalog/player measurements).",
+      "provisional: anaxa_nous_approx_v1; HSR_Nous f8935ddb407b297732fbd3c624d55897e3e648b9 MIT template 1405; S2 callbacks from Dimbreath dad9155eb00fdeda31fb8456507c53590d49071f. These references do not establish native accuracy.",
+      "configured: first_affordable_v1; ordered ultimate > skill > basic; primary lowest HP fraction then entry index; seeded uniform living-enemy bounces; ultimate inserts at existing legal action boundaries.",
+      "provisional: skill has one selected and four uniform bounce hits, 30 total energy; basic energy 30; ultimate cost 140/gain 5; no-disclosure TurnStart grants 30, including inserted ultimate TurnStart. No per-hit energy interpretation of unknown raw opcodes.",
+      "provisional: ultimate gives seven weaknesses/disclosure until target TurnStart; basic/skill on disclosed entry target queues one 0.7 ATK bonus segment, no SP/energy, classified FollowUp for scheduling but counted as a skill by the explicit S2 hooks; no recursive bonus.",
+      "provisional: disclosed entry-target damage bonus 0.3 applies to the entire action, including bounces/pursuits; ultimate applies it before AoE. Bonus target is reselected at entry after replacement. Native target-specific semantics not reproduced.",
+      "omitted: per-hit random weakness implant, hard control/control resistance, per-weakness defense ignore, enemy-count skill bonus, static trace-2 bonuses, toughness damage/break recovery, other hit-taken energy and native AI; may change damage/order/outcome.",
+      "configured: six development instances use the public Monster_AML_Minion01_00 Skill01 single Quantum hit (2.5 ATK), with explicit target energy 10; other enemy skills/passives are excluded. All panels/HP/queue/capacity are explicit developer inputs; no native encounter generation, summon, escape or phase mechanics.",
+      "provisional: finite_queue_after_action_v1; ascending empty slot refill after complete actions, before next inserts; new enemy begins at full action distance; immediate revival keeps slot; queue exhausted AND board empty required for clear. Progress denominator fixed; same final-dead instance counted once; reaching threshold does not stop battle.",
+      "provisional: weighted_kills_flat_penalty_v1; threshold failure incurs configured flat loss; floor loss at zero then apply configured recovery up to cap, no rounding/cap changes (recovery can restore zero after loss). Battle outcome, minimum progress and run survival are separate. Cancellation/ActionLimit never settle HP.",
+      "configured: existing Sakura cycle/action ordering and 0.3 ally damage factor; no additional inferred difficulty reduction. Timer ties use unit_before_cycle=false; completed action elimination precedes expiry. Runtime error is an error, never a business defeat."
+    ]
+  }
+}

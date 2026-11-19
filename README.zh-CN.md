@@ -17,7 +17,7 @@
 | [账号适配器与配置转换](docs/modules/account/README.md) | 已实现，支持 reliquary-archiver v4 账号导入、未持有角色试用补齐、练度保底、装备映射和静态面板计算。 |
 | 整局环境 | 计划中。模拟节点、商店、投资与资源结算。 |
 | 运营决策器 | 设计中。当前优先确定单个节点的可见观测、合法操作和评价方式。模型训练待实现。 |
-| 战斗引擎 | 独立开发分支已有原型，可验证部分战斗规则，待接入整局环境。 |
+| [战斗引擎](docs/modules/battle-simulation/README.md) | Rust 战斗核心接收已组装的面板和动作，支持分步选招、按种子重放及批次评估。开发 CLI 提供 JSON 场景解析和事件回放。 |
 | 战斗规划器 | 计划中。比较站位、战斗操作和重试方案。 |
 | 阵容研究器 | 计划中。搜索阵容和过渡路线。 |
 | 实验评估器 | 计划中。回放对局并比较策略结果。 |
@@ -31,6 +31,7 @@
 | --- | --- |
 | [StarRailRes](https://github.com/Mar-7th/StarRailRes) | 游戏基础数据参考 |
 | [TurnBasedGameData](https://github.com/DimbreathBot/TurnBasedGameData) | 游戏基础数据参考 |
+| [HSR_Nous](https://github.com/pzc2004/HSR_Nous) | 战斗公式核对与合成验证向量 |
 
 ## 许可证
 

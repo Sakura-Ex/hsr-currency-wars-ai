@@ -48,6 +48,8 @@ hsr-currency-wars-ai/
 
 Rust crate 在各自目录维护 `Cargo.toml`，并加入仓库根 `Cargo.toml` 的 workspace。共用包配置和依赖版本在根清单维护，Rust 依赖统一由根 `Cargo.lock` 锁定。
 
+当前根 workspace 包含已实现的 `core/account` 和 `core/battle`。模块共用根清单的依赖；`account` 使用 edition 2024，`battle` 保持 edition 2021，根 `Cargo.lock` 和 `rust-toolchain.toml` 统一锁定依赖与工具链；从根目录或模块目录均可构建和运行。`core/run`、`research/sim_native` 等规划中模块按各自实现状态接入。战斗核心的使用方法和验证入口见[战斗模拟模块文档](../modules/battle-simulation/README.md)。
+
 Python 研究项目在根目录维护 `pyproject.toml` 和 `uv.lock`。Python 模拟扩展的构建配置由 `research/sim_native/pyproject.toml` 维护。各模块在使用说明中提供安装、运行和验证命令。
 
 ## 配套目录

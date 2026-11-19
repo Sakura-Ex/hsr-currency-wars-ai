@@ -1,8 +1,8 @@
 # Rust 账号数据与配置
 
-状态：原始账号模型、reliquary-archiver v4 导入、账号静态配置转换和静态面板计算已实现。Python 生成结果接入与绑定待实现。
+本模块提供 `account-core` crate，供训练、评估和玩家应用共用。包括原始账号模型、reliquary-archiver v4 导入、账号静态配置转换和静态面板计算。
 
-`core/account/` 提供 `account-core` crate，供训练、评估和玩家应用共用。[reliquary-archiver 导入](reliquary-import.md)将来源文件转换为统一原始账号；[账号静态配置](playable-configuration.md)说明转换入口、保底规则和面板结构。整体流程见[账号数据流](../account-generation/data-flow.md)。
+[reliquary-archiver 导入](reliquary-import.md)将来源文件转换为统一原始账号；[账号静态配置](playable-configuration.md)说明转换入口、保底规则和面板结构。整体流程见[账号数据流](../account-generation/data-flow.md)。
 
 ## 目录与入口
 
@@ -38,7 +38,7 @@ core/account/
     └── fixtures/       # 人工构造的最小样例
 ```
 
-所有 Rust crate 在根 `Cargo.toml` 中组织为 workspace，当前成员为 `core/account`。后续训练绑定放在 `research/sim_native/`，通过路径依赖使用账号核心。
+所有 Rust crate 在根 `Cargo.toml` 中组织为 workspace，当前成员包含 `core/account` 与 `core/battle`。后续训练绑定放在 `research/sim_native/`，通过路径依赖使用账号核心。
 
 原始账号类型继续通过 `account_core::RawAccount` 等根入口使用。实际配置类型位于 `account_core::playable`，转换入口位于 `account_core::playable::conversion`，计算资料位于 `account_core::reference`。
 
